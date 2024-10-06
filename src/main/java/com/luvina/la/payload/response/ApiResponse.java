@@ -4,17 +4,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 @Builder
 public class ApiResponse<T> {
     @Builder.Default
-    int code = 200;
+    String code = "200";
 
     Long totalRecords;
-    String message;
-    T result;
+    ApiResponse<ErrorMessage> message;
+    List<String> params;
     T departments;
     T employees;
 

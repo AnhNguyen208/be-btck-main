@@ -1,3 +1,7 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * ApiResponse.java, 04/10/2024 AnhNLT
+ */
 package com.luvina.la.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -19,5 +23,4 @@ public class ApiResponse<T> {
     List<String> params;
     T departments;
     T employees;
-
 }

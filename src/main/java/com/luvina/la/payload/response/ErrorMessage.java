@@ -1,7 +1,10 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * ErrorMessage.java, 06/10/2024 AnhNLT
+ */
 package com.luvina.la.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 import java.util.ArrayList;

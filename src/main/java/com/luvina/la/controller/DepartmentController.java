@@ -1,3 +1,7 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * DepartmentController.java, 04/10/2024 AnhNLT
+ */
 package com.luvina.la.controller;
 
 import com.luvina.la.payload.response.ErrorMessage;
@@ -16,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- *
+ * Controller để quản lý department
+ * @author AnhNLT
  */
 @RestController
 @RequestMapping("/departments")
@@ -27,17 +32,17 @@ public class DepartmentController {
     DepartmentService departmentService;
 
     /**
-     * Api lấy danh sách phòng ban
+     * Api lấy danh sách department
      * @return
-     * Trường hợp lấy được department
-     * code: 200
-     * departments: danh sách department
-     * Trường hợp không lấy được department
-     * code: 500
-     * message: {
-     *     code: "ER023"
-     *     params: []
-     * }
+     *      Trường hợp lấy được department
+     *          code: 200
+     *          departments: danh sách department
+     *      Trường hợp không lấy được department
+     *          code: 500
+     *          message: {
+     *              code: "ER023"
+     *              params: []
+     *          }
      */
     @GetMapping
     public ApiResponse<List<DepartmentDTO>> getListDepartments() {

@@ -1,3 +1,7 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * DepartmentRepository.java, 04/10/2024 AnhNLT
+ */
 package com.luvina.la.repository;
 
 import com.luvina.la.entity.Department;

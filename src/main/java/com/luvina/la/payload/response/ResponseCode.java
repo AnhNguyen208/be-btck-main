@@ -1,10 +1,10 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * ResponseCode.java, 06/10/2024 AnhNLT
+ */
 package com.luvina.la.payload.response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 public enum ResponseCode {

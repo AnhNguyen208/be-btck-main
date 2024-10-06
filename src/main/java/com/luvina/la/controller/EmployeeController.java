@@ -1,3 +1,7 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * EmployeeController.java, 04/10/2024 AnhNLT
+ */
 package com.luvina.la.controller;
 
 import com.luvina.la.dto.EmployeeDTO;
@@ -13,6 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller để quản lý employee
+ * @author AnhNLT
+ */
 @RestController
 @RequestMapping("/employees")
 @RequiredArgsConstructor
@@ -20,17 +28,30 @@ import java.util.List;
 @CrossOrigin
 public class EmployeeController {
     EmployeeService employeeService;
+
+    /**
+     * Api lấy danh sách employee
+     * @param employeeName Tên nhân viên
+     * @param departmentId Mã phòng ban
+     * @param ordEmployeeName ASC hoặc DESC
+     * @param ordCertificationName ASC hoặc DESC
+     * @param ordEndDate ASC hoặc DESC
+     * @param offset Số nguyên dương
+     * @param limit Số nguyên dương
+     * @return Danh sách EmployeeDTO
+     *
+     */
     @GetMapping
-    public ApiResponse<List<EmployeeDTO>> getListEmployees(@RequestParam(required = false) String employee_name,
-                                                           @RequestParam(required = false) String department_id,
-                                                           @RequestParam(required = false) String ord_employee_name,
-                                                           @RequestParam(required = false) String ord_certification_name,
-                                                           @RequestParam(required = false) String ord_end_date,
+    public ApiResponse<List<EmployeeDTO>> getListEmployees(@RequestParam(name = "employee_name", required = false) String employeeName,
+                                                           @RequestParam(name = "department_id", required = false) String departmentId,
+                                                           @RequestParam(name = "ord_employee_name", required = false) String ordEmployeeName,
+                                                           @RequestParam(name = "ord_certification_name", required = false) String ordCertificationName,
+                                                           @RequestParam(name = "ord_end_date",required = false) String ordEndDate,
                                                            @RequestParam(defaultValue = "0") String offset,
                                                            @RequestParam(defaultValue = "5") String limit) {
-        if((!ParamConstants.ASC.getValue().equals(ord_employee_name) && !ParamConstants.DESC.getValue().equals(ord_employee_name)) ||
-                (!ParamConstants.ASC.getValue().equals(ord_certification_name) && !ParamConstants.DESC.getValue().equals(ord_certification_name)) ||
-                (!ParamConstants.ASC.getValue().equals(ord_end_date) && !ParamConstants.DESC.getValue().equals(ord_end_date))
+        if((!ParamConstants.ASC.getValue().equals(ordEmployeeName) && !ParamConstants.DESC.getValue().equals(ordEmployeeName)) ||
+                (!ParamConstants.ASC.getValue().equals(ordCertificationName) && !ParamConstants.DESC.getValue().equals(ordCertificationName)) ||
+                (!ParamConstants.ASC.getValue().equals(ordEndDate) && !ParamConstants.DESC.getValue().equals(ordEndDate))
         ) {
             return ApiResponse.<List<EmployeeDTO>>builder()
                     .code(ResponseCode.ERROR.getCode())
@@ -62,8 +83,8 @@ public class EmployeeController {
         }
 
         return ApiResponse.<List<EmployeeDTO>>builder()
-                .totalRecords(employeeService.countEmployees(employee_name, department_id))
-                .employees(employeeService.getEmployees(employee_name, department_id, ord_employee_name, ord_certification_name, ord_end_date, offset, limit))
+                .totalRecords(employeeService.countEmployees(employeeName, departmentId))
+                .employees(employeeService.getEmployees(employeeName, departmentId, ordEmployeeName, ordCertificationName, ordEndDate, offset, limit))
                 .build();
     }
 }

@@ -1,3 +1,7 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * DepartmentDTO.java, 04/10/2024 AnhNLT
+ */
 package com.luvina.la.dto;
 
 import lombok.*;

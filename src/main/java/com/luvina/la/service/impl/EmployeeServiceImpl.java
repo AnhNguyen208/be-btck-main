@@ -1,3 +1,7 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * EmployeeServiceImpl.java, 04/10/2024 AnhNLT
+ */
 package com.luvina.la.service.impl;
 
 import com.luvina.la.entity.Employee;
@@ -25,38 +29,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     EmployeeRepository employeeRepository;
     EmployeeMapper employeeMapper;
     @Override
-    public List<EmployeeDTO> getEmployees(String employee_name, String department_id, String ord_employee_name, String ord_certification_name, String ord_end_date, String offset, String limit) {
-        Pageable pageable = PageRequest.of(Integer.parseInt(offset) / Integer.parseInt(limit), Integer.parseInt(limit));
+    public List<EmployeeDTO> getEmployees(String employeeName, String departmentId, String ordEmployeeName, String ordCertificationName, String ordEndDate, String offset, String limit) {
         Sort sort = Sort.by(
-                new Sort.Order(Sort.Direction.fromString(ord_employee_name), "employeeName"),
-                new Sort.Order(Sort.Direction.fromString(ord_certification_name), "employeeCertificationList.certification.certificationName"),
-                new Sort.Order(Sort.Direction.fromString(ord_end_date), "employeeCertificationList.endDate")
+                new Sort.Order(Sort.Direction.fromString(ordEmployeeName), "employeeName"),
+                new Sort.Order(Sort.Direction.fromString(ordCertificationName), "employeeCertificationList.certification.certificationName"),
+                new Sort.Order(Sort.Direction.fromString(ordEndDate), "employeeCertificationList.endDate")
         );
-        if(isLong(department_id)) {
-            Optional<List<Employee>> list = employeeRepository.findByDepartment_departmentIdAndEmployeeNameLike(Long.parseLong(department_id), "%" + employee_name + "%", sort);
-            return list.map(employees -> (List<EmployeeDTO>) employeeMapper.toList(employees)).orElse(null);
-        } else {
-            Optional<List<Employee>> list = employeeRepository.findByEmployeeNameLike("%" + employee_name + "%", sort);
-            return list.map(employees -> (List<EmployeeDTO>) employeeMapper.toList(employees)).orElse(null);
-        }
+        Pageable pageable = PageRequest.of(Integer.parseInt(offset) / Integer.parseInt(limit), Integer.parseInt(limit), sort);
+
+        Optional<List<Employee>> list = employeeRepository.findByDepartment_departmentIdAndEmployeeNameLike(Long.parseLong(departmentId), "%" + employeeName + "%", pageable);
+        return list.map(employees -> (List<EmployeeDTO>) employeeMapper.toList(employees)).orElse(null);
     }
-    private boolean isLong(String str) {
-        if (str == null || str.isEmpty()) {
-            return false;
-        }
-        try {
-            Long.parseLong(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
+
     @Override
-    public Long countEmployees(String employee_name, String department_id) {
-        if(isLong(department_id)) {
-            return employeeRepository.countByDepartment_departmentIdAndEmployeeNameLike(Long.parseLong(department_id), "%" + employee_name + "%");
-        } else {
-            return employeeRepository.countByEmployeeNameLike("%" + employee_name + "%");
-        }
+    public Long countEmployees(String employeeName, String departmentId) {
+        return employeeRepository.countByDepartment_departmentIdAndEmployeeNameLike(Long.parseLong(departmentId), "%" + employeeName + "%");
     }
 }

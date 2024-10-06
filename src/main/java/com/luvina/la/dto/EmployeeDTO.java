@@ -1,9 +1,12 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * EmployeeDTO.java, 04/10/2024 AnhNLT
+ */
 package com.luvina.la.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

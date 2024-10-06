@@ -1,3 +1,7 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * ParamConstants.java, 06/10/2024 AnhNLT
+ */
 package com.luvina.la.payload;
 
 import lombok.Getter;

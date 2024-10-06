@@ -1,3 +1,7 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * DepartmentMapper.java, 04/10/2024 AnhNLT
+ */
 package com.luvina.la.mapper;
 
 import com.luvina.la.dto.DepartmentDTO;

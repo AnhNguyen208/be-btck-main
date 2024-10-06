@@ -1,3 +1,7 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * DepartmentServiceImpl.java, 04/10/2024 AnhNLT
+ */
 package com.luvina.la.service.impl;
 
 import com.luvina.la.service.DepartmentService;

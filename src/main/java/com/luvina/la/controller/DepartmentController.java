@@ -47,11 +47,13 @@ public class DepartmentController {
                     .departments(departmentService.getDepartments())
                     .build();
         } catch (Exception e) {
-            return null;
-//            return ApiResponse.<List<DepartmentDTO>>builder()
-//                    .code(ResponseCode.ERROR.getCode())
-//                    .message(ErrorMessage.INVALID_ORDER_PARAMETER)
-//                    .build();
+            return ApiResponse.<List<DepartmentDTO>>builder()
+                    .code(ResponseCode.ERROR.getCode())
+                    .message(ApiResponse.<ErrorMessage>builder()
+                            .code(ErrorMessage.DEPARTMENT_ERROR.getCode())
+                            .params(ErrorMessage.DEPARTMENT_ERROR.getParams())
+                            .build())
+                    .build();
         }
 
     }

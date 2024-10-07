@@ -42,13 +42,15 @@ public class EmployeeController {
      *
      */
     @GetMapping
-    public ApiResponse<List<EmployeeDTO>> getListEmployees(@RequestParam(name = "employee_name", required = false) String employeeName,
-                                                           @RequestParam(name = "department_id", required = false) String departmentId,
-                                                           @RequestParam(name = "ord_employee_name", required = false) String ordEmployeeName,
-                                                           @RequestParam(name = "ord_certification_name", required = false) String ordCertificationName,
-                                                           @RequestParam(name = "ord_end_date",required = false) String ordEndDate,
-                                                           @RequestParam(defaultValue = "0") String offset,
-                                                           @RequestParam(defaultValue = "5") String limit) {
+    public ApiResponse<List<EmployeeDTO>> getListEmployees(
+            @RequestParam(name = "employee_name", required = false) String employeeName,
+            @RequestParam(name = "department_id", required = false) String departmentId,
+            @RequestParam(name = "ord_employee_name", required = false) String ordEmployeeName,
+            @RequestParam(name = "ord_certification_name", required = false) String ordCertificationName,
+            @RequestParam(name = "ord_end_date",required = false) String ordEndDate,
+            @RequestParam(defaultValue = "0") String offset,
+            @RequestParam(defaultValue = "5") String limit
+    ) {
         if((!ParamConstants.ASC.getValue().equals(ordEmployeeName) && !ParamConstants.DESC.getValue().equals(ordEmployeeName)) ||
                 (!ParamConstants.ASC.getValue().equals(ordCertificationName) && !ParamConstants.DESC.getValue().equals(ordCertificationName)) ||
                 (!ParamConstants.ASC.getValue().equals(ordEndDate) && !ParamConstants.DESC.getValue().equals(ordEndDate))

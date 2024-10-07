@@ -35,15 +35,15 @@ public interface EmployeeMapper {
     Iterable<EmployeeDTO> toList(Iterable<Employee> list);
 
     @Named("getFirstCertificationName")
-    public static String getFirstCertificationName(List<EmployeeCertification> employeeCertificationList) {
+    static String getFirstCertificationName(List<EmployeeCertification> employeeCertificationList) {
         return employeeCertificationList.get(0).getCertification().getCertificationName();
     }
     @Named("getFirstEndDate")
-    public static Date getFirstEndDate(List<EmployeeCertification> employeeCertificationList) {
+    static Date getFirstEndDate(List<EmployeeCertification> employeeCertificationList) {
         return employeeCertificationList.get(0).getEndDate();
     }
     @Named("getFirstScore")
-    public static BigDecimal getFirstScore(List<EmployeeCertification> employeeCertificationList) {
+    static BigDecimal getFirstScore(List<EmployeeCertification> employeeCertificationList) {
         return employeeCertificationList.get(0).getScore();
     }
 }

@@ -10,6 +10,10 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
+/**
+ * Chuẩn hóa cấu trúc phản hồi cho các API
+ * @param <T> Các kiểu dữ liệu trả về
+ */
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data

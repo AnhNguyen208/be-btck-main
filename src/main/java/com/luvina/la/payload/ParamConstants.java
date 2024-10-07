@@ -6,6 +6,9 @@ package com.luvina.la.payload;
 
 import lombok.Getter;
 
+/**
+ * Quản lý các hằng số
+ */
 @Getter
 public enum ParamConstants {
     ASC("ASC"),

@@ -6,6 +6,9 @@ package com.luvina.la.payload.response;
 
 import lombok.Getter;
 
+/**
+ * Quản lý các mã phản hồi
+ */
 @Getter
 public enum ResponseCode {
     SUCCESS("200"),

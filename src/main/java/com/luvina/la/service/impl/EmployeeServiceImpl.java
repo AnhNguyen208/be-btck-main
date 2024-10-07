@@ -36,13 +36,35 @@ public class EmployeeServiceImpl implements EmployeeService {
                 new Sort.Order(Sort.Direction.fromString(ordEndDate), "employeeCertificationList.endDate")
         );
         Pageable pageable = PageRequest.of(Integer.parseInt(offset) / Integer.parseInt(limit), Integer.parseInt(limit), sort);
+        Optional<List<Employee>> list;
 
-        Optional<List<Employee>> list = employeeRepository.findByDepartment_departmentIdAndEmployeeNameLike(Long.parseLong(departmentId), "%" + employeeName + "%", pageable);
+        if(isLong(departmentId)) {
+            list = employeeRepository.findByDepartment_departmentIdAndEmployeeNameLike(Long.parseLong(departmentId), "%" + employeeName + "%", pageable);
+        } else {
+            list = employeeRepository.findByEmployeeNameLike("%" + employeeName + "%", pageable);
+        }
+
         return list.map(employees -> (List<EmployeeDTO>) employeeMapper.toList(employees)).orElse(null);
+    }
+
+    private boolean isLong(String str) {
+        if (str == null || str.isEmpty()) {
+            return false;
+        }
+        try {
+            Long.parseLong(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     @Override
     public Long countEmployees(String employeeName, String departmentId) {
-        return employeeRepository.countByDepartment_departmentIdAndEmployeeNameLike(Long.parseLong(departmentId), "%" + employeeName + "%");
+        if(isLong(departmentId)) {
+            return employeeRepository.countByDepartment_departmentIdAndEmployeeNameLike(Long.parseLong(departmentId), "%" + employeeName + "%");
+        } else {
+            return employeeRepository.countByEmployeeNameLike("%" + employeeName + "%");
+        }
     }
 }

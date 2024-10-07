@@ -10,6 +10,9 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Quản lý các thông điệp lỗi
+ */
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public enum ErrorMessage {

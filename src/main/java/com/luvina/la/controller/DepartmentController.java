@@ -4,8 +4,7 @@
  */
 package com.luvina.la.controller;
 
-import com.luvina.la.payload.response.ErrorMessage;
-import com.luvina.la.payload.response.ResponseCode;
+import com.luvina.la.payload.ErrorMessage;
 import com.luvina.la.service.DepartmentService;
 import com.luvina.la.dto.DepartmentDTO;
 import com.luvina.la.payload.response.ApiResponse;
@@ -56,7 +55,7 @@ public class DepartmentController {
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponse<?> response = ApiResponse.ErrorMessageResponse(ErrorMessage.DEPARTMENT_ERROR);
+            ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.DEPARTMENT_ERROR);
 
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }

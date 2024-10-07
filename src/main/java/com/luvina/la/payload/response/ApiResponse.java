@@ -5,13 +5,15 @@
 package com.luvina.la.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.luvina.la.payload.ErrorMessage;
+import com.luvina.la.payload.ResponseCode;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
 /**
- * Chuẩn hóa cấu trúc phản hồi cho các API
+ * Cấu trúc phản hồi dữ liệu của API
  * @param <T> Các kiểu dữ liệu trả về
  */
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -28,7 +30,7 @@ public class ApiResponse<T> {
     T departments;
     T employees;
 
-    public static ApiResponse<?> ErrorMessageResponse(ErrorMessage errorMessage) {
+    public static ApiResponse<?> createErrorResponse(ErrorMessage errorMessage) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(errorMessage.getCode())
                 .params(errorMessage.getParams())

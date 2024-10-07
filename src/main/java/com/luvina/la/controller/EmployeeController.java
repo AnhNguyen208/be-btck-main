@@ -6,7 +6,7 @@ package com.luvina.la.controller;
 
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.payload.ParamConstants;
-import com.luvina.la.payload.response.ErrorMessage;
+import com.luvina.la.payload.ErrorMessage;
 import com.luvina.la.service.EmployeeService;
 import com.luvina.la.payload.response.ApiResponse;
 import lombok.AccessLevel;
@@ -52,26 +52,24 @@ public class EmployeeController {
             @RequestParam(defaultValue = "0") String offset,
             @RequestParam(defaultValue = "5") String limit
     ) {
-        if((!ParamConstants.ASC.getValue().equals(ordEmployeeName) && !ParamConstants.DESC.getValue().equals(ordEmployeeName)) ||
-                (!ParamConstants.ASC.getValue().equals(ordCertificationName) && !ParamConstants.DESC.getValue().equals(ordCertificationName)) ||
-                (!ParamConstants.ASC.getValue().equals(ordEndDate) && !ParamConstants.DESC.getValue().equals(ordEndDate))
-        ) {
-            ApiResponse<?> response = ApiResponse.ErrorMessageResponse(ErrorMessage.INVALID_ORDER_PARAMETER);
+        if(checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
+            ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_ORDER_PARAMETER);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if(Integer.parseInt(limit) < 0) {
-            ApiResponse<?> response = ApiResponse.ErrorMessageResponse(ErrorMessage.INVALID_LIMIT_PARAMETER);
+            ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_LIMIT_PARAMETER);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if(Integer.parseInt(offset) < 0) {
-            ApiResponse<?> response = ApiResponse.ErrorMessageResponse(ErrorMessage.INVALID_OFFSET_PARAMETER);
+            ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_OFFSET_PARAMETER);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         Long totalRecords = employeeService.countEmployees(employeeName, departmentId);
-        List<EmployeeDTO> list = employeeService.getEmployees(employeeName, departmentId, ordEmployeeName, ordCertificationName, ordEndDate, offset, limit);
+        List<EmployeeDTO> list = employeeService.getEmployees(employeeName, departmentId,
+                ordEmployeeName, ordCertificationName, ordEndDate, offset, limit);
 
         ApiResponse<List<EmployeeDTO>> response = ApiResponse.<List<EmployeeDTO>>builder()
                 .totalRecords(totalRecords)
@@ -79,5 +77,9 @@ public class EmployeeController {
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    private boolean checkOrdValue(String value) {
+        return (!ParamConstants.ASC.getValue().equals(value)) && !ParamConstants.DESC.getValue().equals(value);
     }
 }

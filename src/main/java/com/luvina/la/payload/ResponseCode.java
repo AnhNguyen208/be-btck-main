@@ -2,7 +2,7 @@
  * Copyright(C) 2024  Luvina
  * ResponseCode.java, 06/10/2024 AnhNLT
  */
-package com.luvina.la.payload.response;
+package com.luvina.la.payload;
 
 import lombok.Getter;
 

@@ -18,7 +18,6 @@ import java.util.List;
 
 /**
  * Chuyển đổi giữa EmployeeDTO và Employee
- *
  * use:
  *  EmployeeMapper.MAPPER.toEntity(dto);
  *  EmployeeMapper.MAPPER.toList(list);

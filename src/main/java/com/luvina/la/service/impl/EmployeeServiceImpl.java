@@ -55,6 +55,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         return list.map(employees -> (List<EmployeeDTO>) employeeMapper.toList(employees)).orElse(null);
     }
 
+    /**
+     * Kiểm tra departmentId có phải số không
+     * @param str chuỗi departmentId
+     * @return Nếu là số thì trả về true, còn không trả về false
+     */
     private boolean isLong(String str) {
         if (str == null || str.isEmpty()) {
             return false;
@@ -67,6 +72,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    /**
+     * Số lượng Employee
+     * @return Số lượng Employee
+     */
     @Override
     public Long countEmployees(String employeeName, String departmentId) {
         if(isLong(departmentId)) {

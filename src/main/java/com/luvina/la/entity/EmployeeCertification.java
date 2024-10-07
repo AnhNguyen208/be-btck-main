@@ -14,6 +14,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Thông tin EmployeeCertification trong CSDL
+ */
 @Entity
 @Table(name = "employees_certifications")
 @Getter

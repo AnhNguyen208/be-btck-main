@@ -16,6 +16,9 @@ import lombok.AccessLevel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * Thông tin Employee trong CSDL
+ */
 @Entity
 @Table(name = "employees")
 @Getter

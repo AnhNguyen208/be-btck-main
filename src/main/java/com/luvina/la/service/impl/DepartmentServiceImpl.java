@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Lấy thông tin Department từ CSDL
+ */
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -25,7 +28,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     DepartmentMapper departmentMapper;
 
     /**
-     * Lấy danh sách tất cả phòng ban
+     * Lấy danh sách tất cả Department
      * @return Danh sách đối tượng DepartmentDTO
      */
     @Override

@@ -11,6 +11,9 @@ import java.util.Date;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * Thông tin Employee hiển thị cho client
+ */
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)

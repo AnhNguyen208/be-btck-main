@@ -9,6 +9,9 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 
+/**
+ * Thông tin Department hiển thị cho client
+ */
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)

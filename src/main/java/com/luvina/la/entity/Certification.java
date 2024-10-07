@@ -13,6 +13,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Thông tin Certification trong CSDL
+ */
 @Entity
 @Table(name = "certifications")
 @Getter

@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * Chuyển đổi giữa EmployeeDTO và Employee
+ *
  * use:
  *  EmployeeMapper.MAPPER.toEntity(dto);
  *  EmployeeMapper.MAPPER.toList(list);
@@ -25,7 +27,7 @@ import java.util.List;
 public interface EmployeeMapper {
     EmployeeMapper MAPPER = Mappers.getMapper( EmployeeMapper.class );
 
-    Employee toEntity(EmployeeDTO entity);
+    Employee toEntity(EmployeeDTO dto);
     @Mapping(source = "department.departmentName", target = "departmentName")
     @Mapping(source = "employeeCertificationList", target = "certificationName", qualifiedByName = "getFirstCertificationName")
     @Mapping(source = "employeeCertificationList", target = "endDate", qualifiedByName = "getFirstEndDate")

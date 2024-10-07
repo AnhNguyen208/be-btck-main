@@ -9,6 +9,9 @@ import com.luvina.la.entity.Department;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Chuyển đổi giữa DepartmentDTO và Department
+ */
 @Mapper
 public interface DepartmentMapper {
     DepartmentMapper MAPPER1 = Mappers.getMapper( DepartmentMapper.class );

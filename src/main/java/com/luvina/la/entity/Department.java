@@ -14,6 +14,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Thông tin Department trong CSDL
+ */
 @Entity
 @Table(name = "departments")
 @Getter

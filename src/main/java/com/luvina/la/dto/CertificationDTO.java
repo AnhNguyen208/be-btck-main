@@ -12,6 +12,9 @@ import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Thông tin Certification hiển thị cho client
+ */
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)

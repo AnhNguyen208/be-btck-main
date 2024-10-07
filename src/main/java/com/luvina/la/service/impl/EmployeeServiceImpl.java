@@ -38,21 +38,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public List<EmployeeDTO> getEmployees(String employeeName, String departmentId, String ordEmployeeName, String ordCertificationName, String ordEndDate, String offset, String limit) {
-        Sort sort = Sort.by(
-                new Sort.Order(Sort.Direction.fromString(ordEmployeeName), "employeeName"),
-                new Sort.Order(Sort.Direction.fromString(ordCertificationName), "employeeCertificationList.certification.certificationName"),
-                new Sort.Order(Sort.Direction.fromString(ordEndDate), "employeeCertificationList.endDate")
-        );
-        Pageable pageable = PageRequest.of(Integer.parseInt(offset) / Integer.parseInt(limit), Integer.parseInt(limit), sort);
-        Optional<List<Employee>> list;
-
-        if(isLong(departmentId)) {
-            list = employeeRepository.findByDepartment_departmentIdAndEmployeeNameLike(Long.parseLong(departmentId), "%" + employeeName + "%", pageable);
-        } else {
-            list = employeeRepository.findByEmployeeNameLike("%" + employeeName + "%", pageable);
-        }
-
-        return list.map(employees -> (List<EmployeeDTO>) employeeMapper.toList(employees)).orElse(null);
+        Pageable pageable = PageRequest.of(Integer.parseInt(offset) / Integer.parseInt(limit), Integer.parseInt(limit));
+        return employeeRepository.findEmployees(employeeName,
+                isLong(departmentId) ? Long.parseLong(departmentId) : null,
+                ordEmployeeName,
+                ordCertificationName,
+                ordEndDate,
+                pageable);
     }
 
     /**
@@ -78,10 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Long countEmployees(String employeeName, String departmentId) {
-        if(isLong(departmentId)) {
-            return employeeRepository.countByDepartment_departmentIdAndEmployeeNameLike(Long.parseLong(departmentId), "%" + employeeName + "%");
-        } else {
-            return employeeRepository.countByEmployeeNameLike("%" + employeeName + "%");
-        }
+        return employeeRepository.countEmployees(employeeName,
+                isLong(departmentId) ? Long.parseLong(departmentId) : null);
     }
 }

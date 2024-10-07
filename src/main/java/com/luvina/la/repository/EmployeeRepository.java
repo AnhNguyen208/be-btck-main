@@ -19,12 +19,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Optional<Employee> findByEmployeeLoginId(String employeeLoginId);
-    Optional<List<Employee>> findByDepartment_departmentIdAndEmployeeNameLike(Long departmentId, String employeeName, Pageable pageable);
-    Optional<List<Employee>> findByEmployeeNameLike(String employeeName, Pageable pageable);
-    Long countByDepartment_departmentIdAndEmployeeNameLike(Long departmentId, String employeeName);
-    Long countByEmployeeNameLike(String employeeName);
 
-    @Query(value = "SELECT new com.luvina.la.dto.EmployeeDTO(" +
+    @Query("SELECT new com.luvina.la.dto.EmployeeDTO(" +
             "e.employeeId, " +
             "e.employeeName, " +
             "e.employeeBirthDate, " +
@@ -39,8 +35,30 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "LEFT JOIN e.employeeCertificationList ec " +
             "LEFT JOIN ec.certification c " +
             "WHERE (:departmentId IS NULL OR e.department.departmentId = :departmentId) " +
-            "AND (:employeeName IS NULL OR e.employeeName LIKE CONCAT('%', :employeeName, '%'))")
+            "AND (:employeeName IS NULL OR e.employeeName LIKE CONCAT('%', :employeeName, '%')) " +
+            "ORDER BY " +
+            "CASE WHEN :ordEmployeeName IS NOT NULL AND :ordEmployeeName = 'ASC' THEN e.employeeName END ASC, " +
+            "CASE WHEN :ordEmployeeName IS NOT NULL AND :ordEmployeeName = 'DESC' THEN e.employeeName END DESC, " +
+            "CASE WHEN :ordCertificationName IS NOT NULL AND :ordCertificationName = 'ASC' THEN c.certificationName END ASC, " +
+            "CASE WHEN :ordCertificationName IS NOT NULL AND :ordCertificationName = 'DESC' THEN c.certificationName END DESC, " +
+            "CASE WHEN :ordEndDate IS NOT NULL AND :ordEndDate = 'ASC' THEN ec.endDate END ASC, " +
+            "CASE WHEN :ordEndDate IS NOT NULL AND :ordEndDate = 'DESC' THEN ec.endDate END DESC, " +
+            "e.employeeId ASC")
     List<EmployeeDTO> findEmployees(@Param("employeeName") String employeeName,
                                     @Param("departmentId") Long departmentId,
+                                    @Param("ordEmployeeName") String ordEmployeeName,
+                                    @Param("ordCertificationName") String ordCertificationName,
+                                    @Param("ordEndDate") String ordEndDate,
                                     Pageable pageable);
+
+
+    @Query("SELECT COUNT(e.employeeId) " +
+            "FROM Employee e " +
+            "JOIN e.department d " +
+            "LEFT JOIN e.employeeCertificationList ec " +
+            "LEFT JOIN ec.certification c " +
+            "WHERE (:departmentId IS NULL OR e.department.departmentId = :departmentId) " +
+            "AND (:employeeName IS NULL OR e.employeeName LIKE CONCAT('%', :employeeName, '%'))")
+    Long countEmployees(@Param("employeeName") String employeeName,
+                        @Param("departmentId") Long departmentId);
 }

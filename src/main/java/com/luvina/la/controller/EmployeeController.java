@@ -7,12 +7,13 @@ package com.luvina.la.controller;
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.payload.ParamConstants;
 import com.luvina.la.payload.response.ErrorMessage;
-import com.luvina.la.payload.response.ResponseCode;
 import com.luvina.la.service.EmployeeService;
 import com.luvina.la.payload.response.ApiResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class EmployeeController {
      *
      */
     @GetMapping
-    public ApiResponse<List<EmployeeDTO>> getListEmployees(
+    public ResponseEntity<?> getListEmployees(
             @RequestParam(name = "employee_name", required = false) String employeeName,
             @RequestParam(name = "department_id", required = false) String departmentId,
             @RequestParam(name = "ord_employee_name", required = false) String ordEmployeeName,
@@ -55,38 +56,28 @@ public class EmployeeController {
                 (!ParamConstants.ASC.getValue().equals(ordCertificationName) && !ParamConstants.DESC.getValue().equals(ordCertificationName)) ||
                 (!ParamConstants.ASC.getValue().equals(ordEndDate) && !ParamConstants.DESC.getValue().equals(ordEndDate))
         ) {
-            return ApiResponse.<List<EmployeeDTO>>builder()
-                    .code(ResponseCode.ERROR.getCode())
-                    .message(ApiResponse.<ErrorMessage>builder()
-                            .code(ErrorMessage.INVALID_ORDER_PARAMETER.getCode())
-                            .params(ErrorMessage.INVALID_ORDER_PARAMETER.getParams())
-                            .build())
-                    .build();
+            ApiResponse<?> response = ApiResponse.ErrorMessageResponse(ErrorMessage.INVALID_ORDER_PARAMETER);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if(Integer.parseInt(limit) < 0) {
-            return ApiResponse.<List<EmployeeDTO>>builder()
-                    .code(ResponseCode.ERROR.getCode())
-                    .message(ApiResponse.<ErrorMessage>builder()
-                            .code(ErrorMessage.INVALID_LIMIT_PARAMETER.getCode())
-                            .params(ErrorMessage.INVALID_LIMIT_PARAMETER.getParams())
-                            .build())
-                    .build();
+            ApiResponse<?> response = ApiResponse.ErrorMessageResponse(ErrorMessage.INVALID_LIMIT_PARAMETER);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if(Integer.parseInt(offset) < 0) {
-            return ApiResponse.<List<EmployeeDTO>>builder()
-                    .code(ResponseCode.ERROR.getCode())
-                    .message(ApiResponse.<ErrorMessage>builder()
-                            .code(ErrorMessage.INVALID_OFFSET_PARAMETER.getCode())
-                            .params(ErrorMessage.INVALID_OFFSET_PARAMETER.getParams())
-                            .build())
-                    .build();
+            ApiResponse<?> response = ApiResponse.ErrorMessageResponse(ErrorMessage.INVALID_OFFSET_PARAMETER);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return ApiResponse.<List<EmployeeDTO>>builder()
-                .totalRecords(employeeService.countEmployees(employeeName, departmentId))
-                .employees(employeeService.getEmployees(employeeName, departmentId, ordEmployeeName, ordCertificationName, ordEndDate, offset, limit))
+        Long totalRecords = employeeService.countEmployees(employeeName, departmentId);
+        List<EmployeeDTO> list = employeeService.getEmployees(employeeName, departmentId, ordEmployeeName, ordCertificationName, ordEndDate, offset, limit);
+
+        ApiResponse<List<EmployeeDTO>> response = ApiResponse.<List<EmployeeDTO>>builder()
+                .totalRecords(totalRecords)
+                .employees(list)
                 .build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

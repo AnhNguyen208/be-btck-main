@@ -12,6 +12,8 @@ import com.luvina.la.payload.response.ApiResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,21 +47,18 @@ public class DepartmentController {
      *          }
      */
     @GetMapping
-    public ApiResponse<List<DepartmentDTO>> getListDepartments() {
+    public ResponseEntity<?> getListDepartments() {
         try {
-            return ApiResponse.<List<DepartmentDTO>>builder()
-                    .code(ResponseCode.SUCCESS.getCode())
-                    .departments(departmentService.getDepartments())
+            List<DepartmentDTO> result = departmentService.getDepartments();
+            ApiResponse<List<DepartmentDTO>> response = ApiResponse.<List<DepartmentDTO>>builder()
+                    .departments(result)
                     .build();
-        } catch (Exception e) {
-            return ApiResponse.<List<DepartmentDTO>>builder()
-                    .code(ResponseCode.ERROR.getCode())
-                    .message(ApiResponse.<ErrorMessage>builder()
-                            .code(ErrorMessage.DEPARTMENT_ERROR.getCode())
-                            .params(ErrorMessage.DEPARTMENT_ERROR.getParams())
-                            .build())
-                    .build();
-        }
 
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponse<?> response = ApiResponse.ErrorMessageResponse(ErrorMessage.DEPARTMENT_ERROR);
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

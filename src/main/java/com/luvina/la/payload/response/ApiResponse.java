@@ -20,11 +20,23 @@ import java.util.List;
 @Builder
 public class ApiResponse<T> {
     @Builder.Default
-    String code = "200";
+    String code = ResponseCode.SUCCESS.getCode();
 
     Long totalRecords;
-    ApiResponse<ErrorMessage> message;
+    ErrorResponse message;
     List<String> params;
     T departments;
     T employees;
+
+    public static ApiResponse<?> ErrorMessageResponse(ErrorMessage errorMessage) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code(errorMessage.getCode())
+                .params(errorMessage.getParams())
+                .build();
+
+        return ApiResponse.builder()
+                .code(ResponseCode.ERROR.getCode())
+                .message(errorResponse)
+                .build();
+    }
 }

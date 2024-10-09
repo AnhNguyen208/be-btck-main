@@ -52,31 +52,35 @@ public class EmployeeController {
             @RequestParam(defaultValue = "0") String offset,
             @RequestParam(defaultValue = "5") String limit
     ) {
-        if(checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
-            ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_ORDER_PARAMETER);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        try {
+            if(checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
+                ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_ORDER_PARAMETER);
+                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            if(Integer.parseInt(limit) < 0) {
+                ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_LIMIT_PARAMETER);
+                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            if(Integer.parseInt(offset) < 0) {
+                ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_OFFSET_PARAMETER);
+                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            Long totalRecords = employeeService.countEmployees(employeeName, departmentId);
+            List<EmployeeDTO> list = employeeService.getEmployees(employeeName, departmentId,
+                    ordEmployeeName, ordCertificationName, ordEndDate, offset, limit);
+
+            ApiResponse<List<EmployeeDTO>> response = ApiResponse.<List<EmployeeDTO>>builder()
+                    .totalRecords(totalRecords)
+                    .employees(list)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        if(Integer.parseInt(limit) < 0) {
-            ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_LIMIT_PARAMETER);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        if(Integer.parseInt(offset) < 0) {
-            ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_OFFSET_PARAMETER);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        Long totalRecords = employeeService.countEmployees(employeeName, departmentId);
-        List<EmployeeDTO> list = employeeService.getEmployees(employeeName, departmentId,
-                ordEmployeeName, ordCertificationName, ordEndDate, offset, limit);
-
-        ApiResponse<List<EmployeeDTO>> response = ApiResponse.<List<EmployeeDTO>>builder()
-                .totalRecords(totalRecords)
-                .employees(list)
-                .build();
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     private boolean checkOrdValue(String value) {

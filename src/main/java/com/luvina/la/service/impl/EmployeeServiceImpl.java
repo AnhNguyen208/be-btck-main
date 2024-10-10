@@ -30,7 +30,6 @@ import java.util.Optional;
 @Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
     EmployeeRepository employeeRepository;
-    EmployeeMapper employeeMapper;
 
     /**
      * Lấy danh sách tất cả Employee

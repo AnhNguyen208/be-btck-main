@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public enum ErrorMessage {
-    DEPARTMENT_ERROR("ER023", new ArrayList<>(List.of(new String[]{}))),
+    SYSTEM_ERROR("ER023", new ArrayList<>(List.of(new String[]{}))),
     INVALID_ORDER_PARAMETER("ER021", new ArrayList<>(List.of(new String[]{}))),
     INVALID_OFFSET_PARAMETER("ER018", new ArrayList<>(List.of(new String[]{"オフセット"}))),
     INVALID_LIMIT_PARAMETER("ER018", new ArrayList<>(List.of(new String[]{"リミット"}))),

@@ -1,13 +1,15 @@
 /**
  * Copyright(C) 2024  Luvina
- * DepartmentController.java, 04/10/2024 AnhNLT
+ * CertificationController.java, 04/10/2024 AnhNLT
  */
 package com.luvina.la.controller;
 
-import com.luvina.la.payload.ErrorMessage;
-import com.luvina.la.service.DepartmentService;
+import com.luvina.la.dto.CertificationDTO;
 import com.luvina.la.dto.DepartmentDTO;
+import com.luvina.la.payload.ErrorMessage;
 import com.luvina.la.payload.response.ApiResponse;
+import com.luvina.la.service.CertificationService;
+import com.luvina.la.service.DepartmentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,24 +23,24 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * Controller để quản lý department
+ * Controller để quản lý Certification
  * @author AnhNLT
  */
 @RestController
-@RequestMapping("/departments")
+@RequestMapping("/certifications")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @CrossOrigin
-public class DepartmentController {
-    DepartmentService departmentService;
+public class CertificationController {
+    CertificationService certificationService;
 
     /**
-     * Api lấy danh sách department
+     * Api lấy danh sách certification
      * @return
-     *      Trường hợp lấy được department
+     *      Trường hợp lấy được certification
      *          code: 200
-     *          departments: danh sách department
-     *      Trường hợp không lấy được department
+     *          certifications: danh sách certification
+     *      Trường hợp không lấy được certification
      *          code: 500
      *          message: {
      *              code: "ER023"
@@ -46,11 +48,11 @@ public class DepartmentController {
      *          }
      */
     @GetMapping
-    public ResponseEntity<?> getListDepartments() {
+    public ResponseEntity<?> getListCertifications() {
         try {
-            List<DepartmentDTO> result = departmentService.getDepartments();
-            ApiResponse<List<DepartmentDTO>> response = ApiResponse.<List<DepartmentDTO>>builder()
-                    .departments(result)
+            List<CertificationDTO> result = certificationService.getCertifications();
+            ApiResponse<List<CertificationDTO>> response = ApiResponse.<List<CertificationDTO>>builder()
+                    .certifications(result)
                     .build();
 
             return new ResponseEntity<>(response, HttpStatus.OK);

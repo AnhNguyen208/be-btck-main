@@ -9,9 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 /**
  * Thông tin Certification hiển thị cho client
  */
@@ -19,7 +16,6 @@ import java.util.Date;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CertificationDTO {
+    Long certificationId;
     String certificationName;
-    Date endDate;
-    BigDecimal score;
 }

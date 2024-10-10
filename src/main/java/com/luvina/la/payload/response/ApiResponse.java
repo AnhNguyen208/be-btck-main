@@ -29,6 +29,7 @@ public class ApiResponse<T> {
     List<String> params;
     T departments;
     T employees;
+    T certifications;
 
     public static ApiResponse<?> createErrorResponse(ErrorMessage errorMessage) {
         ErrorResponse errorResponse = ErrorResponse.builder()

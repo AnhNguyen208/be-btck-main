@@ -25,14 +25,14 @@ public class ApiResponse<T> {
     String code = ResponseCode.SUCCESS.getCode();
 
     Long totalRecords;
-    ErrorResponse message;
+    MessageResponse message;
     List<String> params;
     T departments;
     T employees;
     T certifications;
 
     public static ApiResponse<?> createErrorResponse(ErrorMessage errorMessage) {
-        ErrorResponse errorResponse = ErrorResponse.builder()
+        MessageResponse errorResponse = MessageResponse.builder()
                 .code(errorMessage.getCode())
                 .params(errorMessage.getParams())
                 .build();

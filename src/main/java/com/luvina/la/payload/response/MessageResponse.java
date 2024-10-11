@@ -14,13 +14,13 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 
 /**
- * Cấu trúc phản hồi của Error
+ * Cấu trúc phản hồi của message response
  */
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 @Builder
-public class ErrorResponse {
+public class MessageResponse {
     @Builder.Default
     String code = ResponseCode.ERROR.getCode();
     List<String> params;

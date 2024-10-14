@@ -6,6 +6,7 @@ package com.luvina.la.service.impl;
 
 import com.luvina.la.entity.Employee;
 import com.luvina.la.mapper.EmployeeMapper;
+import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.service.EmployeeService;
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.repository.EmployeeRepository;
@@ -71,5 +72,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Long countEmployees(String employeeName, String departmentId) {
         return employeeRepository.countEmployees(employeeName,
                 isLong(departmentId) ? Long.parseLong(departmentId) : null);
+    }
+
+    @Override
+    public Long addEmployee(AddEmployeeRequest request) {
+        if(request.getEmployeeLoginId() == null) {
+
+        }
+        return null;
     }
 }

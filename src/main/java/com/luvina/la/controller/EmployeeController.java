@@ -7,6 +7,7 @@ package com.luvina.la.controller;
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.payload.ParamConstants;
 import com.luvina.la.payload.ErrorMessage;
+import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.service.EmployeeService;
 import com.luvina.la.payload.response.ApiResponse;
 import lombok.AccessLevel;
@@ -54,17 +55,17 @@ public class EmployeeController {
     ) {
         try {
             if(checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
-                ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_ORDER_PARAMETER);
+                ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorMessage.ER021_ORDER);
                 return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             if(Integer.parseInt(limit) < 0) {
-                ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_LIMIT_PARAMETER);
+                ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorMessage.ER018_LIMIT);
                 return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             if(Integer.parseInt(offset) < 0) {
-                ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.INVALID_OFFSET_PARAMETER);
+                ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorMessage.ER018_OFFSET);
                 return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
@@ -78,6 +79,16 @@ public class EmployeeController {
                     .build();
 
             return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> addEmployee(@RequestBody AddEmployeeRequest request) {
+        try {
+
+            return null;
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

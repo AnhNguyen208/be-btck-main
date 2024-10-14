@@ -57,7 +57,7 @@ public class DepartmentController {
         } catch (RuntimeException re) {
             return new ResponseEntity<>(re.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.SYSTEM_ERROR);
+            ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorMessage.ER023);
 
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }

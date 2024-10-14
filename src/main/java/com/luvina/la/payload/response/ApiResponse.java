@@ -30,8 +30,9 @@ public class ApiResponse<T> {
     T departments;
     T employees;
     T certifications;
+    T employeeId;
 
-    public static ApiResponse<?> createErrorResponse(ErrorMessage errorMessage) {
+    public static ApiResponse<?> createMessageResponse(ErrorMessage errorMessage) {
         MessageResponse errorResponse = MessageResponse.builder()
                 .code(errorMessage.getCode())
                 .params(errorMessage.getParams())

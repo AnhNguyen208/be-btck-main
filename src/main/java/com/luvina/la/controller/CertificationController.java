@@ -5,11 +5,9 @@
 package com.luvina.la.controller;
 
 import com.luvina.la.dto.CertificationDTO;
-import com.luvina.la.dto.DepartmentDTO;
 import com.luvina.la.payload.ErrorMessage;
 import com.luvina.la.payload.response.ApiResponse;
 import com.luvina.la.service.CertificationService;
-import com.luvina.la.service.DepartmentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -59,7 +57,7 @@ public class CertificationController {
         } catch (RuntimeException re) {
             return new ResponseEntity<>(re.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            ApiResponse<?> response = ApiResponse.createErrorResponse(ErrorMessage.SYSTEM_ERROR);
+            ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorMessage.ER023);
 
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }

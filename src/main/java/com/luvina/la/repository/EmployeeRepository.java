@@ -61,4 +61,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "AND (:employeeName IS NULL OR e.employeeName LIKE CONCAT('%', :employeeName, '%'))")
     Long countEmployees(@Param("employeeName") String employeeName,
                         @Param("departmentId") Long departmentId);
+
+    boolean existsByEmployeeLoginId(String employeeLoginId);
 }

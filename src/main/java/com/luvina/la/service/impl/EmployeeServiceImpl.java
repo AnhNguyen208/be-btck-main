@@ -81,4 +81,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return null;
     }
+
+    @Override
+    public boolean checkExistsByEmployeeLoginId(String employeeLoginId) {
+        return employeeRepository.existsByEmployeeLoginId(employeeLoginId);
+    }
 }

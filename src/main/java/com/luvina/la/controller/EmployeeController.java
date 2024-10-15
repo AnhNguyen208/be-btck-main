@@ -10,6 +10,7 @@ import com.luvina.la.payload.ErrorMessage;
 import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.service.EmployeeService;
 import com.luvina.la.payload.response.ApiResponse;
+import com.luvina.la.validate.ValidateRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,6 +31,7 @@ import java.util.List;
 @CrossOrigin
 public class EmployeeController {
     EmployeeService employeeService;
+    ValidateRequest validateRequest;
 
     /**
      * Api lấy danh sách employee
@@ -87,8 +89,13 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<?> addEmployee(@RequestBody AddEmployeeRequest request) {
         try {
+            ApiResponse<?> response = validateRequest.validateAddEmployeeRequest(request);
+            if (response != null) {
+                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
             return null;
+
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

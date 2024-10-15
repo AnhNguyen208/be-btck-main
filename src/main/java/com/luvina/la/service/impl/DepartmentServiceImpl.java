@@ -35,4 +35,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<DepartmentDTO> getDepartments() {
         return (List<DepartmentDTO>) departmentMapper.toList(departmentRepository.findAll());
     }
+
+    @Override
+    public boolean checkExistsById(Long departmentId) {
+        return departmentRepository.existsById(departmentId);
+    }
 }

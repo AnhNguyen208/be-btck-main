@@ -6,7 +6,6 @@ package com.luvina.la.service;
 
 
 import com.luvina.la.dto.EmployeeDTO;
-import com.luvina.la.entity.Employee;
 import com.luvina.la.payload.request.AddEmployeeRequest;
 
 import java.util.List;
@@ -17,4 +16,6 @@ public interface EmployeeService {
     Long countEmployees(String employeeName, String departmentId);
 
     Long addEmployee(AddEmployeeRequest request);
+
+    boolean checkExistsByEmployeeLoginId(String employeeLoginId);
 }

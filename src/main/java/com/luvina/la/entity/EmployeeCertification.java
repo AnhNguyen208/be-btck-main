@@ -17,6 +17,7 @@ import java.util.Date;
 /**
  * Thông tin EmployeeCertification trong CSDL
  */
+@Data
 @Entity
 @Table(name = "employees_certifications")
 @Getter
@@ -33,12 +34,12 @@ public class EmployeeCertification implements Serializable {
     Long employeeCertificationId;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false, referencedColumnName = "employee_id")
+    @JoinColumn(name = "employee_id", referencedColumnName = "employee_id")
     @JsonBackReference
     Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "certification_id", nullable = false, referencedColumnName = "certification_id")
+    @JoinColumn(name = "certification_id", referencedColumnName = "certification_id")
     @JsonBackReference
     Certification certification;
 

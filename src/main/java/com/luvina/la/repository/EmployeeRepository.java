@@ -32,7 +32,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "ec.score) " +
             "FROM Employee e " +
             "JOIN e.department d " +
-            "LEFT JOIN e.employeeCertificationList ec " +
+            "LEFT JOIN e.certifications ec " +
             "LEFT JOIN ec.certification c " +
             "WHERE (:departmentId IS NULL OR e.department.departmentId = :departmentId) " +
             "AND (:employeeName IS NULL OR e.employeeName LIKE CONCAT('%', :employeeName, '%')) " +
@@ -55,7 +55,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("SELECT COUNT(e.employeeId) " +
             "FROM Employee e " +
             "JOIN e.department d " +
-            "LEFT JOIN e.employeeCertificationList ec " +
+            "LEFT JOIN e.certifications ec " +
             "LEFT JOIN ec.certification c " +
             "WHERE (:departmentId IS NULL OR e.department.departmentId = :departmentId) " +
             "AND (:employeeName IS NULL OR e.employeeName LIKE CONCAT('%', :employeeName, '%'))")

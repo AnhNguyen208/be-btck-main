@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CertificationService {
     List<CertificationDTO> getCertifications();
+    boolean checkExistsById(Long certificationId);
 }

@@ -1,9 +1,10 @@
 package com.luvina.la.validate;
 
-import com.luvina.la.payload.ErrorMessage;
+import com.luvina.la.exception.AppException;
+import com.luvina.la.exception.ErrorCode;
 import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.payload.request.CertificationRequest;
-import com.luvina.la.payload.response.ApiResponse;
+import com.luvina.la.service.CertificationService;
 import com.luvina.la.service.DepartmentService;
 import com.luvina.la.service.EmployeeService;
 import lombok.AccessLevel;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,160 +26,141 @@ public class ValidateRequest {
     private static final String DATE_FORMAT = "yyyy/MM/dd";
     EmployeeService employeeService;
     DepartmentService departmentService;
-    public ApiResponse<?> validateAddEmployeeRequest(AddEmployeeRequest request) {
-        System.out.println(request);
-        ApiResponse<?> response;
-        if(validateEmployeeLoginName(request.getEmployeeLoginId()) != null) {
-            response = validateEmployeeLoginName(request.getEmployeeLoginId());
-        } else if (validateEmployeeName(request.getEmployeeName()) != null) {
-            response = validateEmployeeName(request.getEmployeeName());
-        } else if (validateEmployeeNameKana(request.getEmployeeNameKana()) != null) {
-            response = validateEmployeeNameKana(request.getEmployeeNameKana());
-        } else if (validateEmployeeBirthDate(request.getEmployeeBirthDate()) != null) {
-            response = validateEmployeeBirthDate(request.getEmployeeBirthDate());
-        } else if (validateEmployeeEmail(request.getEmployeeEmail()) != null) {
-            response = validateEmployeeEmail(request.getEmployeeEmail());
-        } else if (validateEmployeeTelephone(request.getEmployeeTelephone()) != null) {
-            response = validateEmployeeTelephone(request.getEmployeeTelephone());
-        } else if (validateEmployeeLoginPassword(request.getEmployeeLoginPassword()) != null) {
-            response = validateEmployeeLoginPassword(request.getEmployeeLoginPassword());
-        } else if (validateDepartmentId(request.getDepartmentId()) != null) {
-            response = validateDepartmentId(request.getDepartmentId());
-        } else {
-            response = null;
-        }
+    CertificationService certificationService;
 
-        return response;
+    public void validateAddEmployeeRequest(AddEmployeeRequest request) {
+        validateEmployeeLoginName(request.getEmployeeLoginId());
+        validateEmployeeName(request.getEmployeeName());
+        validateEmployeeNameKana(request.getEmployeeNameKana());
+        validateEmployeeBirthDate(request.getEmployeeBirthDate());
+        validateEmployeeEmail(request.getEmployeeEmail());
+        validateEmployeeTelephone(request.getEmployeeTelephone());
+        validateEmployeeLoginPassword(request.getEmployeeLoginPassword());
+        validateDepartmentId(request.getDepartmentId());
+        validateListCertifications(request.getCertifications());
     }
 
-    private ApiResponse<?> validateEmployeeLoginName(String employeeLoginName) {
-        ApiResponse<?> response;
+    private void validateEmployeeLoginName(String employeeLoginName) {
         if (isNull(employeeLoginName)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER001_EMPLOYEE_LOGIN_ID);
+            throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
         } else if (checkMaxLength(employeeLoginName, 50)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER006_EMPLOYEE_LOGIN_ID);
+            throw new AppException(ErrorCode.ER006_EMPLOYEE_LOGIN_ID);
         } else if (checkPattern(employeeLoginName, "^[a-zA-Z_][a-zA-Z0-9_]*$")) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER019_EMPLOYEE_LOGIN_ID);
+            throw new AppException(ErrorCode.ER019_EMPLOYEE_LOGIN_ID);
         } else if (employeeService.checkExistsByEmployeeLoginId(employeeLoginName)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER003_EMPLOYEE_LOGIN_ID);
-        } else {
-            response = null;
+            throw new AppException(ErrorCode.ER003_EMPLOYEE_LOGIN_ID);
         }
-
-        return response;
     }
 
-    private ApiResponse<?> validateEmployeeName(String employeeName) {
-        ApiResponse<?> response;
+    private void validateEmployeeName(String employeeName) {
         if (isNull(employeeName)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER001_EMPLOYEE_NAME);
+            throw new AppException(ErrorCode.ER001_EMPLOYEE_NAME);
         } else if (checkMaxLength(employeeName, 125)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER006_EMPLOYEE_NAME);
-        } else {
-            response = null;
+            throw new AppException(ErrorCode.ER006_EMPLOYEE_NAME);
         }
-
-        return response;
     }
 
-    private ApiResponse<?> validateEmployeeNameKana(String employeeNameKana) {
-        ApiResponse<?> response;
+    private void validateEmployeeNameKana(String employeeNameKana) {
         if (isNull(employeeNameKana)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER001_EMPLOYEE_LOGIN_ID);
+            throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
         } else if (checkMaxLength(employeeNameKana, 125)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER006_EMPLOYEE_NAME_KANA);
+            throw new AppException(ErrorCode.ER006_EMPLOYEE_NAME_KANA);
         } else if (checkPattern(employeeNameKana, "^[\\u30A0-\\u30FF・]+$")) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER009_EMPLOYEE_NAME_KANA);
-        } else {
-            response = null;
+            throw new AppException(ErrorCode.ER009_EMPLOYEE_NAME_KANA);
         }
-
-        return response;
     }
 
-    private ApiResponse<?> validateEmployeeBirthDate(String employeeBirthDate) {
-        ApiResponse<?> response;
+    private void validateEmployeeBirthDate(String employeeBirthDate) {
         if (isNull(employeeBirthDate)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER001_EMPLOYEE_BIRTHDATE);
-        } else if (!checkValueDate(employeeBirthDate)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER011_EMPLOYEE_BIRTHDATE);
-        } else if (!checkFormatDate(employeeBirthDate)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER005_EMPLOYEE_BIRTHDATE);
-        } else {
-            response = null;
+            throw new AppException(ErrorCode.ER001_EMPLOYEE_BIRTHDATE);
+        } else if (checkValueDate(employeeBirthDate)) {
+            throw new AppException(ErrorCode.ER011_EMPLOYEE_BIRTHDATE);
+        } else if (checkFormatDate(employeeBirthDate)) {
+            throw new AppException(ErrorCode.ER005_EMPLOYEE_BIRTHDATE);
         }
-
-        return response;
     }
 
-    private ApiResponse<?> validateEmployeeEmail(String employeeEmail) {
-        ApiResponse<?> response;
+    private void validateEmployeeEmail(String employeeEmail) {
         if(isNull(employeeEmail)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER001_EMPLOYEE_EMAIL);
+            throw new AppException(ErrorCode.ER001_EMPLOYEE_EMAIL);
         } else if (checkMaxLength(employeeEmail, 125)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER006_EMPLOYEE_EMAIL);
-        } else {
-            response = null;
+            throw new AppException(ErrorCode.ER006_EMPLOYEE_EMAIL);
         }
-
-        return response;
     }
 
-    private ApiResponse<?> validateEmployeeTelephone(String employeeTelephone) {
-        ApiResponse<?> response;
+    private void validateEmployeeTelephone(String employeeTelephone) {
         if(isNull(employeeTelephone)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER001_EMPLOYEE_TELEPHONE);
+            throw new AppException(ErrorCode.ER001_EMPLOYEE_TELEPHONE);
         } else if (checkMaxLength(employeeTelephone, 50)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER006_EMPLOYEE_TELEPHONE);
-        } else if (checkPattern(employeeTelephone, "/^[\\x00-\\x7F]*$/")) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER008_EMPLOYEE_TELEPHONE);
-        } else {
-            response = null;
+            throw new AppException(ErrorCode.ER006_EMPLOYEE_TELEPHONE);
+        } else if (checkPattern(employeeTelephone, "[0-9]+")) {
+            throw new AppException(ErrorCode.ER008_EMPLOYEE_TELEPHONE);
         }
-
-        return response;
     }
 
-    private ApiResponse<?> validateEmployeeLoginPassword(String employeeLoginPassword) {
-        ApiResponse<?> response;
+    private void validateEmployeeLoginPassword(String employeeLoginPassword) {
         if(isNull(employeeLoginPassword)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER001_EMPLOYEE_LOGIN_PASSWORD);
+            throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_PASSWORD);
         } else if (!checkLength(employeeLoginPassword, 8, 50)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER007_EMPLOYEE_LOGIN_PASSWORD);
-        } else {
-            response = null;
+            throw new AppException(ErrorCode.ER007_EMPLOYEE_LOGIN_PASSWORD);
         }
-
-        return response;
     }
 
-    private ApiResponse<?> validateDepartmentId(Long departmentId) {
-        ApiResponse<?> response;
+    private void validateDepartmentId(Long departmentId) {
         if (isNull(departmentId)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER002_DEPARTMENT_ID);
+            throw new AppException(ErrorCode.ER002_DEPARTMENT_ID);
         } else if (departmentId <= 0) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER018_DEPARTMENT_ID);
+            throw new AppException(ErrorCode.ER018_DEPARTMENT_ID);
         } else if (!departmentService.checkExistsById(departmentId)) {
-            response = ApiResponse.createMessageResponse(ErrorMessage.ER004_DEPARTMENT_ID);
-        } else {
-            response = null;
+            throw new AppException(ErrorCode.ER004_DEPARTMENT_ID);
         }
-
-        return response;
     }
 
-    private ApiResponse<?> validateListCertifications(List<CertificationRequest> requests) {
-        ApiResponse<?> response = null;
-        for (CertificationRequest request: requests) {
-
+    private void validateListCertifications(List<CertificationRequest> requests) {
+        for (CertificationRequest certification: requests) {
+            validateStartDate(certification.getCertificationStartDate());
+            validateEndDate(certification.getCertificationStartDate(),
+                    certification.getCertificationEndDate());
         }
-        return null;
     }
 
-    private ApiResponse<?> validateCertification(CertificationRequest request) {
-        ApiResponse<?> response = null;
+    private void validateStartDate(String startDate) {
+        if (isNull(startDate) || checkValueDate(startDate)) {
+            throw new AppException(ErrorCode.ER001_CERTIFICATION_START_DATE);
+        } else if (checkFormatDate(startDate)) {
+            throw new AppException(ErrorCode.ER005_CERTIFICATION_START_DATE);
+        }
+    }
 
-        return null;
+    private void validateEndDate(String startDateStr, String endDateStr) {
+        Date startDate = new Date(startDateStr);
+        Date endDate = new Date(endDateStr);
+
+        if (isNull(endDateStr) || checkValueDate(endDateStr)) {
+            throw new AppException(ErrorCode.ER001_CERTIFICATION_START_DATE);
+        } else if (checkFormatDate(endDateStr)) {
+            throw new AppException(ErrorCode.ER005_CERTIFICATION_START_DATE);
+        } else if ((endDate).compareTo(startDate) <= 0) {
+            throw new AppException(ErrorCode.ER012_CERTIFICATION_START_DATE_END_DATE);
+        }
+    }
+
+    private void validateScore(BigDecimal score) {
+        if(isNull(score)) {
+            throw new AppException(ErrorCode.ER001_CERTIFICATION_SCORE);
+        } else if (Integer.parseInt(String.valueOf(score)) <= 0) {
+            throw new AppException(ErrorCode.ER018_CERTIFICATION_SCORE);
+        }
+    }
+
+    private void validateCertificationId(Long id) {
+        if(isNull(id)) {
+            throw new AppException(ErrorCode.ER001_CERTIFICATION_ID);
+        } else if (id <= 0) {
+            throw new AppException(ErrorCode.ER018_CERTIFICATION_ID);
+        } else if (certificationService.checkExistsById(id)) {
+            throw new AppException(ErrorCode.ER004_CERTIFICATION_ID);
+        }
     }
 
     private boolean isNull(Object obj) {
@@ -197,15 +180,14 @@ public class ValidateRequest {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         try {
             Date date = sdf.parse(obj.toString());
-            System.out.println(date);
-            return date != null;
+            return date == null;
         } catch (ParseException e) {
-            return false;
+            return true;
         }
     }
 
     private boolean checkFormatDate(Object obj) {
-       return obj.toString().matches("\\d{4}/\\d{2}/\\d{2}");
+       return !obj.toString().matches("\\d{4}/\\d{2}/\\d{2}");
     }
 
     private boolean checkLength(Object obj, int min, int max) {

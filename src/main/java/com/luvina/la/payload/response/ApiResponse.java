@@ -5,10 +5,12 @@
 package com.luvina.la.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.luvina.la.payload.ErrorMessage;
-import com.luvina.la.payload.ResponseCode;
+import com.luvina.la.constant.CodeConstants;
+import com.luvina.la.exception.AppException;
+import com.luvina.la.exception.ErrorCode;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ import java.util.List;
 @Builder
 public class ApiResponse<T> {
     @Builder.Default
-    String code = ResponseCode.SUCCESS.getCode();
+    String code = HttpStatus.OK.toString();
 
     Long totalRecords;
     MessageResponse message;
@@ -32,14 +34,14 @@ public class ApiResponse<T> {
     T certifications;
     T employeeId;
 
-    public static ApiResponse<?> createMessageResponse(ErrorMessage errorMessage) {
+    public static ApiResponse<?> createMessageResponse(AppException exception) {
         MessageResponse errorResponse = MessageResponse.builder()
-                .code(errorMessage.getCode())
-                .params(errorMessage.getParams())
+                .code(exception.getErrorCode().getCode())
+                .params(exception.getErrorCode().getParams())
                 .build();
 
         return ApiResponse.builder()
-                .code(ResponseCode.ERROR.getCode())
+                .code(CodeConstants.ERROR.getCode())
                 .message(errorResponse)
                 .build();
     }

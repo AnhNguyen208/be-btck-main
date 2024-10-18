@@ -1,22 +1,18 @@
 /**
  * Copyright(C) 2024  Luvina
- * ResponseCode.java, 06/10/2024 AnhNLT
+ * CodeConstants.java, 18/10/2024 AnhNLT
  */
-package com.luvina.la.payload;
+package com.luvina.la.constant;
 
 import lombok.Getter;
-
-/**
- * Quản lý các mã phản hồi
- */
 @Getter
-public enum ResponseCode {
+public enum CodeConstants {
     SUCCESS("200"),
     ERROR("500"),
     ;
     private final String code;
 
-    ResponseCode(String code) {
+    CodeConstants(String code) {
         this.code = code;
     }
 }

@@ -19,6 +19,7 @@ import lombok.experimental.FieldDefaults;
 /**
  * Thông tin Employee trong CSDL
  */
+@Data
 @Entity
 @Table(name = "employees")
 @Getter
@@ -60,8 +61,8 @@ public class Employee implements Serializable {
     @Column(name = "employee_login_password", length = 100)
     String employeeLoginPassword;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     @JsonIgnore
-    List<EmployeeCertification> employeeCertificationList;
+    List<EmployeeCertification> certifications;
 }

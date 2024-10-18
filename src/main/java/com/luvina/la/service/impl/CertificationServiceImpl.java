@@ -35,4 +35,9 @@ public class CertificationServiceImpl implements CertificationService {
     public List<CertificationDTO> getCertifications() {
         return (List<CertificationDTO>) certificationMapper.toList(certificationRepository.findAll());
     }
+
+    @Override
+    public boolean checkExistsById(Long certificationId) {
+        return certificationRepository.existsById(certificationId);
+    }
 }

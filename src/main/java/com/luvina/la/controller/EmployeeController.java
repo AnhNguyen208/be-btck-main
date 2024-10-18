@@ -5,8 +5,9 @@
 package com.luvina.la.controller;
 
 import com.luvina.la.dto.EmployeeDTO;
-import com.luvina.la.payload.ParamConstants;
-import com.luvina.la.payload.ErrorMessage;
+import com.luvina.la.constant.ParamOrderByConstants;
+import com.luvina.la.exception.AppException;
+import com.luvina.la.exception.ErrorCode;
 import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.service.EmployeeService;
 import com.luvina.la.payload.response.ApiResponse;
@@ -55,22 +56,13 @@ public class EmployeeController {
             @RequestParam(defaultValue = "0") String offset,
             @RequestParam(defaultValue = "5") String limit
     ) {
-        try {
-            if(checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
-                ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorMessage.ER021_ORDER);
-                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
-            if(Integer.parseInt(limit) < 0) {
-                ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorMessage.ER018_LIMIT);
-                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
-            if(Integer.parseInt(offset) < 0) {
-                ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorMessage.ER018_OFFSET);
-                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
+        if(checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
+            throw new AppException(ErrorCode.ER021_ORDER);
+        } else if(Integer.parseInt(limit) < 0) {
+            throw new AppException(ErrorCode.ER018_LIMIT);
+        } else if(Integer.parseInt(offset) < 0) {
+            throw new AppException(ErrorCode.ER018_OFFSET);
+        } else {
             Long totalRecords = employeeService.countEmployees(employeeName, departmentId);
             List<EmployeeDTO> list = employeeService.getEmployees(employeeName, departmentId,
                     ordEmployeeName, ordCertificationName, ordEndDate, offset, limit);
@@ -81,27 +73,18 @@ public class EmployeeController {
                     .build();
 
             return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping
     public ResponseEntity<?> addEmployee(@RequestBody AddEmployeeRequest request) {
-        try {
-            ApiResponse<?> response = validateRequest.validateAddEmployeeRequest(request);
-            if (response != null) {
-                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        validateRequest.validateAddEmployeeRequest(request);
+        employeeService.addEmployee(request);
 
-            return null;
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return null;
     }
 
     private boolean checkOrdValue(String value) {
-        return (!ParamConstants.ASC.getValue().equals(value)) && !ParamConstants.DESC.getValue().equals(value);
+        return (!ParamOrderByConstants.ASC.getValue().equals(value)) && !ParamOrderByConstants.DESC.getValue().equals(value);
     }
 }

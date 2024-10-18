@@ -4,9 +4,16 @@
  */
 package com.luvina.la.service.impl;
 
+import com.luvina.la.entity.Certification;
 import com.luvina.la.entity.Employee;
+import com.luvina.la.entity.EmployeeCertification;
+import com.luvina.la.mapper.EmployeeCertificationMapper;
 import com.luvina.la.mapper.EmployeeMapper;
 import com.luvina.la.payload.request.AddEmployeeRequest;
+import com.luvina.la.payload.request.CertificationRequest;
+import com.luvina.la.repository.CertificationRepository;
+import com.luvina.la.repository.DepartmentRepository;
+import com.luvina.la.repository.EmployeeCertificationRepository;
 import com.luvina.la.service.EmployeeService;
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.repository.EmployeeRepository;
@@ -19,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +39,11 @@ import java.util.Optional;
 @Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
     EmployeeRepository employeeRepository;
+    DepartmentRepository departmentRepository;
+    EmployeeMapper employeeMapper;
+    EmployeeCertificationMapper employeeCertificationMapper;
+    CertificationRepository certificationRepository;
+    EmployeeCertificationRepository employeeCertificationRepository;
 
     /**
      * Lấy danh sách tất cả Employee
@@ -74,14 +87,40 @@ public class EmployeeServiceImpl implements EmployeeService {
                 isLong(departmentId) ? Long.parseLong(departmentId) : null);
     }
 
+    /**
+     * Lưu thông tin employee vào CSDL
+     * @param request Thông tin employee nhận từ controller
+     * @return ID employee mới
+     */
     @Override
     public Long addEmployee(AddEmployeeRequest request) {
-        if(request.getEmployeeLoginId() == null) {
+        Employee employee = employeeMapper.toEntity1(request);
 
+        employee.setDepartment(departmentRepository.findById(request.getDepartmentId()).orElseThrow());
+        employee.setCertifications(new ArrayList<>());
+
+        List<EmployeeCertification> list = new ArrayList<>();
+
+        for (CertificationRequest request1: request.getCertifications()) {
+            EmployeeCertification ec = employeeCertificationMapper.toEntity(request1);
+            ec.setCertification(certificationRepository.findById(request1.getCertificationId()).orElseThrow());
+            ec.setEmployee(employee);
+            list.add(ec);
         }
-        return null;
+
+        employee.setCertifications(list);
+        employee = employeeRepository.save(employee);
+
+        return employee.getEmployeeId();
     }
 
+    /**
+     * Kiểm tra employeeLoginId đã tồn tại chưa
+     * @param employeeLoginId employeeLoginId cần kiểm tra
+     * @return
+     *      true: Đã tồn tại trong CSDL
+     *      false: Chưa tồn tại trong CSDL
+     */
     @Override
     public boolean checkExistsByEmployeeLoginId(String employeeLoginId) {
         return employeeRepository.existsByEmployeeLoginId(employeeLoginId);

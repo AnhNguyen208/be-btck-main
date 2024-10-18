@@ -5,11 +5,12 @@
 package com.luvina.la.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.luvina.la.payload.ResponseCode;
+import com.luvina.la.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -22,6 +23,6 @@ import java.util.List;
 @Builder
 public class MessageResponse {
     @Builder.Default
-    String code = ResponseCode.ERROR.getCode();
+    String code = HttpStatus.OK.toString();
     List<String> params;
 }

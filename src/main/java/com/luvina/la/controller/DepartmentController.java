@@ -4,7 +4,8 @@
  */
 package com.luvina.la.controller;
 
-import com.luvina.la.payload.ErrorMessage;
+import com.luvina.la.exception.AppException;
+import com.luvina.la.exception.ErrorCode;
 import com.luvina.la.service.DepartmentService;
 import com.luvina.la.dto.DepartmentDTO;
 import com.luvina.la.payload.response.ApiResponse;
@@ -47,19 +48,11 @@ public class DepartmentController {
      */
     @GetMapping
     public ResponseEntity<?> getListDepartments() {
-        try {
-            List<DepartmentDTO> result = departmentService.getDepartments();
-            ApiResponse<List<DepartmentDTO>> response = ApiResponse.<List<DepartmentDTO>>builder()
-                    .departments(result)
-                    .build();
+        List<DepartmentDTO> result = departmentService.getDepartments();
+        ApiResponse<List<DepartmentDTO>> response = ApiResponse.<List<DepartmentDTO>>builder()
+                .departments(result)
+                .build();
 
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (RuntimeException re) {
-            return new ResponseEntity<>(re.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (Exception e) {
-            ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorMessage.ER023);
-
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -25,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +93,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param request Thông tin employee nhận từ controller
      * @return ID employee mới
      */
+    @Transactional
     @Override
     public Long addEmployee(AddEmployeeRequest request) {
         Employee employee = employeeMapper.toEntity1(request);

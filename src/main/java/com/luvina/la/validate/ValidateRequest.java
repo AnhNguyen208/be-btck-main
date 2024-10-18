@@ -48,7 +48,9 @@ public class ValidateRequest {
         validateEmployeeTelephone(request.getEmployeeTelephone());
         validateEmployeeLoginPassword(request.getEmployeeLoginPassword());
         validateDepartmentId(request.getDepartmentId());
-        validateListCertifications(request.getCertifications());
+        if(request.getCertifications() != null) {
+            validateListCertifications(request.getCertifications());
+        }
     }
 
     /**
@@ -88,7 +90,7 @@ public class ValidateRequest {
             throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
         } else if (checkMaxLength(employeeNameKana, 125)) {
             throw new AppException(ErrorCode.ER006_EMPLOYEE_NAME_KANA);
-        } else if (checkPattern(employeeNameKana, "^[\\u30A0-\\u30FF・]+$")) {
+        } else if (checkPattern(employeeNameKana, "^[\\uFF65-\\uFF9F]+$")) {
             throw new AppException(ErrorCode.ER009_EMPLOYEE_NAME_KANA);
         }
     }
@@ -224,7 +226,7 @@ public class ValidateRequest {
             throw new AppException(ErrorCode.ER001_CERTIFICATION_ID);
         } else if (id <= 0) {
             throw new AppException(ErrorCode.ER018_CERTIFICATION_ID);
-        } else if (certificationService.checkExistsById(id)) {
+        } else if (!certificationService.checkExistsById(id)) {
             throw new AppException(ErrorCode.ER004_CERTIFICATION_ID);
         }
     }

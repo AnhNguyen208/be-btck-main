@@ -22,13 +22,13 @@ public class GlobalExceptionHandler {
         ApiResponse<?> response = ApiResponse.createMessageResponse(new AppException(ErrorCode.ER023));
         System.out.println(exception.getMessage());
 
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ExceptionHandler(value = AppException.class)
     ResponseEntity<?> handlingAppException(AppException exception) {
         ApiResponse<?> response = ApiResponse.createMessageResponse(exception);
 
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

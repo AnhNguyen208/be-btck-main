@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,9 +85,11 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<?> addEmployee(@RequestBody AddEmployeeRequest request) {
         validateRequest.validateAddEmployeeRequest(request);
-        employeeService.addEmployee(request);
+        Long id = employeeService.addEmployee(request);
+        ApiResponse<?> response = ApiResponse.createMessageResponse(id, "MSG001", new ArrayList<>(List.of(new String[]{})));
+//        ApiResponse<?> response = ApiResponse.createMessageResponse(0L, "MSG001", new ArrayList<>(List.of(new String[]{})));
 
-        return null;
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**

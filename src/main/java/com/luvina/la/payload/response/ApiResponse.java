@@ -24,15 +24,15 @@ import java.util.List;
 @Builder
 public class ApiResponse<T> {
     @Builder.Default
-    String code = HttpStatus.OK.toString();
+    String code = CodeConstants.SUCCESS.getCode();
 
     Long totalRecords;
+    T employeeId;
     MessageResponse message;
     List<String> params;
     T departments;
     T employees;
     T certifications;
-    T employeeId;
 
     public static ApiResponse<?> createMessageResponse(AppException exception) {
         MessageResponse errorResponse = MessageResponse.builder()
@@ -42,6 +42,19 @@ public class ApiResponse<T> {
 
         return ApiResponse.builder()
                 .code(CodeConstants.ERROR.getCode())
+                .message(errorResponse)
+                .build();
+    }
+
+    public static ApiResponse<?> createMessageResponse(Long id, String code, List<String> params) {
+        MessageResponse errorResponse = MessageResponse.builder()
+                .code(code)
+                .params(params)
+                .build();
+
+        return ApiResponse.builder()
+                .employeeId(id)
+                .code(CodeConstants.SUCCESS.getCode())
                 .message(errorResponse)
                 .build();
     }

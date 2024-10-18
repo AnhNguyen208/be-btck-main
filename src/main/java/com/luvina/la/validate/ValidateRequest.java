@@ -1,3 +1,7 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * ValidateRequest.java, 16/10/2024 AnhNLT
+ */
 package com.luvina.la.validate;
 
 import com.luvina.la.exception.AppException;
@@ -19,6 +23,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * Validate dữ liệu nhân từ FE
+ */
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -28,6 +35,10 @@ public class ValidateRequest {
     DepartmentService departmentService;
     CertificationService certificationService;
 
+    /**
+     * Validate thông tin employee
+     * @param request Thông tin employee
+     */
     public void validateAddEmployeeRequest(AddEmployeeRequest request) {
         validateEmployeeLoginName(request.getEmployeeLoginId());
         validateEmployeeName(request.getEmployeeName());
@@ -40,6 +51,10 @@ public class ValidateRequest {
         validateListCertifications(request.getCertifications());
     }
 
+    /**
+     * Validate employeeLoginName
+     * @param employeeLoginName Giá trị cần validate
+     */
     private void validateEmployeeLoginName(String employeeLoginName) {
         if (isNull(employeeLoginName)) {
             throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
@@ -52,6 +67,10 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Validate employeeName
+     * @param employeeName Giá trị cần validate
+     */
     private void validateEmployeeName(String employeeName) {
         if (isNull(employeeName)) {
             throw new AppException(ErrorCode.ER001_EMPLOYEE_NAME);
@@ -60,6 +79,10 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Validate employeeNameKana
+     * @param employeeNameKana Giá trị cần validate
+     */
     private void validateEmployeeNameKana(String employeeNameKana) {
         if (isNull(employeeNameKana)) {
             throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
@@ -70,6 +93,10 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Validate employeeBirthDate
+     * @param employeeBirthDate Giá trị cần validate
+     */
     private void validateEmployeeBirthDate(String employeeBirthDate) {
         if (isNull(employeeBirthDate)) {
             throw new AppException(ErrorCode.ER001_EMPLOYEE_BIRTHDATE);
@@ -80,6 +107,10 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Validate employeeEmail
+     * @param employeeEmail Giá trị cần validate
+     */
     private void validateEmployeeEmail(String employeeEmail) {
         if(isNull(employeeEmail)) {
             throw new AppException(ErrorCode.ER001_EMPLOYEE_EMAIL);
@@ -88,6 +119,10 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Validate employeeTelephone
+     * @param employeeTelephone Giá trị cần validate
+     */
     private void validateEmployeeTelephone(String employeeTelephone) {
         if(isNull(employeeTelephone)) {
             throw new AppException(ErrorCode.ER001_EMPLOYEE_TELEPHONE);
@@ -98,6 +133,10 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Validate employeeLoginPassword
+     * @param employeeLoginPassword Giá trị cần validate
+     */
     private void validateEmployeeLoginPassword(String employeeLoginPassword) {
         if(isNull(employeeLoginPassword)) {
             throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_PASSWORD);
@@ -106,6 +145,10 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Validate departmentId
+     * @param departmentId Giá trị cần validate
+     */
     private void validateDepartmentId(Long departmentId) {
         if (isNull(departmentId)) {
             throw new AppException(ErrorCode.ER002_DEPARTMENT_ID);
@@ -116,14 +159,24 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Validate List CertificationRequest
+     * @param requests Giá trị cần validate
+     */
     private void validateListCertifications(List<CertificationRequest> requests) {
         for (CertificationRequest certification: requests) {
             validateStartDate(certification.getCertificationStartDate());
             validateEndDate(certification.getCertificationStartDate(),
                     certification.getCertificationEndDate());
+            validateScore(certification.getEmployeeCertificationScore());
+            validateCertificationId(certification.getCertificationId());
         }
     }
 
+    /**
+     * Validate startDate
+     * @param startDate Giá trị cần validate
+     */
     private void validateStartDate(String startDate) {
         if (isNull(startDate) || checkValueDate(startDate)) {
             throw new AppException(ErrorCode.ER001_CERTIFICATION_START_DATE);
@@ -132,6 +185,11 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Validate endDate
+     * @param startDateStr Giá trị cần validate
+     * @param endDateStr Giá trị cần validate
+     */
     private void validateEndDate(String startDateStr, String endDateStr) {
         Date startDate = new Date(startDateStr);
         Date endDate = new Date(endDateStr);
@@ -145,6 +203,10 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Validate score
+     * @param score Giá trị cần validate
+     */
     private void validateScore(BigDecimal score) {
         if(isNull(score)) {
             throw new AppException(ErrorCode.ER001_CERTIFICATION_SCORE);
@@ -153,6 +215,10 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Validate certificationId
+     * @param id Giá trị cần validate
+     */
     private void validateCertificationId(Long id) {
         if(isNull(id)) {
             throw new AppException(ErrorCode.ER001_CERTIFICATION_ID);
@@ -163,19 +229,49 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Kiểm tra đối tượng có null không
+     * @param obj Giá trị cần kiểm tra
+     * @return
+     *      true: Hợp lệ
+     *      false: Không hợp lệ
+     */
     private boolean isNull(Object obj) {
         return obj == null;
     }
 
+    /**
+     * Kiểm tra độ dài xâu
+     * @param obj Giá trị cần kiểm tra
+     * @param length Độ dài
+     * @return
+     *      true: Hợp lệ
+     *      false: Không hợp lệ
+     */
     private boolean checkMaxLength(Object obj, int length) {
         return obj.toString().length() > length;
     }
 
+    /**
+     * Kiểm tra định dạng xâu
+     * @param obj Giá trị cần kiểm tra
+     * @param regex Định dạng cần kiểm tra
+     * @return
+     *      true: Hợp lệ
+     *      false: Không hợp lệ
+     */
     private boolean checkPattern(Object obj, String regex) {
         Pattern pattern = Pattern.compile(regex);
         return !pattern.matcher(obj.toString()).matches();
     }
 
+    /**
+     * Kiểm tra giá trị ngày có hợp lệ không
+     * @param obj Giá trị cần kiểm tra
+     * @return
+     *      true: Hợp lệ
+     *      false: Không hợp lệ
+     */
     private boolean checkValueDate(Object obj) {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         try {
@@ -186,10 +282,27 @@ public class ValidateRequest {
         }
     }
 
+    /**
+     * Kiểm tra định dạng ngày
+     * @param obj Giá trị cần kiểm tra
+     * @return
+     *      true: Hợp lệ
+     *      false: Không hợp lệ
+     */
     private boolean checkFormatDate(Object obj) {
        return !obj.toString().matches("\\d{4}/\\d{2}/\\d{2}");
     }
 
+
+    /**
+     * Kiểm tra độ dài
+     * @param obj Giá trị cần kiểm tra
+     * @param min Độ dài min
+     * @param max Độ dài max
+     * @return
+     *      true: Hợp lệ
+     *      false: Không hợp lệ
+     */
     private boolean checkLength(Object obj, int min, int max) {
         return min <= obj.toString().length() && obj.toString().length() <= max;
     }

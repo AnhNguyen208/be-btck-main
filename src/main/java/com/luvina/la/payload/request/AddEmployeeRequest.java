@@ -1,13 +1,17 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * AddEmployeeRequest.java, 16/10/2024 AnhNLT
+ */
 package com.luvina.la.payload.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.Date;
 import java.util.List;
 
+/**
+ *  Chứa thông tin nhân viên được truyền từ phía client
+ *  khi tạo mới một nhân viên
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

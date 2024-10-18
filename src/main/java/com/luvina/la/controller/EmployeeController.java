@@ -76,6 +76,11 @@ public class EmployeeController {
         }
     }
 
+    /**
+     * Api thêm mới employee
+     * @param request Thông tin employee nhận từ FE
+     * @return ID employee vừa thêm
+     */
     @PostMapping
     public ResponseEntity<?> addEmployee(@RequestBody AddEmployeeRequest request) {
         validateRequest.validateAddEmployeeRequest(request);
@@ -84,6 +89,13 @@ public class EmployeeController {
         return null;
     }
 
+    /**
+     * Kiểm tra giá trị Order by
+     * @param value gía trị cần kiểm tra
+     * @return
+     *         true: Giá tr hợp lệ
+     *         false: Giá trị không hợp lệ
+     */
     private boolean checkOrdValue(String value) {
         return (!ParamOrderByConstants.ASC.getValue().equals(value)) && !ParamOrderByConstants.DESC.getValue().equals(value);
     }

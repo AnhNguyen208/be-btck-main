@@ -1,13 +1,18 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * CertificationRequest.java, 16/10/2024 AnhNLT
+ */
 package com.luvina.la.payload.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
+/**
+ *  Chứa thông tin về trình độ tiếng Nhật được truyền từ phía
+ *  client khi tạo mới một nhân viên
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

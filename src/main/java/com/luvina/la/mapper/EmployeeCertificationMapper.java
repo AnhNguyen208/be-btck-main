@@ -1,16 +1,20 @@
+/**
+ * Copyright(C) 2024  Luvina
+ * EmployeeCertificationMapper.java, 18/10/2024 AnhNLT
+ */
 package com.luvina.la.mapper;
 
-import com.luvina.la.entity.Certification;
 import com.luvina.la.entity.EmployeeCertification;
 import com.luvina.la.payload.request.CertificationRequest;
-import com.luvina.la.repository.CertificationRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.util.Date;
-import java.util.List;
 
+/**
+ * Chuyển đổi giữa CertificationRequest và EmployeeCertification
+ */
 @Mapper
 public interface EmployeeCertificationMapper {
 //    @Mapping(source = "request.certificationId", target = "certification", qualifiedByName = "setCertification")

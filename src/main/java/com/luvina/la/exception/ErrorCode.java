@@ -68,6 +68,7 @@ public enum ErrorCode {
 
     // 1.10 Validate parameter [employeeId]
     ER001_EMPLOYEE_ID("ER001", new ArrayList<>(List.of(new String[]{"ID"}))),
+    ER013_EMPLOYEE_ID("ER014", new ArrayList<>(List.of(new String[]{"ID"}))),
     ER014_EMPLOYEE_ID("ER014", new ArrayList<>(List.of(new String[]{"ID"}))),
 
     // Validate parameter list employee

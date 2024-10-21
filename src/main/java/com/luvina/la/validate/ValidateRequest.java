@@ -8,6 +8,7 @@ import com.luvina.la.exception.AppException;
 import com.luvina.la.exception.ErrorCode;
 import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.payload.request.CertificationRequest;
+import com.luvina.la.payload.request.EditEmployeeRequest;
 import com.luvina.la.service.CertificationService;
 import com.luvina.la.service.DepartmentService;
 import com.luvina.la.service.EmployeeService;
@@ -40,7 +41,7 @@ public class ValidateRequest {
      * @param request Thông tin employee
      */
     public void validateAddEmployeeRequest(AddEmployeeRequest request) {
-        validateEmployeeLoginName(request.getEmployeeLoginId());
+        validateEmployeeLoginId(request.getEmployeeLoginId());
         validateEmployeeName(request.getEmployeeName());
         validateEmployeeNameKana(request.getEmployeeNameKana());
         validateEmployeeBirthDate(request.getEmployeeBirthDate());
@@ -66,17 +67,45 @@ public class ValidateRequest {
     }
 
     /**
-     * Validate employeeLoginName
-     * @param employeeLoginName Giá trị cần validate
+     * Validate thông tin employee
+     * @param request Thông tin employee
      */
-    private void validateEmployeeLoginName(String employeeLoginName) {
-        if (isNull(employeeLoginName)) {
+    public void validateEditEmployeeRequest(EditEmployeeRequest request) {
+        validateEmployeeId1(request.getEmployeeId());
+        validateEmployeeLoginId(request.getEmployeeLoginId());
+        validateEmployeeName(request.getEmployeeName());
+        validateEmployeeNameKana(request.getEmployeeNameKana());
+        validateEmployeeBirthDate(request.getEmployeeBirthDate());
+        validateEmployeeEmail(request.getEmployeeEmail());
+        validateEmployeeTelephone(request.getEmployeeTelephone());
+        validateEmployeeLoginPassword(request.getEmployeeLoginPassword());
+        validateDepartmentId(request.getDepartmentId());
+        if(request.getCertifications() != null) {
+            validateListCertifications(request.getCertifications());
+        }
+    }
+
+    private void validateEmployeeId1(Long employeeId) {
+        if(isNull(employeeId)) {
+            throw new AppException(ErrorCode.ER001_EMPLOYEE_ID);
+        } else if (!employeeService.checkExistsById(employeeId)) {
+            throw new AppException(ErrorCode.ER013_EMPLOYEE_ID);
+        }
+    }
+
+
+    /**
+     * Validate employeeLoginName
+     * @param employeeLoginId Giá trị cần validate
+     */
+    private void validateEmployeeLoginId(String employeeLoginId) {
+        if (isNull(employeeLoginId)) {
             throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
-        } else if (checkMaxLength(employeeLoginName, 50)) {
+        } else if (checkMaxLength(employeeLoginId, 50)) {
             throw new AppException(ErrorCode.ER006_EMPLOYEE_LOGIN_ID);
-        } else if (checkPattern(employeeLoginName, "^[a-zA-Z_][a-zA-Z0-9_]*$")) {
+        } else if (checkPattern(employeeLoginId, "^[a-zA-Z_][a-zA-Z0-9_]*$")) {
             throw new AppException(ErrorCode.ER019_EMPLOYEE_LOGIN_ID);
-        } else if (employeeService.checkExistsByEmployeeLoginId(employeeLoginName)) {
+        } else if (employeeService.checkExistsByEmployeeLoginId(employeeLoginId)) {
             throw new AppException(ErrorCode.ER003_EMPLOYEE_LOGIN_ID);
         }
     }

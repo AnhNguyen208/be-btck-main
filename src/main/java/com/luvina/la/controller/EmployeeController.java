@@ -120,7 +120,7 @@ public class EmployeeController {
 
 
     /**
-     * Lấy thông tin chi tiết của employee
+     * Api lấy thông tin chi tiết của employee
      * @param employeeId EmployeeId nhận từ FE
      * @return
      *  Trường hợp thành công: Thông tin chi tiết của employee

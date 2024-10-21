@@ -54,6 +54,18 @@ public class ValidateRequest {
     }
 
     /**
+     * Validate employeeId
+     * @param employeeId employeeId cần validate
+     */
+    public void validateEmployeeId(Long employeeId) {
+        if(isNull(employeeId)) {
+            throw new AppException(ErrorCode.ER001_EMPLOYEE_ID);
+        } else if (!employeeService.checkExistsById(employeeId)) {
+            throw new AppException(ErrorCode.ER014_EMPLOYEE_ID);
+        }
+    }
+
+    /**
      * Validate employeeLoginName
      * @param employeeLoginName Giá trị cần validate
      */

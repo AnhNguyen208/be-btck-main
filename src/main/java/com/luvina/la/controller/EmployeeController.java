@@ -45,8 +45,16 @@ public class EmployeeController {
      * @param ordEndDate ASC hoặc DESC
      * @param offset Số nguyên dương
      * @param limit Số nguyên dương
-     * @return Danh sách EmployeeDTO
-     *
+     * @return
+     *  Trường hợp thành công: Danh sách EmployeeDTO
+     *  Trường hợp lỗi
+     *      {
+     *          "code": "500"
+     *          "message":  {
+     * 	            "code": "ER015"
+     * 	            "params": []
+     *          }
+     *      }
      */
     @GetMapping
     public ResponseEntity<?> getListEmployees(
@@ -81,7 +89,24 @@ public class EmployeeController {
     /**
      * Api thêm mới employee
      * @param request Thông tin employee nhận từ FE
-     * @return ID employee vừa thêm
+     * @return
+     *  Trường hợp thành công
+     *      {
+     *          "code": "200"
+     *          "employeeId": "1",
+     *          "message":  {
+     * 	            "code": "MSG001"
+     * 	            "params": []
+     *          }
+     *      }
+     *  Trường hợp lỗi
+     *      {
+     *          "code": "500"
+     *          "message":  {
+     * 	            "code": "ER015"
+     * 	            "params": []
+     *          }
+     *      }
      */
     @PostMapping
     public ResponseEntity<?> addEmployee(@RequestBody AddEmployeeRequest request) {
@@ -93,6 +118,21 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+    /**
+     * Lấy thông tin chi tiết của employee
+     * @param employeeId EmployeeId nhận từ FE
+     * @return
+     *  Trường hợp thành công: Thông tin chi tiết của employee
+     *  Trường hợp lỗi
+     *      {
+     *          "code": "500"
+     *          "message":  {
+     * 	            "code": "ER013"
+     * 	            "params": []
+     *          }
+     *      }
+     */
     @GetMapping("/{employeeId}")
     public ResponseEntity<?> getDetailEmployee(@PathVariable Long employeeId) {
         EmployeeDetailDTO detailDTO = employeeService.getDetailEmployee(employeeId);
@@ -109,6 +149,39 @@ public class EmployeeController {
                 .employeeLoginId(detailDTO.getEmployeeLoginId())
                 .certifications(detailDTO.getCertifications())
                 .build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+     * Api xóa employee
+     * @param employeeId EmployeeId nhận từ FE
+     * @return
+     *  Trường hợp thành công
+     *      {
+     *          "code": "200"
+     *          "employeeId": "1",
+     *          "message":  {
+     * 	           "code": "MSG003"
+     * 	            "params": []
+     *           }
+     *       }
+     *  Trường hợp lỗi
+     *      {
+     *          "code": "500"
+     *          "employeeId": "1",
+     *          "message":  {
+     * 	            "code": "ER015"
+     * 	            "params": []
+     *          }
+     *       }
+     */
+    @DeleteMapping("/{employeeId}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable Long employeeId) {
+        validateRequest.validateEmployeeId(employeeId);
+        employeeService.deleteEmployee(employeeId);
+
+        ApiResponse<?> response = ApiResponse.createMessageResponse(employeeId, "MSG003", new ArrayList<>(List.of(new String[]{})));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

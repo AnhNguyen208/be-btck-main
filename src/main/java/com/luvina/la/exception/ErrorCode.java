@@ -66,6 +66,10 @@ public enum ErrorCode {
     ER018_CERTIFICATION_SCORE("ER018", new ArrayList<>(List.of(new String[]{"点数"}))),
     ER018_CERTIFICATION_ID("ER018", new ArrayList<>(List.of(new String[]{"資格"}))),
 
+    // 1.10 Validate parameter [employeeId]
+    ER001_EMPLOYEE_ID("ER001", new ArrayList<>(List.of(new String[]{"ID"}))),
+    ER014_EMPLOYEE_ID("ER014", new ArrayList<>(List.of(new String[]{"ID"}))),
+
     // Validate parameter list employee
     ER018_OFFSET("ER018", new ArrayList<>(List.of(new String[]{"オフセット"}))),
     ER018_LIMIT("ER018", new ArrayList<>(List.of(new String[]{"リミット"}))),

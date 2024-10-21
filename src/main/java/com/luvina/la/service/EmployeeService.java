@@ -21,4 +21,8 @@ public interface EmployeeService {
     boolean checkExistsByEmployeeLoginId(String employeeLoginId);
 
     EmployeeDetailDTO getDetailEmployee(Long employeeId);
+
+    void deleteEmployee(Long employeeId);
+
+    boolean checkExistsById(Long employeeId);
 }

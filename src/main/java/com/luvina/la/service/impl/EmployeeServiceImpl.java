@@ -139,4 +139,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDetailDTO getDetailEmployee(Long employeeId) {
         return employeeMapper.toDto1(employeeRepository.findById(employeeId).orElseThrow());
     }
+
+    @Override
+    public void deleteEmployee(Long employeeId) {
+        employeeRepository.deleteById(employeeId);
+    }
+
+    @Override
+    public boolean checkExistsById(Long employeeId) {
+        return employeeRepository.existsById(employeeId);
+    }
 }

@@ -6,6 +6,7 @@ package com.luvina.la.controller;
 
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.constant.ParamOrderByConstants;
+import com.luvina.la.dto.EmployeeDetailDTO;
 import com.luvina.la.exception.AppException;
 import com.luvina.la.exception.ErrorCode;
 import com.luvina.la.payload.request.AddEmployeeRequest;
@@ -27,7 +28,7 @@ import java.util.List;
  * @author AnhNLT
  */
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/employee")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @CrossOrigin
@@ -88,6 +89,26 @@ public class EmployeeController {
         Long id = employeeService.addEmployee(request);
         ApiResponse<?> response = ApiResponse.createMessageResponse(id, "MSG001", new ArrayList<>(List.of(new String[]{})));
 //        ApiResponse<?> response = ApiResponse.createMessageResponse(0L, "MSG001", new ArrayList<>(List.of(new String[]{})));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<?> getDetailEmployee(@PathVariable Long employeeId) {
+        EmployeeDetailDTO detailDTO = employeeService.getDetailEmployee(employeeId);
+
+        ApiResponse<?> response = ApiResponse.builder()
+                .employeeId(detailDTO.getEmployeeId())
+                .employeeName(detailDTO.getEmployeeName())
+                .employeeBirthDate(detailDTO.getEmployeeBirthDate())
+                .departmentId(detailDTO.getDepartmentId())
+                .departmentName(detailDTO.getDepartmentName())
+                .employeeEmail(detailDTO.getEmployeeEmail())
+                .employeeTelephone(detailDTO.getEmployeeTelephone())
+                .employeeNameKana(detailDTO.getEmployeeNameKana())
+                .employeeLoginId(detailDTO.getEmployeeLoginId())
+                .certifications(detailDTO.getCertifications())
+                .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

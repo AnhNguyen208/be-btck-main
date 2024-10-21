@@ -4,6 +4,7 @@
  */
 package com.luvina.la.service.impl;
 
+import com.luvina.la.dto.EmployeeDetailDTO;
 import com.luvina.la.entity.Certification;
 import com.luvina.la.entity.Employee;
 import com.luvina.la.entity.EmployeeCertification;
@@ -126,5 +127,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean checkExistsByEmployeeLoginId(String employeeLoginId) {
         return employeeRepository.existsByEmployeeLoginId(employeeLoginId);
+    }
+
+    /**
+     * Lấy thông tin employee theo employeeId từ CSDL
+     * @param employeeId employeeId
+     * @return thông tin employee từ CSDL
+     */
+    @Transactional
+    @Override
+    public EmployeeDetailDTO getDetailEmployee(Long employeeId) {
+        return employeeMapper.toDto1(employeeRepository.findById(employeeId).orElseThrow());
     }
 }

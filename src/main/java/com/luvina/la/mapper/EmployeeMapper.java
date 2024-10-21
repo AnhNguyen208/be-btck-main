@@ -4,7 +4,9 @@
  */
 package com.luvina.la.mapper;
 
+import com.luvina.la.dto.EmployeeCertificationDTO;
 import com.luvina.la.dto.EmployeeDTO;
+import com.luvina.la.dto.EmployeeDetailDTO;
 import com.luvina.la.entity.Employee;
 import com.luvina.la.entity.EmployeeCertification;
 import com.luvina.la.payload.request.AddEmployeeRequest;
@@ -19,6 +21,8 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +48,11 @@ public interface EmployeeMapper {
     EmployeeDTO toDto(Employee entity);
 
     Iterable<EmployeeDTO> toList(Iterable<Employee> list);
+
+    @Mapping(source = "department.departmentId", target = "departmentId")
+    @Mapping(source = "department.departmentName", target = "departmentName")
+    @Mapping(source = "certifications", target = "certifications", qualifiedByName = "getCertifications")
+    EmployeeDetailDTO toDto1(Employee entity);
 
     @Named("getFirstCertificationName")
     static String getFirstCertificationName(List<EmployeeCertification> certifications) {
@@ -73,5 +82,24 @@ public interface EmployeeMapper {
     @Named("setBirthDate")
     static Date setBirthDate(String employeeBirthDate) {
         return new Date(employeeBirthDate);
+    }
+
+    @Named("getCertifications")
+    static List<EmployeeCertificationDTO> getCertifications(List<EmployeeCertification> certifications) {
+        List<EmployeeCertificationDTO> dtos = new ArrayList<>();
+
+        for(EmployeeCertification certification: certifications) {
+            EmployeeCertificationDTO dto = EmployeeCertificationDTO.builder()
+                    .certificationId(certification.getCertification().getCertificationId())
+                    .certificationName(certification.getCertification().getCertificationName())
+                    .startDate(certification.getStartDate())
+                    .endDate(certification.getEndDate())
+                    .score(certification.getScore())
+                    .build();
+
+            dtos.add(dto);
+        }
+
+        return dtos;
     }
 }

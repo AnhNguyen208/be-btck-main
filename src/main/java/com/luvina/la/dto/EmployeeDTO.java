@@ -8,11 +8,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 /**
- * Thông tin Employee hiển thị cho client
+ * Thông tin Employee hiển thị cho client trong ADM002
  */
 @Data
 @Builder
@@ -23,12 +24,18 @@ public class EmployeeDTO implements Serializable {
 
     Long employeeId;
     String employeeName;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     Date employeeBirthDate;
+
     String departmentName;
     String employeeEmail;
     String employeeTelephone;
     String certificationName;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     Date endDate;
+
     BigDecimal score;
 
     public EmployeeDTO(Long employeeId, String employeeName,

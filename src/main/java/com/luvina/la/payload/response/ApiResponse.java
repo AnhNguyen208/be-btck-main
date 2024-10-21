@@ -6,12 +6,14 @@ package com.luvina.la.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.luvina.la.constant.CodeConstants;
+import com.luvina.la.dto.EmployeeCertificationDTO;
 import com.luvina.la.exception.AppException;
 import com.luvina.la.exception.ErrorCode;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +29,15 @@ public class ApiResponse<T> {
     String code = CodeConstants.SUCCESS.getCode();
 
     Long totalRecords;
-    T employeeId;
+    Long employeeId;
+    String employeeName;
+    Date employeeBirthDate;
+    Long departmentId;
+    String departmentName;
+    String employeeEmail;
+    String employeeTelephone;
+    String employeeNameKana;
+    String employeeLoginId;
     MessageResponse message;
     List<String> params;
     T departments;

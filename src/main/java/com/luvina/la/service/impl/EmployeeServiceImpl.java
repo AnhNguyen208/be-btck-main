@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,6 +100,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Long addEmployee(AddEmployeeRequest request) {
         Employee employee = employeeMapper.toEntity1(request);
 
+        String encodePassword = new BCryptPasswordEncoder().encode(employee.getEmployeeLoginPassword());
+        employee.setEmployeeLoginPassword(encodePassword);
         employee.setDepartment(departmentRepository.findById(request.getDepartmentId()).orElseThrow());
         employee.setCertifications(new ArrayList<>());
 

@@ -118,7 +118,6 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
     /**
      * Api lấy thông tin chi tiết của employee
      * @param employeeId EmployeeId nhận từ FE

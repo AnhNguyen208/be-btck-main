@@ -37,7 +37,7 @@ public class ValidateRequest {
     CertificationService certificationService;
 
     /**
-     * Validate thông tin employee
+     * Validate thông tin employee khi add employee
      * @param request Thông tin employee
      */
     public void validateAddEmployeeRequest(AddEmployeeRequest request) {
@@ -55,7 +55,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Validate employeeId
+     * Validate employeeId khi delete employee
      * @param employeeId employeeId cần validate
      */
     public void validateEmployeeId(Long employeeId) {
@@ -67,7 +67,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Validate thông tin employee
+     * Validate thông tin employee khi edit
      * @param request Thông tin employee
      */
     public void validateEditEmployeeRequest(EditEmployeeRequest request) {
@@ -78,13 +78,19 @@ public class ValidateRequest {
         validateEmployeeBirthDate(request.getEmployeeBirthDate());
         validateEmployeeEmail(request.getEmployeeEmail());
         validateEmployeeTelephone(request.getEmployeeTelephone());
-        validateEmployeeLoginPassword(request.getEmployeeLoginPassword());
+        if(!isNull(request.getEmployeeLoginPassword())) {
+            validateEmployeeLoginPassword1(request.getEmployeeLoginPassword());
+        }
         validateDepartmentId(request.getDepartmentId());
         if(request.getCertifications() != null) {
             validateListCertifications(request.getCertifications());
         }
     }
 
+    /**
+     * Validate employeeId khi update employee
+     * @param employeeId employeeId cần validate
+     */
     private void validateEmployeeId1(Long employeeId) {
         if(isNull(employeeId)) {
             throw new AppException(ErrorCode.ER001_EMPLOYEE_ID);
@@ -128,7 +134,7 @@ public class ValidateRequest {
      */
     private void validateEmployeeNameKana(String employeeNameKana) {
         if (isNull(employeeNameKana)) {
-            throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
+            throw new AppException(ErrorCode.ER001_EMPLOYEE_NAME_KANA);
         } else if (checkMaxLength(employeeNameKana, 125)) {
             throw new AppException(ErrorCode.ER006_EMPLOYEE_NAME_KANA);
         } else if (checkPattern(employeeNameKana, "^[\\uFF65-\\uFF9F]+$")) {
@@ -177,13 +183,23 @@ public class ValidateRequest {
     }
 
     /**
-     * Validate employeeLoginPassword
+     * Validate employeeLoginPassword khi add employee
      * @param employeeLoginPassword Giá trị cần validate
      */
     private void validateEmployeeLoginPassword(String employeeLoginPassword) {
         if(isNull(employeeLoginPassword)) {
             throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_PASSWORD);
         } else if (!checkLength(employeeLoginPassword, 8, 50)) {
+            throw new AppException(ErrorCode.ER007_EMPLOYEE_LOGIN_PASSWORD);
+        }
+    }
+
+    /**
+     * Validate employeeLoginPassword khi edit employee
+     * @param employeeLoginPassword Giá trị cần validate
+     */
+    private void validateEmployeeLoginPassword1(String employeeLoginPassword) {
+        if (!checkLength(employeeLoginPassword, 8, 50)) {
             throw new AppException(ErrorCode.ER007_EMPLOYEE_LOGIN_PASSWORD);
         }
     }
@@ -335,7 +351,6 @@ public class ValidateRequest {
     private boolean checkFormatDate(Object obj) {
        return !obj.toString().matches("\\d{4}/\\d{2}/\\d{2}");
     }
-
 
     /**
      * Kiểm tra độ dài

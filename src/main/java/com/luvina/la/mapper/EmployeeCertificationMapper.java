@@ -18,9 +18,9 @@ import java.util.Date;
 @Mapper
 public interface EmployeeCertificationMapper {
 //    @Mapping(source = "request.certificationId", target = "certification", qualifiedByName = "setCertification")
-    @Mapping(source = "request.certificationStartDate", target = "startDate", qualifiedByName = "setStartDate")
-    @Mapping(source = "request.certificationStartDate", target = "endDate", qualifiedByName = "setEndDate")
-    @Mapping(source = "request.employeeCertificationScore", target = "score")
+    @Mapping(source = "certificationStartDate", target = "startDate", qualifiedByName = "setStartDate")
+    @Mapping(source = "certificationEndDate", target = "endDate", qualifiedByName = "setEndDate")
+    @Mapping(source = "employeeCertificationScore", target = "score")
     EmployeeCertification toEntity(CertificationRequest request);
 
     Iterable<EmployeeCertification> toList(Iterable<CertificationRequest> iterable);

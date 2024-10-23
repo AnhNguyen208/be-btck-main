@@ -4,11 +4,11 @@
  */
 package com.luvina.la.validate;
 
-import com.luvina.la.exception.AppException;
 import com.luvina.la.exception.ErrorCode;
 import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.payload.request.CertificationRequest;
 import com.luvina.la.payload.request.EditEmployeeRequest;
+import com.luvina.la.payload.response.ApiResponse;
 import com.luvina.la.service.CertificationService;
 import com.luvina.la.service.DepartmentService;
 import com.luvina.la.service.EmployeeService;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Validate dữ liệu nhân từ FE
+ * Kiểm tra dữ liệu nhân từ FE và trả về 1 response
  */
 @Component
 @RequiredArgsConstructor
@@ -37,255 +37,433 @@ public class ValidateRequest {
     CertificationService certificationService;
 
     /**
-     * Validate thông tin employee khi add employee
+     * Kiểm tra thông tin employee khi add employee
      * @param request Thông tin employee
      */
-    public void validateAddEmployeeRequest(AddEmployeeRequest request) {
-        validateEmployeeLoginId(request.getEmployeeLoginId());
-        validateEmployeeName(request.getEmployeeName());
-        validateEmployeeNameKana(request.getEmployeeNameKana());
-        validateEmployeeBirthDate(request.getEmployeeBirthDate());
-        validateEmployeeEmail(request.getEmployeeEmail());
-        validateEmployeeTelephone(request.getEmployeeTelephone());
-        validateEmployeeLoginPassword(request.getEmployeeLoginPassword());
-        validateDepartmentId(request.getDepartmentId());
-        if(request.getCertifications() != null) {
-            validateListCertifications(request.getCertifications());
+    public ApiResponse<?> validateAddEmployeeRequest(AddEmployeeRequest request) {
+        ApiResponse<?> response;
+
+        response = validateEmployeeLoginIdAdd(request.getEmployeeLoginId());
+        if(response != null) {
+            return response;
         }
+
+        response = validateEmployeeName(request.getEmployeeName());
+        if(response != null) {
+            return response;
+        }
+
+        response = validateEmployeeNameKana(request.getEmployeeNameKana());
+        if(response != null) {
+            return response;
+        }
+
+        response = validateEmployeeBirthDate(request.getEmployeeBirthDate());
+        if(response != null) {
+            return response;
+        }
+
+        response = validateEmployeeEmail(request.getEmployeeEmail());
+        if(response != null) {
+            return response;
+        }
+
+        response = validateEmployeeTelephone(request.getEmployeeTelephone());
+        if(response != null) {
+            return response;
+        }
+
+        response = validateEmployeeLoginPassword(request.getEmployeeLoginPassword());
+        if(response != null) {
+            return response;
+        }
+
+        response = validateDepartmentId(request.getDepartmentId());
+        if(response != null) {
+            return response;
+        }
+
+        if(request.getCertifications() != null ) {
+            response = validateListCertifications(request.getCertifications());
+            return response;
+        }
+
+        return null;
     }
 
     /**
-     * Validate employeeId khi delete employee
+     * Kiểm tra employeeId khi delete employee
      * @param employeeId employeeId cần validate
      */
-    public void validateEmployeeId(Long employeeId) {
+    public ApiResponse<?> validateEmployeeId(Long employeeId) {
+        ApiResponse<?> response = null;
         if(isNull(employeeId)) {
-            throw new AppException(ErrorCode.ER001_EMPLOYEE_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_ID);
         } else if (!employeeService.checkExistsById(employeeId)) {
-            throw new AppException(ErrorCode.ER014_EMPLOYEE_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER014_EMPLOYEE_ID);
         }
+
+        return response;
     }
 
     /**
-     * Validate thông tin employee khi edit
+     * Kiểm tra thông tin employee khi edit
      * @param request Thông tin employee
      */
-    public void validateEditEmployeeRequest(EditEmployeeRequest request) {
-        validateEmployeeId1(request.getEmployeeId());
-        validateEmployeeLoginId(request.getEmployeeLoginId());
-        validateEmployeeName(request.getEmployeeName());
-        validateEmployeeNameKana(request.getEmployeeNameKana());
-        validateEmployeeBirthDate(request.getEmployeeBirthDate());
-        validateEmployeeEmail(request.getEmployeeEmail());
-        validateEmployeeTelephone(request.getEmployeeTelephone());
-        if(!isNull(request.getEmployeeLoginPassword())) {
-            validateEmployeeLoginPassword1(request.getEmployeeLoginPassword());
+    public ApiResponse<?> validateEditEmployeeRequest(EditEmployeeRequest request) {
+        ApiResponse<?> response;
+
+        response = validateEmployeeIdUpdate(request.getEmployeeId());
+        if(response != null) {
+            return response;
         }
-        validateDepartmentId(request.getDepartmentId());
+
+        response = validateEmployeeLoginIdEdit(request.getEmployeeId() , request.getEmployeeLoginId());
+        if(response != null) {
+            return response;
+        }
+
+        response = validateEmployeeName(request.getEmployeeName());
+        if(response != null) {
+            return response;
+        }
+
+        response = validateEmployeeNameKana(request.getEmployeeNameKana());
+        if(response != null) {
+            return response;
+        }
+
+        response = validateEmployeeBirthDate(request.getEmployeeBirthDate());
+        if(response != null) {
+            return response;
+        }
+
+        response = validateEmployeeEmail(request.getEmployeeEmail());
+        if(response != null) {
+            return response;
+        }
+
+        response = validateEmployeeTelephone(request.getEmployeeTelephone());
+        if(response != null) {
+            return response;
+        }
+
+        if("".compareTo(request.getEmployeeLoginPassword()) != 0) {
+            response = validateEmployeeLoginPasswordEdit(request.getEmployeeLoginPassword());
+            if(response != null) {
+                return response;
+            }
+        }
+
+        response = validateDepartmentId(request.getDepartmentId());
+        if(response != null) {
+            return response;
+        }
+
         if(request.getCertifications() != null) {
-            validateListCertifications(request.getCertifications());
+            response = validateListCertifications(request.getCertifications());
+            if(response != null) {
+                return response;
+            }
         }
+
+        return null;
     }
 
     /**
-     * Validate employeeId khi update employee
+     * Kiểm tra employeeId khi update employee
      * @param employeeId employeeId cần validate
      */
-    private void validateEmployeeId1(Long employeeId) {
+    private ApiResponse<?> validateEmployeeIdUpdate(Long employeeId) {
+        ApiResponse<?> response = null;
+
         if(isNull(employeeId)) {
-            throw new AppException(ErrorCode.ER001_EMPLOYEE_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_ID);
         } else if (!employeeService.checkExistsById(employeeId)) {
-            throw new AppException(ErrorCode.ER013_EMPLOYEE_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER013_EMPLOYEE_ID);
         }
+
+        return response;
     }
 
 
     /**
-     * Validate employeeLoginName
-     * @param employeeLoginId Giá trị cần validate
+     * Kiểm tra employeeLoginName khi
+     * @param employeeLoginId Giá trị cần kiểm tra
      */
-    private void validateEmployeeLoginId(String employeeLoginId) {
+    private ApiResponse<?> validateEmployeeLoginIdAdd(String employeeLoginId) {
+        ApiResponse<?> response = null;
+
         if (isNull(employeeLoginId)) {
-            throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
         } else if (checkMaxLength(employeeLoginId, 50)) {
-            throw new AppException(ErrorCode.ER006_EMPLOYEE_LOGIN_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_LOGIN_ID);
         } else if (checkPattern(employeeLoginId, "^[a-zA-Z_][a-zA-Z0-9_]*$")) {
-            throw new AppException(ErrorCode.ER019_EMPLOYEE_LOGIN_ID);
-        } else if (employeeService.checkExistsByEmployeeLoginId(employeeLoginId)) {
-            throw new AppException(ErrorCode.ER003_EMPLOYEE_LOGIN_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER019_EMPLOYEE_LOGIN_ID);
+        } else if (employeeService.checkExistsByEmployeeLoginIAdd(employeeLoginId)) {
+            response = ApiResponse.createMessageResponse(ErrorCode.ER003_EMPLOYEE_LOGIN_ID);
         }
+
+        return response;
     }
 
     /**
-     * Validate employeeName
-     * @param employeeName Giá trị cần validate
+     * Kiểm tra employeeLoginName
+     * @param employeeLoginId Giá trị cần kiểm tra
      */
-    private void validateEmployeeName(String employeeName) {
+    private ApiResponse<?> validateEmployeeLoginIdEdit(Long employeeId, String employeeLoginId) {
+        ApiResponse<?> response = null;
+
+        if (isNull(employeeLoginId)) {
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
+        } else if (checkMaxLength(employeeLoginId, 50)) {
+            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_LOGIN_ID);
+        } else if (checkPattern(employeeLoginId, "^[a-zA-Z_][a-zA-Z0-9_]*$")) {
+            response = ApiResponse.createMessageResponse(ErrorCode.ER019_EMPLOYEE_LOGIN_ID);
+        } else if (employeeService.checkExistsByEmployeeLoginIEdit(employeeId, employeeLoginId)) {
+            response = ApiResponse.createMessageResponse(ErrorCode.ER003_EMPLOYEE_LOGIN_ID);
+        }
+
+        return response;
+    }
+
+    /**
+     * Kiểm tra employeeName
+     * @param employeeName Giá trị cần kiểm tra
+     */
+    private ApiResponse<?> validateEmployeeName(String employeeName) {
+        ApiResponse<?> response = null;
+
         if (isNull(employeeName)) {
-            throw new AppException(ErrorCode.ER001_EMPLOYEE_NAME);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_NAME);
         } else if (checkMaxLength(employeeName, 125)) {
-            throw new AppException(ErrorCode.ER006_EMPLOYEE_NAME);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_NAME);
         }
+
+        return response;
     }
 
     /**
-     * Validate employeeNameKana
-     * @param employeeNameKana Giá trị cần validate
+     * Kiểm tra employeeNameKana
+     * @param employeeNameKana Giá trị cần kiểm tra
      */
-    private void validateEmployeeNameKana(String employeeNameKana) {
+    private ApiResponse<?> validateEmployeeNameKana(String employeeNameKana) {
+        ApiResponse<?> response = null;
+
         if (isNull(employeeNameKana)) {
-            throw new AppException(ErrorCode.ER001_EMPLOYEE_NAME_KANA);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_NAME_KANA);
         } else if (checkMaxLength(employeeNameKana, 125)) {
-            throw new AppException(ErrorCode.ER006_EMPLOYEE_NAME_KANA);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_NAME_KANA);
         } else if (checkPattern(employeeNameKana, "^[\\uFF65-\\uFF9F]+$")) {
-            throw new AppException(ErrorCode.ER009_EMPLOYEE_NAME_KANA);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER009_EMPLOYEE_NAME_KANA);
         }
+
+        return response;
     }
 
     /**
-     * Validate employeeBirthDate
-     * @param employeeBirthDate Giá trị cần validate
+     * Kiểm tra employeeBirthDate
+     * @param employeeBirthDate Giá trị cần kiểm tra
      */
-    private void validateEmployeeBirthDate(String employeeBirthDate) {
+    private ApiResponse<?> validateEmployeeBirthDate(String employeeBirthDate) {
+        ApiResponse<?> response = null;
+
         if (isNull(employeeBirthDate)) {
-            throw new AppException(ErrorCode.ER001_EMPLOYEE_BIRTHDATE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_BIRTHDATE);
         } else if (checkValueDate(employeeBirthDate)) {
-            throw new AppException(ErrorCode.ER011_EMPLOYEE_BIRTHDATE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER011_EMPLOYEE_BIRTHDATE);
         } else if (checkFormatDate(employeeBirthDate)) {
-            throw new AppException(ErrorCode.ER005_EMPLOYEE_BIRTHDATE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER005_EMPLOYEE_BIRTHDATE);
         }
+
+        return response;
     }
 
     /**
-     * Validate employeeEmail
-     * @param employeeEmail Giá trị cần validate
+     * Kiểm tra employeeEmail
+     * @param employeeEmail Giá trị cần kiểm tra
      */
-    private void validateEmployeeEmail(String employeeEmail) {
+    private ApiResponse<?> validateEmployeeEmail(String employeeEmail) {
+        ApiResponse<?> response = null;
+
         if(isNull(employeeEmail)) {
-            throw new AppException(ErrorCode.ER001_EMPLOYEE_EMAIL);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_EMAIL);
         } else if (checkMaxLength(employeeEmail, 125)) {
-            throw new AppException(ErrorCode.ER006_EMPLOYEE_EMAIL);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_EMAIL);
         }
+
+        return response;
     }
 
     /**
-     * Validate employeeTelephone
-     * @param employeeTelephone Giá trị cần validate
+     * Kiểm tra employeeTelephone
+     * @param employeeTelephone Giá trị cần kiểm tra
      */
-    private void validateEmployeeTelephone(String employeeTelephone) {
+    private ApiResponse<?> validateEmployeeTelephone(String employeeTelephone) {
+        ApiResponse<?> response = null;
+
         if(isNull(employeeTelephone)) {
-            throw new AppException(ErrorCode.ER001_EMPLOYEE_TELEPHONE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_TELEPHONE);
         } else if (checkMaxLength(employeeTelephone, 50)) {
-            throw new AppException(ErrorCode.ER006_EMPLOYEE_TELEPHONE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_TELEPHONE);
         } else if (checkPattern(employeeTelephone, "[0-9]+")) {
-            throw new AppException(ErrorCode.ER008_EMPLOYEE_TELEPHONE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER008_EMPLOYEE_TELEPHONE);
         }
+
+        return response;
     }
 
     /**
-     * Validate employeeLoginPassword khi add employee
-     * @param employeeLoginPassword Giá trị cần validate
+     * Kiểm tra employeeLoginPassword khi add employee
+     * @param employeeLoginPassword Giá trị cần kiểm tra
      */
-    private void validateEmployeeLoginPassword(String employeeLoginPassword) {
+    private ApiResponse<?> validateEmployeeLoginPassword(String employeeLoginPassword) {
+        ApiResponse<?> response = null;
+
         if(isNull(employeeLoginPassword)) {
-            throw new AppException(ErrorCode.ER001_EMPLOYEE_LOGIN_PASSWORD);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_LOGIN_PASSWORD);
         } else if (!checkLength(employeeLoginPassword, 8, 50)) {
-            throw new AppException(ErrorCode.ER007_EMPLOYEE_LOGIN_PASSWORD);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER007_EMPLOYEE_LOGIN_PASSWORD);
         }
+
+        return response;
     }
 
     /**
-     * Validate employeeLoginPassword khi edit employee
-     * @param employeeLoginPassword Giá trị cần validate
+     * Kiểm tra employeeLoginPassword khi edit employee
+     * @param employeeLoginPassword Giá trị cần kiểm tra
      */
-    private void validateEmployeeLoginPassword1(String employeeLoginPassword) {
+    private ApiResponse<?> validateEmployeeLoginPasswordEdit(String employeeLoginPassword) {
+        ApiResponse<?> response = null;
+
         if (!checkLength(employeeLoginPassword, 8, 50)) {
-            throw new AppException(ErrorCode.ER007_EMPLOYEE_LOGIN_PASSWORD);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER007_EMPLOYEE_LOGIN_PASSWORD);
         }
+
+        return response;
     }
 
     /**
-     * Validate departmentId
-     * @param departmentId Giá trị cần validate
+     * Kiểm tra departmentId
+     * @param departmentId Giá trị cần kiểm tra
      */
-    private void validateDepartmentId(Long departmentId) {
+    private ApiResponse<?> validateDepartmentId(Long departmentId) {
+        ApiResponse<?> response = null;
+
         if (isNull(departmentId)) {
-            throw new AppException(ErrorCode.ER002_DEPARTMENT_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER002_DEPARTMENT_ID);
         } else if (departmentId <= 0) {
-            throw new AppException(ErrorCode.ER018_DEPARTMENT_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER018_DEPARTMENT_ID);
         } else if (!departmentService.checkExistsById(departmentId)) {
-            throw new AppException(ErrorCode.ER004_DEPARTMENT_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER004_DEPARTMENT_ID);
         }
+
+        return response;
     }
 
     /**
-     * Validate List CertificationRequest
-     * @param requests Giá trị cần validate
+     * Kiểm tra List CertificationRequest
+     * @param requests Giá trị cần kiểm tra
      */
-    private void validateListCertifications(List<CertificationRequest> requests) {
+    private ApiResponse<?> validateListCertifications(List<CertificationRequest> requests) {
+        ApiResponse<?> response;
+
         for (CertificationRequest certification: requests) {
-            validateStartDate(certification.getCertificationStartDate());
-            validateEndDate(certification.getCertificationStartDate(),
+            response = validateStartDate(certification.getCertificationStartDate());
+            if (response != null) {
+                return response;
+            }
+
+            response = validateEndDate(certification.getCertificationStartDate(),
                     certification.getCertificationEndDate());
-            validateScore(certification.getEmployeeCertificationScore());
-            validateCertificationId(certification.getCertificationId());
+            if (response != null) {
+                return response;
+            }
+
+            response = validateScore(certification.getEmployeeCertificationScore());
+            if (response != null) {
+                return response;
+            }
+
+            response = validateCertificationId(certification.getCertificationId());
+            if (response != null) {
+                return response;
+            }
         }
+
+        return null;
     }
 
     /**
-     * Validate startDate
-     * @param startDate Giá trị cần validate
+     * Kiểm tra startDate
+     * @param startDate Giá trị cần kiểm tra
      */
-    private void validateStartDate(String startDate) {
+    private ApiResponse<?> validateStartDate(String startDate) {
+        ApiResponse<?> response = null;
+
         if (isNull(startDate) || checkValueDate(startDate)) {
-            throw new AppException(ErrorCode.ER001_CERTIFICATION_START_DATE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_CERTIFICATION_START_DATE);
         } else if (checkFormatDate(startDate)) {
-            throw new AppException(ErrorCode.ER005_CERTIFICATION_START_DATE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER005_CERTIFICATION_START_DATE);
         }
+
+        return response;
     }
 
     /**
-     * Validate endDate
-     * @param startDateStr Giá trị cần validate
-     * @param endDateStr Giá trị cần validate
+     * Kiểm tra endDate
+     * @param startDateStr Giá trị cần kiểm tra
+     * @param endDateStr Giá trị cần kiểm tra
      */
-    private void validateEndDate(String startDateStr, String endDateStr) {
+    private ApiResponse<?> validateEndDate(String startDateStr, String endDateStr) {
+        ApiResponse<?> response = null;
+
         Date startDate = new Date(startDateStr);
         Date endDate = new Date(endDateStr);
 
         if (isNull(endDateStr) || checkValueDate(endDateStr)) {
-            throw new AppException(ErrorCode.ER001_CERTIFICATION_START_DATE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_CERTIFICATION_START_DATE);
         } else if (checkFormatDate(endDateStr)) {
-            throw new AppException(ErrorCode.ER005_CERTIFICATION_START_DATE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER005_CERTIFICATION_START_DATE);
         } else if ((endDate).compareTo(startDate) <= 0) {
-            throw new AppException(ErrorCode.ER012_CERTIFICATION_START_DATE_END_DATE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER012_CERTIFICATION_START_DATE_END_DATE);
         }
+
+        return response;
     }
 
     /**
-     * Validate score
-     * @param score Giá trị cần validate
+     * Kiểm tra score
+     * @param score Giá trị cần kiểm tra
      */
-    private void validateScore(BigDecimal score) {
+    private ApiResponse<?> validateScore(BigDecimal score) {
+        ApiResponse<?> response = null;
+
         if(isNull(score)) {
-            throw new AppException(ErrorCode.ER001_CERTIFICATION_SCORE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_CERTIFICATION_SCORE);
         } else if (Integer.parseInt(String.valueOf(score)) <= 0) {
-            throw new AppException(ErrorCode.ER018_CERTIFICATION_SCORE);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER018_CERTIFICATION_SCORE);
         }
+
+        return response;
     }
 
     /**
-     * Validate certificationId
-     * @param id Giá trị cần validate
+     * Kiểm tra certificationId
+     * @param id Giá trị cần kiểm tra
      */
-    private void validateCertificationId(Long id) {
+    private ApiResponse<?> validateCertificationId(Long id) {
+        ApiResponse<?> response = null;
+
         if(isNull(id)) {
-            throw new AppException(ErrorCode.ER001_CERTIFICATION_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_CERTIFICATION_ID);
         } else if (id <= 0) {
-            throw new AppException(ErrorCode.ER018_CERTIFICATION_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER018_CERTIFICATION_ID);
         } else if (!certificationService.checkExistsById(id)) {
-            throw new AppException(ErrorCode.ER004_CERTIFICATION_ID);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER004_CERTIFICATION_ID);
         }
+
+        return response;
     }
 
     /**

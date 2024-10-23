@@ -10,6 +10,7 @@ import com.luvina.la.dto.EmployeeDetailDTO;
 import com.luvina.la.exception.AppException;
 import com.luvina.la.exception.ErrorCode;
 import com.luvina.la.payload.request.AddEmployeeRequest;
+import com.luvina.la.payload.request.EditEmployeeRequest;
 import com.luvina.la.service.EmployeeService;
 import com.luvina.la.payload.response.ApiResponse;
 import com.luvina.la.validate.ValidateRequest;
@@ -110,12 +111,16 @@ public class EmployeeController {
      */
     @PostMapping
     public ResponseEntity<?> addEmployee(@RequestBody AddEmployeeRequest request) {
-        validateRequest.validateAddEmployeeRequest(request);
-        Long id = employeeService.addEmployee(request);
-        ApiResponse<?> response = ApiResponse.createMessageResponse(id, "MSG001", new ArrayList<>(List.of(new String[]{})));
-//        ApiResponse<?> response = ApiResponse.createMessageResponse(0L, "MSG001", new ArrayList<>(List.of(new String[]{})));
+        ApiResponse<?> response = validateRequest.validateAddEmployeeRequest(request);
+
+        if (response == null) {
+            Long id = employeeService.addEmployee(request);
+            response = ApiResponse.createMessageResponse(id, "MSG001", List.of(new String[]{}));
+//            response = ApiResponse.createMessageResponse(1L, "MSG001", new ArrayList<>(List.of(new String[]{})));
+        }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
     /**
@@ -181,6 +186,40 @@ public class EmployeeController {
         employeeService.deleteEmployee(employeeId);
 
         ApiResponse<?> response = ApiResponse.createMessageResponse(employeeId, "MSG003", new ArrayList<>(List.of(new String[]{})));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /**
+     * Api chỉnh sửa employee
+     * @param request Thông tin employee nhận từ FE
+     * @return
+     *  Trường hợp thành công
+     *      {
+     *          "code": "200"
+     *          "employeeId": "1",
+     *          "message":  {
+     * 	            "code": "MSG002"
+     * 	            "params": []
+     *          }
+     *      }
+     *  Trường hợp lỗi
+     *      {
+     *          "code": "500"
+     *          "message":  {
+     * 	            "code": "ER015"
+     * 	            "params": []
+     *          }
+     *      }
+     */
+    @PutMapping
+    public ResponseEntity<?> editEmployee(@RequestBody EditEmployeeRequest request) {
+        ApiResponse<?> response = validateRequest.validateEditEmployeeRequest(request);
+        if (response == null) {
+            Long employeeId = employeeService.editEmployee(request);
+
+            response = ApiResponse.createMessageResponse(employeeId, "MSG002", List.of(new String[]{}));
+        }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

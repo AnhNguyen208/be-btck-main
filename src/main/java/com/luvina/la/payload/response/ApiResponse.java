@@ -45,19 +45,31 @@ public class ApiResponse<T> {
     T certifications;
 
     public static ApiResponse<?> createMessageResponse(AppException exception) {
-        MessageResponse errorResponse = MessageResponse.builder()
+        MessageResponse messageResponse = MessageResponse.builder()
                 .code(exception.getErrorCode().getCode())
                 .params(exception.getErrorCode().getParams())
                 .build();
 
         return ApiResponse.builder()
                 .code(CodeConstants.ERROR.getCode())
-                .message(errorResponse)
+                .message(messageResponse)
+                .build();
+    }
+
+    public static ApiResponse<?> createMessageResponse(ErrorCode errorCode) {
+        MessageResponse messageResponse = MessageResponse.builder()
+                .code(errorCode.getCode())
+                .params(errorCode.getParams())
+                .build();
+
+        return ApiResponse.builder()
+                .code(CodeConstants.ERROR.getCode())
+                .message(messageResponse)
                 .build();
     }
 
     public static ApiResponse<?> createMessageResponse(Long id, String code, List<String> params) {
-        MessageResponse errorResponse = MessageResponse.builder()
+        MessageResponse messageResponse = MessageResponse.builder()
                 .code(code)
                 .params(params)
                 .build();
@@ -65,7 +77,7 @@ public class ApiResponse<T> {
         return ApiResponse.builder()
                 .employeeId(id)
                 .code(CodeConstants.SUCCESS.getCode())
-                .message(errorResponse)
+                .message(messageResponse)
                 .build();
     }
 }

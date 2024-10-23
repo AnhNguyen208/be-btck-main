@@ -10,18 +10,13 @@ import com.luvina.la.dto.EmployeeDetailDTO;
 import com.luvina.la.entity.Employee;
 import com.luvina.la.entity.EmployeeCertification;
 import com.luvina.la.payload.request.AddEmployeeRequest;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
+import com.luvina.la.payload.request.EditEmployeeRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,8 +33,11 @@ public interface EmployeeMapper {
 
     Employee toEntity(EmployeeDTO dto);
 
-    @Mapping(source = "request.employeeBirthDate", target = "employeeBirthDate", qualifiedByName = "setBirthDate")
-    Employee toEntity1(AddEmployeeRequest request);
+    @Mapping(source = "employeeBirthDate", target = "employeeBirthDate", qualifiedByName = "setBirthDate")
+    Employee toEntityAdd(AddEmployeeRequest request);
+
+    @Mapping(source = "employeeBirthDate", target = "employeeBirthDate", qualifiedByName = "setBirthDate")
+    Employee toEntityEdit(EditEmployeeRequest request);
 
     @Mapping(source = "department.departmentName", target = "departmentName")
     @Mapping(source = "certifications", target = "certificationName", qualifiedByName = "getFirstCertificationName")
@@ -52,7 +50,7 @@ public interface EmployeeMapper {
     @Mapping(source = "department.departmentId", target = "departmentId")
     @Mapping(source = "department.departmentName", target = "departmentName")
     @Mapping(source = "certifications", target = "certifications", qualifiedByName = "getCertifications")
-    EmployeeDetailDTO toDto1(Employee entity);
+    EmployeeDetailDTO toDetailDto(Employee entity);
 
     @Named("getFirstCertificationName")
     static String getFirstCertificationName(List<EmployeeCertification> certifications) {

@@ -37,9 +37,9 @@ public class Certification implements Serializable {
     @Column(name = "certification_level", nullable = false)
     Integer certificationLevel;
 
-    @OneToMany(mappedBy = "certification", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "certification")
     @JsonManagedReference
     @JsonIgnore
-    List<EmployeeCertification> employeeCertificationList;
+    List<EmployeeCertification> employeeCertifications;
 
 }

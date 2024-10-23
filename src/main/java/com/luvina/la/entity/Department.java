@@ -35,8 +35,8 @@ public class Department implements Serializable {
     @Column(name = "department_name", length = 50, nullable = false)
     String departmentName;
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "department")
     @JsonManagedReference
     @JsonIgnore
-    List<Employee> employeeList;
+    List<Employee> employees;
 }

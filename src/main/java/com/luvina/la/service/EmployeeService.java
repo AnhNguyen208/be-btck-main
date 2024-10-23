@@ -8,6 +8,7 @@ package com.luvina.la.service;
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.dto.EmployeeDetailDTO;
 import com.luvina.la.payload.request.AddEmployeeRequest;
+import com.luvina.la.payload.request.EditEmployeeRequest;
 
 import java.util.List;
 
@@ -18,7 +19,11 @@ public interface EmployeeService {
 
     Long addEmployee(AddEmployeeRequest request);
 
-    boolean checkExistsByEmployeeLoginId(String employeeLoginId);
+    Long editEmployee(EditEmployeeRequest request);
+
+    boolean checkExistsByEmployeeLoginIAdd(String employeeLoginId);
+
+    boolean checkExistsByEmployeeLoginIEdit(Long employeeId, String employeeLoginId);
 
     EmployeeDetailDTO getDetailEmployee(Long employeeId);
 

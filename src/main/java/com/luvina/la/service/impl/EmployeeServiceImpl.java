@@ -192,15 +192,19 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeId employeeId
      * @return thông tin employee từ CSDL
      */
-    @Transactional
     @Override
+    @Transactional
     public EmployeeDetailDTO getDetailEmployee(Long employeeId) {
         return employeeMapper.toDetailDto(employeeRepository.findById(employeeId).orElseThrow());
     }
 
     @Override
+    @Transactional
     public void deleteEmployee(Long employeeId) {
-        employeeRepository.deleteById(employeeId);
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
+        employeeCertificationRepository.deleteAll(employee.getCertifications());
+
+        employeeRepository.delete(employee);
     }
 
     @Override

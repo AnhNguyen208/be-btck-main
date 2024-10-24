@@ -19,6 +19,7 @@ import java.util.List;
 
 /**
  * Lấy thông tin Certification từ CSDL
+ * @author AnhNLT
  */
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,13 @@ public class CertificationServiceImpl implements CertificationService {
         return (List<CertificationDTO>) certificationMapper.toList(certificationRepository.findAll());
     }
 
+    /**
+     * Kiểm tra sự tồn tại của certification bằng id
+     * @param certificationId id muốn kiểm tra
+     * @return
+     *      true: Tồn tại
+     *      false: Không tồn tại
+     */
     @Override
     public boolean checkExistsById(Long certificationId) {
         return certificationRepository.existsById(certificationId);

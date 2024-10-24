@@ -68,16 +68,23 @@ public class EmployeeController {
         ApiResponse<?> response;
 
         if (checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
+            // Kiểm tra ordEmployeeName, ordCertificationName, ordEndDate chỉ nhận giá trị ASC hoặc DESC chưa
             response = ApiResponse.createMessageResponse(ErrorCode.ER021_ORDER);
         } else if (Integer.parseInt(limit) < 0) {
+            // Kiểm tra limit có phải số nguyên dương không
             response = ApiResponse.createMessageResponse(ErrorCode.ER018_LIMIT);
         } else if (Integer.parseInt(offset) < 0) {
+            // Kiểm tra offset có phải số nguyên dương không
             response = ApiResponse.createMessageResponse(ErrorCode.ER018_OFFSET);
         } else {
+            // Lấy tổng số bản ghi phù hợp từ service
             Long totalRecords = employeeService.countEmployees(employeeName, departmentId);
+
+            // Lấy danh sách employee từ service
             List<EmployeeDTO> list = employeeService.getEmployees(employeeName, departmentId,
                     ordEmployeeName, ordCertificationName, ordEndDate, offset, limit);
 
+            //Tạo response
             response = ApiResponse.<List<EmployeeDTO>>builder()
                     .totalRecords(totalRecords)
                     .employees(list)
@@ -113,10 +120,14 @@ public class EmployeeController {
      */
     @PostMapping
     public ResponseEntity<?> addEmployee(@RequestBody AddEmployeeRequest request) {
+        // Kiểm tra thông tin employee từ FE có hợp lệ không
         ApiResponse<?> response = validateRequest.validateAddEmployeeRequest(request);
 
         if (response == null) {
+            // Lưu thông tin employee
             Long id = employeeService.addEmployee(request);
+
+            // Tạo response
             response = ApiResponse.createMessageResponse(id, "MSG001", List.of(new String[]{}));
 //            response = ApiResponse.createMessageResponse(1L, "MSG001", new ArrayList<>(List.of(new String[]{})));
         }
@@ -141,12 +152,14 @@ public class EmployeeController {
      */
     @GetMapping("/{employeeId}")
     public ResponseEntity<?> getDetailEmployee(@PathVariable Long employeeId) {
-        ApiResponse<?> response;
-        response = validateRequest.validateEmployeeIdGet(employeeId);
+        // Kiểm tra employeeId nhận từ FE có hợp lệ không
+        ApiResponse<?> response = validateRequest.validateEmployeeIdGet(employeeId);
 
         if (response == null) {
+            // Lấy thông tin chi tiết employee từ service
             EmployeeDetailDTO detailDTO = employeeService.getDetailEmployee(employeeId);
 
+            // Tạo response
             response = ApiResponse.builder()
                     .employeeId(detailDTO.getEmployeeId())
                     .employeeName(detailDTO.getEmployeeName())
@@ -189,10 +202,14 @@ public class EmployeeController {
      */
     @DeleteMapping("/{employeeId}")
     public ResponseEntity<?> deleteEmployee(@PathVariable Long employeeId) {
+        // Kiểm tra employeeId nhận từ FE có hợp lệ không
         ApiResponse<?> response = validateRequest.validateEmployeeIdDelete(employeeId);
+
         if (response == null) {
+            // Xóa employee
             employeeService.deleteEmployee(employeeId);
 
+            // Tạo response
             response = ApiResponse.createMessageResponse(employeeId, "MSG003", List.of(new String[]{}));
         }
 
@@ -223,10 +240,14 @@ public class EmployeeController {
      */
     @PutMapping
     public ResponseEntity<?> editEmployee(@RequestBody EditEmployeeRequest request) {
+        // Kiểm tra thông tin employee từ FE có hợp lệ không
         ApiResponse<?> response = validateRequest.validateEditEmployeeRequest(request);
+
         if (response == null) {
+            // Chỉnh sửa employee
             Long employeeId = employeeService.editEmployee(request);
 
+            // Tạo response
             response = ApiResponse.createMessageResponse(employeeId, "MSG002", List.of(new String[]{}));
         }
 

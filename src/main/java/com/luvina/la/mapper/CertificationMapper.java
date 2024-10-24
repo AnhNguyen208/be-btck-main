@@ -5,9 +5,7 @@
 package com.luvina.la.mapper;
 
 import com.luvina.la.dto.CertificationDTO;
-import com.luvina.la.dto.DepartmentDTO;
 import com.luvina.la.entity.Certification;
-import com.luvina.la.entity.Department;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

@@ -6,12 +6,10 @@ package com.luvina.la.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.luvina.la.constant.CodeConstants;
-import com.luvina.la.dto.EmployeeCertificationDTO;
 import com.luvina.la.exception.AppException;
 import com.luvina.la.exception.ErrorCode;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +17,7 @@ import java.util.List;
 /**
  * Cấu trúc phản hồi dữ liệu của API
  * @param <T> Các kiểu dữ liệu trả về
+ * @author AnhNLT
  */
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -44,6 +43,11 @@ public class ApiResponse<T> {
     T employees;
     T certifications;
 
+    /**
+     * Tạo response cho AppException
+     * @param exception thông tin exception
+     * @return response
+     */
     public static ApiResponse<?> createMessageResponse(AppException exception) {
         MessageResponse messageResponse = MessageResponse.builder()
                 .code(exception.getErrorCode().getCode())
@@ -56,6 +60,11 @@ public class ApiResponse<T> {
                 .build();
     }
 
+    /**
+     * Tạo response cho ErrorCode
+     * @param errorCode thông tin error
+     * @return response
+     */
     public static ApiResponse<?> createMessageResponse(ErrorCode errorCode) {
         MessageResponse messageResponse = MessageResponse.builder()
                 .code(errorCode.getCode())
@@ -68,6 +77,14 @@ public class ApiResponse<T> {
                 .build();
     }
 
+
+    /**
+     * Tạo response khi add, edit, delete employee
+     * @param id employee id
+     * @param code code message
+     * @param params nội dung
+     * @return response
+     */
     public static ApiResponse<?> createMessageResponse(Long id, String code, List<String> params) {
         MessageResponse messageResponse = MessageResponse.builder()
                 .code(code)

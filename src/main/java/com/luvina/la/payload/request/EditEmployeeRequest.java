@@ -12,6 +12,7 @@ import java.util.List;
 /**
  *  Chứa thông tin nhân viên được truyền từ phía client
  *  khi cập nhật thông tin một nhân viên
+ *  @author AnhNLT
  */
 @Data
 @NoArgsConstructor

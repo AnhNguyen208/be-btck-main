@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * Thông tin Department trong CSDL
+ * @author AnhNLT
  */
 @Entity
 @Table(name = "departments")

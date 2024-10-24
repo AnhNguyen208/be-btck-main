@@ -11,6 +11,7 @@ import org.mapstruct.factory.Mappers;
 
 /**
  * Chuyển đổi giữa DepartmentDTO và Department
+ * @author AnhNLT
  */
 @Mapper
 public interface DepartmentMapper {

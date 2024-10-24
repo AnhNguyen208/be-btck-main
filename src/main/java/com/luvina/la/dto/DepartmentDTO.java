@@ -11,6 +11,7 @@ import java.io.Serializable;
 
 /**
  * Thông tin Department hiển thị cho client
+ * @author AnhNLT
  */
 @Data
 @Builder

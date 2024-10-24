@@ -14,6 +14,7 @@ import java.util.Date;
 
 /**
  * Chuyển đổi giữa CertificationRequest và EmployeeCertification
+ * @author AnhNLT
  */
 @Mapper
 public interface EmployeeCertificationMapper {

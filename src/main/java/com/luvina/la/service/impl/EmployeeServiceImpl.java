@@ -28,11 +28,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Lấy thông tin Employee từ CSDL
+ * @author AnhNLT
  */
 @Service
 @RequiredArgsConstructor
@@ -198,6 +198,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.toDetailDto(employeeRepository.findById(employeeId).orElseThrow());
     }
 
+    /**
+     * Xóa employee trong CSDL
+     * @param employeeId employeeId muốn xóa
+     */
     @Override
     @Transactional
     public void deleteEmployee(Long employeeId) {
@@ -207,6 +211,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.delete(employee);
     }
 
+    /**
+     * Kiểm tra sự tồn tại của employee bằng id
+     * @param employeeId id muốn kiểm tra
+     * @return
+     *      true: Tồn tại
+     *      false: Không tồn tại
+     */
     @Override
     public boolean checkExistsById(Long employeeId) {
         return employeeRepository.existsById(employeeId);

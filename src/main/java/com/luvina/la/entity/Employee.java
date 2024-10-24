@@ -18,6 +18,7 @@ import lombok.experimental.FieldDefaults;
 
 /**
  * Thông tin Employee trong CSDL
+ * @author AnhNLT
  */
 @Entity
 @Table(name = "employees")

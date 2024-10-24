@@ -46,7 +46,10 @@ public class CertificationController {
      */
     @GetMapping
     public ResponseEntity<?> getListCertifications() {
+        // Lấy danh sách certification từ service
         List<CertificationDTO> result = certificationService.getCertifications();
+
+        // Tạo response
         ApiResponse<List<CertificationDTO>> response = ApiResponse.<List<CertificationDTO>>builder()
                 .certifications(result)
                 .build();

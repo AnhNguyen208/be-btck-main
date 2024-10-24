@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Thông tin Certification trong CSDL
+ * @author AnhNLT
  */
 @Entity
 @Table(name = "certifications")

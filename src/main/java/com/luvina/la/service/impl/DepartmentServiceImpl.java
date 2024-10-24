@@ -18,6 +18,7 @@ import java.util.List;
 
 /**
  * Lấy thông tin Department từ CSDL
+ * @author AnhNLT
  */
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         return (List<DepartmentDTO>) departmentMapper.toList(departmentRepository.findAll());
     }
 
+    /**
+     * Kiểm tra sự tồn tại của department bằng id
+     * @param departmentId id muốn kiểm tra
+     * @return
+     *      true: Tồn tại
+     *      false: Không tồn tại
+     */
     @Override
     public boolean checkExistsById(Long departmentId) {
         return departmentRepository.existsById(departmentId);

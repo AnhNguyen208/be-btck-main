@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * Cấu trúc phản hồi của message response
+ * @author AnhNLT
  */
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

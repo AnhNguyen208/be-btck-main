@@ -46,7 +46,10 @@ public class DepartmentController {
      */
     @GetMapping
     public ResponseEntity<?> getListDepartments() {
+        // Lấy danh sách department từ service
         List<DepartmentDTO> result = departmentService.getDepartments();
+
+        // Tạo response
         ApiResponse<List<DepartmentDTO>> response = ApiResponse.<List<DepartmentDTO>>builder()
                 .departments(result)
                 .build();

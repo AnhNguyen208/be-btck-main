@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 /**
  *  Chứa thông tin về trình độ tiếng Nhật được truyền từ phía
  *  client khi tạo mới một nhân viên
+ *  @author AnhNLT
  */
 @Data
 @NoArgsConstructor

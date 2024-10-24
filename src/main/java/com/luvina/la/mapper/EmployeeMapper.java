@@ -26,6 +26,7 @@ import java.util.List;
  * use:
  *  EmployeeMapper.MAPPER.toEntity(dto);
  *  EmployeeMapper.MAPPER.toList(list);
+ *  @author AnhNLT
  */
 @Mapper
 public interface EmployeeMapper {

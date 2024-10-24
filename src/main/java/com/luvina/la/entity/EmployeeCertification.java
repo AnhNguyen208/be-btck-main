@@ -16,6 +16,7 @@ import java.util.Date;
 
 /**
  * Thông tin EmployeeCertification trong CSDL
+ * @author AnhNLT
  */
 @Entity
 @Table(name = "employees_certifications")

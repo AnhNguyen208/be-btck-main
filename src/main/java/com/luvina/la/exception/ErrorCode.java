@@ -7,11 +7,11 @@ package com.luvina.la.exception;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Quản lý các thông điệp lỗi
+ * Danh sách các thông điệp lỗi
+ * @author AnhNLT
  */
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -7,7 +7,6 @@ package com.luvina.la.controller;
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.constant.ParamOrderByConstants;
 import com.luvina.la.dto.EmployeeDetailDTO;
-import com.luvina.la.exception.AppException;
 import com.luvina.la.exception.ErrorCode;
 import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.payload.request.EditEmployeeRequest;
@@ -21,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,24 +65,28 @@ public class EmployeeController {
             @RequestParam(defaultValue = "0") String offset,
             @RequestParam(defaultValue = "5") String limit
     ) {
+        ApiResponse<?> response;
+
         if(checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
-            throw new AppException(ErrorCode.ER021_ORDER);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER021_ORDER);
         } else if(Integer.parseInt(limit) < 0) {
-            throw new AppException(ErrorCode.ER018_LIMIT);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER018_LIMIT);
         } else if(Integer.parseInt(offset) < 0) {
-            throw new AppException(ErrorCode.ER018_OFFSET);
+            response = ApiResponse.createMessageResponse(ErrorCode.ER018_OFFSET);
         } else {
             Long totalRecords = employeeService.countEmployees(employeeName, departmentId);
             List<EmployeeDTO> list = employeeService.getEmployees(employeeName, departmentId,
                     ordEmployeeName, ordCertificationName, ordEndDate, offset, limit);
 
-            ApiResponse<List<EmployeeDTO>> response = ApiResponse.<List<EmployeeDTO>>builder()
+            response = ApiResponse.<List<EmployeeDTO>>builder()
                     .totalRecords(totalRecords)
                     .employees(list)
                     .build();
 
-            return new ResponseEntity<>(response, HttpStatus.OK);
         }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
     /**
@@ -182,10 +184,12 @@ public class EmployeeController {
      */
     @DeleteMapping("/{employeeId}")
     public ResponseEntity<?> deleteEmployee(@PathVariable Long employeeId) {
-        validateRequest.validateEmployeeId(employeeId);
-        employeeService.deleteEmployee(employeeId);
+        ApiResponse<?> response = validateRequest.validateEmployeeId(employeeId);
+        if (response == null) {
+            employeeService.deleteEmployee(employeeId);
 
-        ApiResponse<?> response = ApiResponse.createMessageResponse(employeeId, "MSG003", new ArrayList<>(List.of(new String[]{})));
+            response = ApiResponse.createMessageResponse(employeeId, "MSG003", List.of(new String[]{}));
+        }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

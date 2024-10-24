@@ -33,21 +33,21 @@ public class EmployeeCertification implements Serializable {
     Long employeeCertificationId;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false, referencedColumnName = "employee_id")
     @JsonBackReference
     Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "certification_id", referencedColumnName = "certification_id")
+    @JoinColumn(name = "certification_id", nullable = false, referencedColumnName = "certification_id")
     @JsonBackReference
     Certification certification;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     Date startDate;
 
-    @Column(name = "end_date")
+    @Column(name = "end_date", nullable = false)
     Date endDate;
 
-    @Column(name = "score", precision = 5, scale = 2)
+    @Column(name = "score", nullable = false, precision = 5, scale = 2)
     BigDecimal score;
 }

@@ -113,7 +113,7 @@ public class ValidateRequest {
     public ApiResponse<?> validateEditEmployeeRequest(EditEmployeeRequest request) {
         ApiResponse<?> response;
 
-        response = validateEmployeeIdUpdate(request.getEmployeeId());
+        response = validateEmployeeIdEdit(request.getEmployeeId());
         if(response != null) {
             return response;
         }
@@ -174,7 +174,7 @@ public class ValidateRequest {
      * Kiểm tra employeeId khi update employee
      * @param employeeId employeeId cần validate
      */
-    private ApiResponse<?> validateEmployeeIdUpdate(Long employeeId) {
+    private ApiResponse<?> validateEmployeeIdEdit(Long employeeId) {
         ApiResponse<?> response = null;
 
         if(isNull(employeeId)) {

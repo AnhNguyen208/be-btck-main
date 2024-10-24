@@ -4,8 +4,6 @@
  */
 package com.luvina.la.controller;
 
-import com.luvina.la.exception.AppException;
-import com.luvina.la.exception.ErrorCode;
 import com.luvina.la.service.DepartmentService;
 import com.luvina.la.dto.DepartmentDTO;
 import com.luvina.la.payload.response.ApiResponse;

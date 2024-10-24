@@ -5,8 +5,6 @@
 package com.luvina.la.controller;
 
 import com.luvina.la.dto.CertificationDTO;
-import com.luvina.la.exception.AppException;
-import com.luvina.la.exception.ErrorCode;
 import com.luvina.la.payload.response.ApiResponse;
 import com.luvina.la.service.CertificationService;
 import lombok.AccessLevel;

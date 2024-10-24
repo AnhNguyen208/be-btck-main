@@ -67,11 +67,11 @@ public class EmployeeController {
     ) {
         ApiResponse<?> response;
 
-        if(checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
+        if (checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER021_ORDER);
-        } else if(Integer.parseInt(limit) < 0) {
+        } else if (Integer.parseInt(limit) < 0) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER018_LIMIT);
-        } else if(Integer.parseInt(offset) < 0) {
+        } else if (Integer.parseInt(offset) < 0) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER018_OFFSET);
         } else {
             Long totalRecords = employeeService.countEmployees(employeeName, departmentId);

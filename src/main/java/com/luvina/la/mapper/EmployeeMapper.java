@@ -54,7 +54,7 @@ public interface EmployeeMapper {
 
     @Named("getFirstCertificationName")
     static String getFirstCertificationName(List<EmployeeCertification> certifications) {
-        if(certifications != null && certifications.get(0) != null && certifications.get(0).getCertification() != null) {
+        if (certifications != null && certifications.get(0) != null && certifications.get(0).getCertification() != null) {
             return certifications.get(0).getCertification().getCertificationName();
         } else {
             return null;
@@ -62,7 +62,7 @@ public interface EmployeeMapper {
     }
     @Named("getFirstEndDate")
     static Date getFirstEndDate(List<EmployeeCertification> certifications) {
-        if(certifications != null) {
+        if (certifications != null) {
             return certifications.get(0).getEndDate();
         } else {
             return null;
@@ -70,7 +70,7 @@ public interface EmployeeMapper {
     }
     @Named("getFirstScore")
     static BigDecimal getFirstScore(List<EmployeeCertification> certifications) {
-        if(certifications != null) {
+        if (certifications != null) {
             return certifications.get(0).getScore();
         } else {
             return null;

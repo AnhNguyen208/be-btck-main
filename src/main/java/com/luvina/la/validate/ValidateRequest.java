@@ -44,46 +44,46 @@ public class ValidateRequest {
         ApiResponse<?> response;
 
         response = validateEmployeeLoginIdAdd(request.getEmployeeLoginId());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeName(request.getEmployeeName());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeNameKana(request.getEmployeeNameKana());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeBirthDate(request.getEmployeeBirthDate());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeEmail(request.getEmployeeEmail());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeTelephone(request.getEmployeeTelephone());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeLoginPassword(request.getEmployeeLoginPassword());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateDepartmentId(request.getDepartmentId());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
-        if(request.getCertifications() != null ) {
+        if (request.getCertifications() != null ) {
             response = validateListCertifications(request.getCertifications());
             return response;
         }
@@ -97,7 +97,7 @@ public class ValidateRequest {
      */
     public ApiResponse<?> validateEmployeeId(Long employeeId) {
         ApiResponse<?> response = null;
-        if(isNull(employeeId)) {
+        if (isNull(employeeId)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_ID);
         } else if (!employeeService.checkExistsById(employeeId)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER014_EMPLOYEE_ID);
@@ -114,55 +114,55 @@ public class ValidateRequest {
         ApiResponse<?> response;
 
         response = validateEmployeeIdEdit(request.getEmployeeId());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeLoginIdEdit(request.getEmployeeId() , request.getEmployeeLoginId());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeName(request.getEmployeeName());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeNameKana(request.getEmployeeNameKana());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeBirthDate(request.getEmployeeBirthDate());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeEmail(request.getEmployeeEmail());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
         response = validateEmployeeTelephone(request.getEmployeeTelephone());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
-        if("".compareTo(request.getEmployeeLoginPassword()) != 0) {
+        if ("".compareTo(request.getEmployeeLoginPassword()) != 0) {
             response = validateEmployeeLoginPasswordEdit(request.getEmployeeLoginPassword());
-            if(response != null) {
+            if (response != null) {
                 return response;
             }
         }
 
         response = validateDepartmentId(request.getDepartmentId());
-        if(response != null) {
+        if (response != null) {
             return response;
         }
 
-        if(request.getCertifications() != null) {
+        if (request.getCertifications() != null) {
             response = validateListCertifications(request.getCertifications());
-            if(response != null) {
+            if (response != null) {
                 return response;
             }
         }
@@ -177,7 +177,7 @@ public class ValidateRequest {
     private ApiResponse<?> validateEmployeeIdEdit(Long employeeId) {
         ApiResponse<?> response = null;
 
-        if(isNull(employeeId)) {
+        if (isNull(employeeId)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_ID);
         } else if (!employeeService.checkExistsById(employeeId)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER013_EMPLOYEE_ID);
@@ -286,7 +286,7 @@ public class ValidateRequest {
     private ApiResponse<?> validateEmployeeEmail(String employeeEmail) {
         ApiResponse<?> response = null;
 
-        if(isNull(employeeEmail)) {
+        if (isNull(employeeEmail)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_EMAIL);
         } else if (checkMaxLength(employeeEmail, 125)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_EMAIL);
@@ -302,7 +302,7 @@ public class ValidateRequest {
     private ApiResponse<?> validateEmployeeTelephone(String employeeTelephone) {
         ApiResponse<?> response = null;
 
-        if(isNull(employeeTelephone)) {
+        if (isNull(employeeTelephone)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_TELEPHONE);
         } else if (checkMaxLength(employeeTelephone, 50)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_TELEPHONE);
@@ -320,7 +320,7 @@ public class ValidateRequest {
     private ApiResponse<?> validateEmployeeLoginPassword(String employeeLoginPassword) {
         ApiResponse<?> response = null;
 
-        if(isNull(employeeLoginPassword)) {
+        if (isNull(employeeLoginPassword)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_LOGIN_PASSWORD);
         } else if (!checkLength(employeeLoginPassword, 8, 50)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER007_EMPLOYEE_LOGIN_PASSWORD);
@@ -439,7 +439,7 @@ public class ValidateRequest {
     private ApiResponse<?> validateScore(BigDecimal score) {
         ApiResponse<?> response = null;
 
-        if(isNull(score)) {
+        if (isNull(score)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER001_CERTIFICATION_SCORE);
         } else if (Integer.parseInt(String.valueOf(score)) <= 0) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER018_CERTIFICATION_SCORE);
@@ -455,7 +455,7 @@ public class ValidateRequest {
     private ApiResponse<?> validateCertificationId(Long id) {
         ApiResponse<?> response = null;
 
-        if(isNull(id)) {
+        if (isNull(id)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER001_CERTIFICATION_ID);
         } else if (id <= 0) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER018_CERTIFICATION_ID);

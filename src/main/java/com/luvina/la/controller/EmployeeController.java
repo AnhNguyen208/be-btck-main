@@ -141,20 +141,25 @@ public class EmployeeController {
      */
     @GetMapping("/{employeeId}")
     public ResponseEntity<?> getDetailEmployee(@PathVariable Long employeeId) {
-        EmployeeDetailDTO detailDTO = employeeService.getDetailEmployee(employeeId);
+        ApiResponse<?> response;
+        response = validateRequest.validateEmployeeIdGet(employeeId);
 
-        ApiResponse<?> response = ApiResponse.builder()
-                .employeeId(detailDTO.getEmployeeId())
-                .employeeName(detailDTO.getEmployeeName())
-                .employeeBirthDate(detailDTO.getEmployeeBirthDate())
-                .departmentId(detailDTO.getDepartmentId())
-                .departmentName(detailDTO.getDepartmentName())
-                .employeeEmail(detailDTO.getEmployeeEmail())
-                .employeeTelephone(detailDTO.getEmployeeTelephone())
-                .employeeNameKana(detailDTO.getEmployeeNameKana())
-                .employeeLoginId(detailDTO.getEmployeeLoginId())
-                .certifications(detailDTO.getCertifications())
-                .build();
+        if (response == null) {
+            EmployeeDetailDTO detailDTO = employeeService.getDetailEmployee(employeeId);
+
+            response = ApiResponse.builder()
+                    .employeeId(detailDTO.getEmployeeId())
+                    .employeeName(detailDTO.getEmployeeName())
+                    .employeeBirthDate(detailDTO.getEmployeeBirthDate())
+                    .departmentId(detailDTO.getDepartmentId())
+                    .departmentName(detailDTO.getDepartmentName())
+                    .employeeEmail(detailDTO.getEmployeeEmail())
+                    .employeeTelephone(detailDTO.getEmployeeTelephone())
+                    .employeeNameKana(detailDTO.getEmployeeNameKana())
+                    .employeeLoginId(detailDTO.getEmployeeLoginId())
+                    .certifications(detailDTO.getCertifications())
+                    .build();
+        }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -184,7 +189,7 @@ public class EmployeeController {
      */
     @DeleteMapping("/{employeeId}")
     public ResponseEntity<?> deleteEmployee(@PathVariable Long employeeId) {
-        ApiResponse<?> response = validateRequest.validateEmployeeId(employeeId);
+        ApiResponse<?> response = validateRequest.validateEmployeeIdDelete(employeeId);
         if (response == null) {
             employeeService.deleteEmployee(employeeId);
 

@@ -95,12 +95,27 @@ public class ValidateRequest {
      * Kiểm tra employeeId khi delete employee
      * @param employeeId employeeId cần validate
      */
-    public ApiResponse<?> validateEmployeeId(Long employeeId) {
+    public ApiResponse<?> validateEmployeeIdDelete(Long employeeId) {
         ApiResponse<?> response = null;
         if (isNull(employeeId)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_ID);
         } else if (!employeeService.checkExistsById(employeeId)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER014_EMPLOYEE_ID);
+        }
+
+        return response;
+    }
+
+    /**
+     * Kiểm tra employeeId khi get detail employee
+     * @param employeeId employeeId cần validate
+     */
+    public ApiResponse<?> validateEmployeeIdGet(Long employeeId) {
+        ApiResponse<?> response = null;
+        if (isNull(employeeId)) {
+            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_ID);
+        } else if (!employeeService.checkExistsById(employeeId)) {
+            response = ApiResponse.createMessageResponse(ErrorCode.ER013_EMPLOYEE_ID);
         }
 
         return response;

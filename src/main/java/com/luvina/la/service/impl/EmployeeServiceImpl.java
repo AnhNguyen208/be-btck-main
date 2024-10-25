@@ -205,10 +205,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional
     public void deleteEmployee(Long employeeId) {
-        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
-        employeeCertificationRepository.deleteAll(employee.getCertifications());
+        employeeCertificationRepository.deleteByEmployeeId(employeeId);
 
-        employeeRepository.delete(employee);
+        employeeRepository.deleteById(employeeId);
     }
 
     /**

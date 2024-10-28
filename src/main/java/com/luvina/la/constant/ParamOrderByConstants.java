@@ -7,7 +7,8 @@ package com.luvina.la.constant;
 import lombok.Getter;
 
 /**
- * Quản lý các hằng số
+ * Enum lưu trữ các tham số săp xếp.
+ * @author AnhNLT
  */
 @Getter
 public enum ParamOrderByConstants {

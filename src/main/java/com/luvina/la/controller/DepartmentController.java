@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * Controller để quản lý department
+ * Controller xử lý các yêu cầu HTTP liên quan đến department
+ * Bao gồm chức năng lấy danh sách department
  * @author AnhNLT
  */
 @RestController
@@ -32,17 +33,30 @@ public class DepartmentController {
     DepartmentService departmentService;
 
     /**
-     * Api lấy danh sách department
+     * Lấy danh sách department từ DepartmentService
      * @return
      *      Trường hợp lấy được department
-     *          code: 200
-     *          departments: danh sách department
+     *      {
+     *          "code": "200"
+     *          "departments": [
+     *              {
+     *                  "departmentId": "1",
+     *                  "departmentName": "Phòng DEV1",
+     *              },
+     *              {
+     *                  "departmentId": "2",
+     *                  "departmentName": "Phòng DEV2",
+     *              }
+     *          ]
+     *      }
      *      Trường hợp không lấy được department
-     *          code: 500
-     *          message: {
-     *              code: "ER023"
-     *              params: []
+     *      {
+     *          "code": "500"
+     *          "message":  {
+     * 	            "code": "ER023"
+     * 	            "params": []
      *          }
+     *      }
      */
     @GetMapping
     public ResponseEntity<?> getListDepartments() {

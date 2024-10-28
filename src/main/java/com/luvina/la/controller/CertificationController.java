@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * Controller để quản lý Certification
+ * Controller xử lý các yêu cầu HTTP liên quan đến certification
+ * Bao gồm chức năng lấy danh sách certification
  * @author AnhNLT
  */
 @RestController
@@ -32,17 +33,30 @@ public class CertificationController {
     CertificationService certificationService;
 
     /**
-     * Api lấy danh sách certification
+     * Lấy danh sách certification từ CertificationService
      * @return
      *      Trường hợp lấy được certification
-     *          code: 200
-     *          certifications: danh sách certification
+     *      {
+     *          "code": "200"
+     *          "certifications": [
+     *              {
+     *                  "certificationId": "1",
+     *                  "certificationName": "Trình độ tiếng Nhật cấp 1",
+     *              },
+     *              {
+     *                  "certificationId": "2",
+     *                  "certificationName": "Trình độ tiếng Nhật cấp 2",
+     *              }
+     *          ]
+     *      }
      *      Trường hợp không lấy được certification
-     *          code: 500
-     *          message: {
-     *              code: "ER023"
-     *              params: []
+     *      {
+     *          "code": 500
+     *          "message": {
+     *              "code": "ER023"
+     *              "params"": []
      *          }
+     *      }
      */
     @GetMapping
     public ResponseEntity<?> getListCertifications() {

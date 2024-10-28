@@ -5,6 +5,11 @@
 package com.luvina.la.constant;
 
 import lombok.Getter;
+
+/**
+ * Enum lưu trữ các mã trạng thái phản hồi.
+ * @author AnhNLT
+ */
 @Getter
 public enum CodeConstants {
     SUCCESS("200"),

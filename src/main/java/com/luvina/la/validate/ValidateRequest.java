@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 /**
  * Kiểm tra dữ liệu nhân từ FE và trả về 1 response
+ * @author AnhNLT
  */
 @Component
 @RequiredArgsConstructor
@@ -37,8 +38,8 @@ public class ValidateRequest {
     CertificationService certificationService;
 
     /**
-     * Kiểm tra thông tin employee khi add employee
-     * @param request Thông tin employee
+     * Kiểm tra thông tin employee khi thêm mới employee
+     * @param request Thông tin employee cần kiểm tra
      */
     public ApiResponse<?> validateAddEmployeeRequest(AddEmployeeRequest request) {
         ApiResponse<?> response;
@@ -92,10 +93,10 @@ public class ValidateRequest {
     }
 
     /**
-     * Kiểm tra employeeId khi delete employee
-     * @param employeeId employeeId cần validate
+     * Kiểm tra employeeId khi xóa employee
+     * @param employeeId employeeId cần kiểm tra
      */
-    public ApiResponse<?> validateEmployeeIdDelete(Long employeeId) {
+    public ApiResponse<?> validateDeleteEmployeeRequest(Long employeeId) {
         ApiResponse<?> response = null;
         if (isNull(employeeId)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_ID);
@@ -107,10 +108,10 @@ public class ValidateRequest {
     }
 
     /**
-     * Kiểm tra employeeId khi get detail employee
-     * @param employeeId employeeId cần validate
+     * Kiểm tra employeeId khi lấy thông tin chi tiết của employee
+     * @param employeeId employeeId cần kiểm tra
      */
-    public ApiResponse<?> validateEmployeeIdGet(Long employeeId) {
+    public ApiResponse<?> validateGetDetailEmployeeRequest(Long employeeId) {
         ApiResponse<?> response = null;
         if (isNull(employeeId)) {
             response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_ID);
@@ -122,8 +123,8 @@ public class ValidateRequest {
     }
 
     /**
-     * Kiểm tra thông tin employee khi edit
-     * @param request Thông tin employee
+     * Kiểm tra thông tin employee khi chỉnh sửa employee
+     * @param request Thông tin employee cần kiểm tra
      */
     public ApiResponse<?> validateEditEmployeeRequest(EditEmployeeRequest request) {
         ApiResponse<?> response;
@@ -186,8 +187,8 @@ public class ValidateRequest {
     }
 
     /**
-     * Kiểm tra employeeId khi update employee
-     * @param employeeId employeeId cần validate
+     * Kiểm tra employeeId khi chỉnh sửa employee
+     * @param employeeId employeeId cần kiểm tra
      */
     private ApiResponse<?> validateEmployeeIdEdit(Long employeeId) {
         ApiResponse<?> response = null;
@@ -203,7 +204,7 @@ public class ValidateRequest {
 
 
     /**
-     * Kiểm tra employeeLoginName khi
+     * Kiểm tra employeeLoginName khi thêm mới employee
      * @param employeeLoginId Giá trị cần kiểm tra
      */
     private ApiResponse<?> validateEmployeeLoginIdAdd(String employeeLoginId) {
@@ -329,7 +330,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Kiểm tra employeeLoginPassword khi add employee
+     * Kiểm tra employeeLoginPassword khi thêm mới employee
      * @param employeeLoginPassword Giá trị cần kiểm tra
      */
     private ApiResponse<?> validateEmployeeLoginPassword(String employeeLoginPassword) {
@@ -345,7 +346,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Kiểm tra employeeLoginPassword khi edit employee
+     * Kiểm tra employeeLoginPassword khi chỉnh sửa employee
      * @param employeeLoginPassword Giá trị cần kiểm tra
      */
     private ApiResponse<?> validateEmployeeLoginPasswordEdit(String employeeLoginPassword) {
@@ -377,7 +378,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Kiểm tra List CertificationRequest
+     * Kiểm tra danh sách certification
      * @param requests Giá trị cần kiểm tra
      */
     private ApiResponse<?> validateListCertifications(List<CertificationRequest> requests) {

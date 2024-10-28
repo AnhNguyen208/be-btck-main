@@ -4,14 +4,14 @@
  */
 package com.luvina.la.controller;
 
-import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.constant.ParamOrderByConstants;
+import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.dto.EmployeeDetailDTO;
 import com.luvina.la.exception.ErrorCode;
 import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.payload.request.EditEmployeeRequest;
-import com.luvina.la.service.EmployeeService;
 import com.luvina.la.payload.response.ApiResponse;
+import com.luvina.la.service.EmployeeService;
 import com.luvina.la.validate.ValidateRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Controller để quản lý employee
+ * Controller xử lý các yêu cầu HTTP liên quan đến employee
+ * Bao gồm các chức năng lấy danh sách, lấy thông tin chi tiết, thêm mới, chỉnh sửa, và xóa employee.
  * @author AnhNLT
  */
 @RestController
@@ -36,7 +37,8 @@ public class EmployeeController {
     ValidateRequest validateRequest;
 
     /**
-     * Api lấy danh sách employee
+     * Lấy danh sách employee từ EmployeeService
+     *
      * @param employeeName Tên nhân viên
      * @param departmentId Mã phòng ban
      * @param ordEmployeeName ASC hoặc DESC
@@ -45,15 +47,43 @@ public class EmployeeController {
      * @param offset Số nguyên dương
      * @param limit Số nguyên dương
      * @return
-     *  Trường hợp thành công: Danh sách EmployeeDTO
+     *  Trường hợp thành công
+     *  {
+     *     "code": "200"
+     *     "totalRecords": 2,
+     *     "employees": [
+     *       {
+     *         "employeeId": "1",
+     *         "employeeName": "Nguyễn Văn A",
+     *         "employeeBirthDate": "1983/01/01",
+     *         "departmentName": "Phòng DevN",
+     *         "employeeEmail": "nguyenvana@luvina.net",
+     *         "employeeTelephone": "01234567",
+     *         "certificationName": "Trình độ tiếng Nhật cấp 1",
+     *         "endDate": "9999/12/31",
+     *         "score": "999"
+     *       },
+     *       {
+     *         "employeeId": "2",
+     *         "employeeName": "Nguyễn Văn B",
+     *         "employeeBirthDate": "1983/01/02",
+     *         "departmentName": "Phòng DevN",
+     *         "employeeEmail": "nguyenvanb@luvina.net",
+     *         "employeeTelephone": "01234568",
+     *         "certificationName": "Trình độ tiếng Nhật cấp 2",
+     *         "endDate": "9999/12/31",
+     *         "score": "999"
+     *       }
+     *     ]
+     *  }
      *  Trường hợp lỗi
-     *      {
-     *          "code": "500"
-     *          "message":  {
-     * 	            "code": "ER015"
-     * 	            "params": []
-     *          }
-     *      }
+     *  {
+     *     "code": "500"
+     *     "message":  {
+     * 	    "code": "ER015"
+     * 	    "params": []         				
+     *        }
+     *  }
      */
     @GetMapping
     public ResponseEntity<?> getListEmployees(
@@ -97,7 +127,7 @@ public class EmployeeController {
     }
 
     /**
-     * Api thêm mới employee
+     * Thêm mới employee qua EmployeeService
      * @param request Thông tin employee nhận từ FE
      * @return
      *  Trường hợp thành công
@@ -137,7 +167,7 @@ public class EmployeeController {
     }
 
     /**
-     * Api lấy thông tin chi tiết của employee
+     * Lấy thông tin của employee từ EmployeeService
      * @param employeeId EmployeeId nhận từ FE
      * @return
      *  Trường hợp thành công: Thông tin chi tiết của employee
@@ -153,7 +183,7 @@ public class EmployeeController {
     @GetMapping("/{employeeId}")
     public ResponseEntity<?> getDetailEmployee(@PathVariable Long employeeId) {
         // Kiểm tra employeeId nhận từ FE có hợp lệ không
-        ApiResponse<?> response = validateRequest.validateEmployeeIdGet(employeeId);
+        ApiResponse<?> response = validateRequest.validateGetDetailEmployeeRequest(employeeId);
 
         if (response == null) {
             // Lấy thông tin chi tiết employee từ service
@@ -203,7 +233,7 @@ public class EmployeeController {
     @DeleteMapping("/{employeeId}")
     public ResponseEntity<?> deleteEmployee(@PathVariable Long employeeId) {
         // Kiểm tra employeeId nhận từ FE có hợp lệ không
-        ApiResponse<?> response = validateRequest.validateEmployeeIdDelete(employeeId);
+        ApiResponse<?> response = validateRequest.validateDeleteEmployeeRequest(employeeId);
 
         if (response == null) {
             // Xóa employee

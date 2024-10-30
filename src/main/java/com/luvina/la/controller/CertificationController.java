@@ -4,6 +4,7 @@
  */
 package com.luvina.la.controller;
 
+import com.luvina.la.constant.ErrorConstants;
 import com.luvina.la.dto.CertificationDTO;
 import com.luvina.la.payload.response.ApiResponse;
 import com.luvina.la.service.CertificationService;
@@ -60,14 +61,21 @@ public class CertificationController {
      */
     @GetMapping
     public ResponseEntity<?> getListCertifications() {
-        // Lấy danh sách certification từ service
-        List<CertificationDTO> result = certificationService.getCertifications();
+        try {
+            // Lấy danh sách certification từ service
+            List<CertificationDTO> result = certificationService.getCertifications();
 
-        // Tạo response
-        ApiResponse<List<CertificationDTO>> response = ApiResponse.<List<CertificationDTO>>builder()
-                .certifications(result)
-                .build();
+            // Tạo response
+            ApiResponse<List<CertificationDTO>> response = ApiResponse.<List<CertificationDTO>>builder()
+                    .certifications(result)
+                    .build();
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception ex) {
+            ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorConstants.ER023);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+
     }
 }

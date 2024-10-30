@@ -5,7 +5,6 @@
 package com.luvina.la.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.luvina.la.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;

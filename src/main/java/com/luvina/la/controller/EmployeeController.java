@@ -7,7 +7,7 @@ package com.luvina.la.controller;
 import com.luvina.la.constant.ParamOrderByConstants;
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.dto.EmployeeDetailDTO;
-import com.luvina.la.exception.ErrorCode;
+import com.luvina.la.constant.ErrorConstants;
 import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.payload.request.EditEmployeeRequest;
 import com.luvina.la.payload.response.ApiResponse;
@@ -95,35 +95,40 @@ public class EmployeeController {
             @RequestParam(defaultValue = "0") String offset,
             @RequestParam(defaultValue = "5") String limit
     ) {
-        ApiResponse<?> response;
+        try {
+            ApiResponse<?> response;
 
-        if (checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
-            // Kiểm tra ordEmployeeName, ordCertificationName, ordEndDate chỉ nhận giá trị ASC hoặc DESC chưa
-            response = ApiResponse.createMessageResponse(ErrorCode.ER021_ORDER);
-        } else if (Integer.parseInt(limit) < 0) {
-            // Kiểm tra limit có phải số nguyên dương không
-            response = ApiResponse.createMessageResponse(ErrorCode.ER018_LIMIT);
-        } else if (Integer.parseInt(offset) < 0) {
-            // Kiểm tra offset có phải số nguyên dương không
-            response = ApiResponse.createMessageResponse(ErrorCode.ER018_OFFSET);
-        } else {
-            // Lấy tổng số bản ghi phù hợp từ service
-            Long totalRecords = employeeService.countEmployees(employeeName, departmentId);
+            if (checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
+                // Kiểm tra ordEmployeeName, ordCertificationName, ordEndDate chỉ nhận giá trị ASC hoặc DESC chưa
+                response = ApiResponse.createMessageResponse(ErrorConstants.ER021_ORDER);
+            } else if (Integer.parseInt(limit) < 0) {
+                // Kiểm tra limit có phải số nguyên dương không
+                response = ApiResponse.createMessageResponse(ErrorConstants.ER018_LIMIT);
+            } else if (Integer.parseInt(offset) < 0) {
+                // Kiểm tra offset có phải số nguyên dương không
+                response = ApiResponse.createMessageResponse(ErrorConstants.ER018_OFFSET);
+            } else {
+                // Lấy tổng số bản ghi phù hợp từ service
+                Long totalRecords = employeeService.countEmployees(employeeName, departmentId);
 
-            // Lấy danh sách employee từ service
-            List<EmployeeDTO> list = employeeService.getEmployees(employeeName, departmentId,
-                    ordEmployeeName, ordCertificationName, ordEndDate, offset, limit);
+                // Lấy danh sách employee từ service
+                List<EmployeeDTO> list = employeeService.getEmployees(employeeName, departmentId,
+                        ordEmployeeName, ordCertificationName, ordEndDate, offset, limit);
 
-            //Tạo response
-            response = ApiResponse.<List<EmployeeDTO>>builder()
-                    .totalRecords(totalRecords)
-                    .employees(list)
-                    .build();
+                //Tạo response
+                response = ApiResponse.<List<EmployeeDTO>>builder()
+                        .totalRecords(totalRecords)
+                        .employees(list)
+                        .build();
 
+            }
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception ex) {
+            ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorConstants.ER023);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 
     /**
@@ -150,20 +155,24 @@ public class EmployeeController {
      */
     @PostMapping
     public ResponseEntity<?> addEmployee(@RequestBody AddEmployeeRequest request) {
-        // Kiểm tra thông tin employee từ FE có hợp lệ không
-        ApiResponse<?> response = validateRequest.validateAddEmployeeRequest(request);
+        try {
+            // Kiểm tra thông tin employee từ FE có hợp lệ không
+            ApiResponse<?> response = validateRequest.validateAddEmployeeRequest(request);
 
-        if (response == null) {
-            // Lưu thông tin employee
-            Long id = employeeService.addEmployee(request);
+            if (response == null) {
+                // Lưu thông tin employee
+                Long id = employeeService.addEmployee(request);
 
-            // Tạo response
-            response = ApiResponse.createMessageResponse(id, "MSG001", List.of(new String[]{}));
-//            response = ApiResponse.createMessageResponse(1L, "MSG001", new ArrayList<>(List.of(new String[]{})));
+                // Tạo response
+                response = ApiResponse.createMessageResponse(id, "MSG001", List.of(new String[]{}));
+            }
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception ex) {
+            ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorConstants.ER023);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 
     /**
@@ -182,29 +191,35 @@ public class EmployeeController {
      */
     @GetMapping("/{employeeId}")
     public ResponseEntity<?> getDetailEmployee(@PathVariable Long employeeId) {
-        // Kiểm tra employeeId nhận từ FE có hợp lệ không
-        ApiResponse<?> response = validateRequest.validateGetDetailEmployeeRequest(employeeId);
+        try {
+            // Kiểm tra employeeId nhận từ FE có hợp lệ không
+            ApiResponse<?> response = validateRequest.validateGetDetailEmployeeRequest(employeeId);
 
-        if (response == null) {
-            // Lấy thông tin chi tiết employee từ service
-            EmployeeDetailDTO detailDTO = employeeService.getDetailEmployee(employeeId);
+            if (response == null) {
+                // Lấy thông tin chi tiết employee từ service
+                EmployeeDetailDTO detailDTO = employeeService.getDetailEmployee(employeeId);
 
-            // Tạo response
-            response = ApiResponse.builder()
-                    .employeeId(detailDTO.getEmployeeId())
-                    .employeeName(detailDTO.getEmployeeName())
-                    .employeeBirthDate(detailDTO.getEmployeeBirthDate())
-                    .departmentId(detailDTO.getDepartmentId())
-                    .departmentName(detailDTO.getDepartmentName())
-                    .employeeEmail(detailDTO.getEmployeeEmail())
-                    .employeeTelephone(detailDTO.getEmployeeTelephone())
-                    .employeeNameKana(detailDTO.getEmployeeNameKana())
-                    .employeeLoginId(detailDTO.getEmployeeLoginId())
-                    .certifications(detailDTO.getCertifications())
-                    .build();
+                // Tạo response
+                response = ApiResponse.builder()
+                        .employeeId(detailDTO.getEmployeeId())
+                        .employeeName(detailDTO.getEmployeeName())
+                        .employeeBirthDate(detailDTO.getEmployeeBirthDate())
+                        .departmentId(detailDTO.getDepartmentId())
+                        .departmentName(detailDTO.getDepartmentName())
+                        .employeeEmail(detailDTO.getEmployeeEmail())
+                        .employeeTelephone(detailDTO.getEmployeeTelephone())
+                        .employeeNameKana(detailDTO.getEmployeeNameKana())
+                        .employeeLoginId(detailDTO.getEmployeeLoginId())
+                        .certifications(detailDTO.getCertifications())
+                        .build();
+            }
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception ex) {
+            ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorConstants.ER023);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**
@@ -232,18 +247,24 @@ public class EmployeeController {
      */
     @DeleteMapping("/{employeeId}")
     public ResponseEntity<?> deleteEmployee(@PathVariable Long employeeId) {
-        // Kiểm tra employeeId nhận từ FE có hợp lệ không
-        ApiResponse<?> response = validateRequest.validateDeleteEmployeeRequest(employeeId);
+        try {
+            // Kiểm tra employeeId nhận từ FE có hợp lệ không
+            ApiResponse<?> response = validateRequest.validateDeleteEmployeeRequest(employeeId);
 
-        if (response == null) {
-            // Xóa employee
-            employeeService.deleteEmployee(employeeId);
+            if (response == null) {
+                // Xóa employee
+                employeeService.deleteEmployee(employeeId);
 
-            // Tạo response
-            response = ApiResponse.createMessageResponse(employeeId, "MSG003", List.of(new String[]{}));
+                // Tạo response
+                response = ApiResponse.createMessageResponse(employeeId, "MSG003", List.of(new String[]{}));
+            }
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception ex) {
+            ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorConstants.ER023);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**
@@ -270,18 +291,24 @@ public class EmployeeController {
      */
     @PutMapping
     public ResponseEntity<?> editEmployee(@RequestBody EditEmployeeRequest request) {
-        // Kiểm tra thông tin employee từ FE có hợp lệ không
-        ApiResponse<?> response = validateRequest.validateEditEmployeeRequest(request);
+        try {
+            // Kiểm tra thông tin employee từ FE có hợp lệ không
+            ApiResponse<?> response = validateRequest.validateEditEmployeeRequest(request);
 
-        if (response == null) {
-            // Chỉnh sửa employee
-            Long employeeId = employeeService.editEmployee(request);
+            if (response == null) {
+                // Chỉnh sửa employee
+                Long employeeId = employeeService.editEmployee(request);
 
-            // Tạo response
-            response = ApiResponse.createMessageResponse(employeeId, "MSG002", List.of(new String[]{}));
+                // Tạo response
+                response = ApiResponse.createMessageResponse(employeeId, "MSG002", List.of(new String[]{}));
+            }
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception ex) {
+            ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorConstants.ER023);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**

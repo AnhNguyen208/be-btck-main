@@ -6,8 +6,7 @@ package com.luvina.la.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.luvina.la.constant.CodeConstants;
-import com.luvina.la.exception.AppException;
-import com.luvina.la.exception.ErrorCode;
+import com.luvina.la.constant.ErrorConstants;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -44,31 +43,14 @@ public class ApiResponse<T> {
     T certifications;
 
     /**
-     * Tạo response cho AppException
-     * @param exception thông tin exception
-     * @return response
-     */
-    public static ApiResponse<?> createMessageResponse(AppException exception) {
-        MessageResponse messageResponse = MessageResponse.builder()
-                .code(exception.getErrorCode().getCode())
-                .params(exception.getErrorCode().getParams())
-                .build();
-
-        return ApiResponse.builder()
-                .code(CodeConstants.ERROR.getCode())
-                .message(messageResponse)
-                .build();
-    }
-
-    /**
      * Tạo response cho ErrorCode
-     * @param errorCode thông tin error
+     * @param errorConstants thông tin error
      * @return response
      */
-    public static ApiResponse<?> createMessageResponse(ErrorCode errorCode) {
+    public static ApiResponse<?> createMessageResponse(ErrorConstants errorConstants) {
         MessageResponse messageResponse = MessageResponse.builder()
-                .code(errorCode.getCode())
-                .params(errorCode.getParams())
+                .code(errorConstants.getCode())
+                .params(errorConstants.getParams())
                 .build();
 
         return ApiResponse.builder()

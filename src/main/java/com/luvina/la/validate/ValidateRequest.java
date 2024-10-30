@@ -4,7 +4,7 @@
  */
 package com.luvina.la.validate;
 
-import com.luvina.la.exception.ErrorCode;
+import com.luvina.la.constant.ErrorConstants;
 import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.payload.request.CertificationRequest;
 import com.luvina.la.payload.request.EditEmployeeRequest;
@@ -99,9 +99,9 @@ public class ValidateRequest {
     public ApiResponse<?> validateDeleteEmployeeRequest(Long employeeId) {
         ApiResponse<?> response = null;
         if (isNull(employeeId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_EMPLOYEE_ID);
         } else if (!employeeService.checkExistsById(employeeId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER014_EMPLOYEE_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER014_EMPLOYEE_ID);
         }
 
         return response;
@@ -114,9 +114,9 @@ public class ValidateRequest {
     public ApiResponse<?> validateGetDetailEmployeeRequest(Long employeeId) {
         ApiResponse<?> response = null;
         if (isNull(employeeId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_EMPLOYEE_ID);
         } else if (!employeeService.checkExistsById(employeeId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER013_EMPLOYEE_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER013_EMPLOYEE_ID);
         }
 
         return response;
@@ -194,9 +194,9 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(employeeId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_EMPLOYEE_ID);
         } else if (!employeeService.checkExistsById(employeeId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER013_EMPLOYEE_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER013_EMPLOYEE_ID);
         }
 
         return response;
@@ -211,13 +211,13 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(employeeLoginId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_EMPLOYEE_LOGIN_ID);
         } else if (checkMaxLength(employeeLoginId, 50)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_LOGIN_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER006_EMPLOYEE_LOGIN_ID);
         } else if (checkPattern(employeeLoginId, "^[a-zA-Z_][a-zA-Z0-9_]*$")) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER019_EMPLOYEE_LOGIN_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER019_EMPLOYEE_LOGIN_ID);
         } else if (employeeService.checkExistsByEmployeeLoginIAdd(employeeLoginId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER003_EMPLOYEE_LOGIN_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER003_EMPLOYEE_LOGIN_ID);
         }
 
         return response;
@@ -231,13 +231,13 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(employeeLoginId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_LOGIN_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_EMPLOYEE_LOGIN_ID);
         } else if (checkMaxLength(employeeLoginId, 50)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_LOGIN_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER006_EMPLOYEE_LOGIN_ID);
         } else if (checkPattern(employeeLoginId, "^[a-zA-Z_][a-zA-Z0-9_]*$")) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER019_EMPLOYEE_LOGIN_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER019_EMPLOYEE_LOGIN_ID);
         } else if (employeeService.checkExistsByEmployeeLoginIEdit(employeeId, employeeLoginId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER003_EMPLOYEE_LOGIN_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER003_EMPLOYEE_LOGIN_ID);
         }
 
         return response;
@@ -251,9 +251,9 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(employeeName)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_NAME);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_EMPLOYEE_NAME);
         } else if (checkMaxLength(employeeName, 125)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_NAME);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER006_EMPLOYEE_NAME);
         }
 
         return response;
@@ -267,11 +267,11 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(employeeNameKana)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_NAME_KANA);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_EMPLOYEE_NAME_KANA);
         } else if (checkMaxLength(employeeNameKana, 125)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_NAME_KANA);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER006_EMPLOYEE_NAME_KANA);
         } else if (checkPattern(employeeNameKana, "^[\\uFF65-\\uFF9F]+$")) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER009_EMPLOYEE_NAME_KANA);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER009_EMPLOYEE_NAME_KANA);
         }
 
         return response;
@@ -285,11 +285,11 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(employeeBirthDate)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_BIRTHDATE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_EMPLOYEE_BIRTHDATE);
         } else if (checkValueDate(employeeBirthDate)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER011_EMPLOYEE_BIRTHDATE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER011_EMPLOYEE_BIRTHDATE);
         } else if (checkFormatDate(employeeBirthDate)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER005_EMPLOYEE_BIRTHDATE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER005_EMPLOYEE_BIRTHDATE);
         }
 
         return response;
@@ -303,9 +303,9 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(employeeEmail)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_EMAIL);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_EMPLOYEE_EMAIL);
         } else if (checkMaxLength(employeeEmail, 125)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_EMAIL);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER006_EMPLOYEE_EMAIL);
         }
 
         return response;
@@ -319,11 +319,11 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(employeeTelephone)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_TELEPHONE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_EMPLOYEE_TELEPHONE);
         } else if (checkMaxLength(employeeTelephone, 50)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER006_EMPLOYEE_TELEPHONE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER006_EMPLOYEE_TELEPHONE);
         } else if (checkPattern(employeeTelephone, "[0-9]+")) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER008_EMPLOYEE_TELEPHONE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER008_EMPLOYEE_TELEPHONE);
         }
 
         return response;
@@ -337,9 +337,9 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(employeeLoginPassword)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_EMPLOYEE_LOGIN_PASSWORD);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_EMPLOYEE_LOGIN_PASSWORD);
         } else if (!checkLength(employeeLoginPassword, 8, 50)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER007_EMPLOYEE_LOGIN_PASSWORD);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER007_EMPLOYEE_LOGIN_PASSWORD);
         }
 
         return response;
@@ -353,7 +353,7 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (!checkLength(employeeLoginPassword, 8, 50)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER007_EMPLOYEE_LOGIN_PASSWORD);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER007_EMPLOYEE_LOGIN_PASSWORD);
         }
 
         return response;
@@ -367,11 +367,11 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(departmentId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER002_DEPARTMENT_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER002_DEPARTMENT_ID);
         } else if (departmentId <= 0) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER018_DEPARTMENT_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER018_DEPARTMENT_ID);
         } else if (!departmentService.checkExistsById(departmentId)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER004_DEPARTMENT_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER004_DEPARTMENT_ID);
         }
 
         return response;
@@ -418,9 +418,9 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(startDate) || checkValueDate(startDate)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_CERTIFICATION_START_DATE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_CERTIFICATION_START_DATE);
         } else if (checkFormatDate(startDate)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER005_CERTIFICATION_START_DATE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER005_CERTIFICATION_START_DATE);
         }
 
         return response;
@@ -438,11 +438,11 @@ public class ValidateRequest {
         Date endDate = new Date(endDateStr);
 
         if (isNull(endDateStr) || checkValueDate(endDateStr)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_CERTIFICATION_START_DATE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_CERTIFICATION_START_DATE);
         } else if (checkFormatDate(endDateStr)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER005_CERTIFICATION_START_DATE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER005_CERTIFICATION_START_DATE);
         } else if ((endDate).compareTo(startDate) <= 0) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER012_CERTIFICATION_START_DATE_END_DATE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER012_CERTIFICATION_START_DATE_END_DATE);
         }
 
         return response;
@@ -456,9 +456,9 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(score)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_CERTIFICATION_SCORE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_CERTIFICATION_SCORE);
         } else if (Integer.parseInt(String.valueOf(score)) <= 0) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER018_CERTIFICATION_SCORE);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER018_CERTIFICATION_SCORE);
         }
 
         return response;
@@ -472,11 +472,11 @@ public class ValidateRequest {
         ApiResponse<?> response = null;
 
         if (isNull(id)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER001_CERTIFICATION_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER001_CERTIFICATION_ID);
         } else if (id <= 0) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER018_CERTIFICATION_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER018_CERTIFICATION_ID);
         } else if (!certificationService.checkExistsById(id)) {
-            response = ApiResponse.createMessageResponse(ErrorCode.ER004_CERTIFICATION_ID);
+            response = ApiResponse.createMessageResponse(ErrorConstants.ER004_CERTIFICATION_ID);
         }
 
         return response;

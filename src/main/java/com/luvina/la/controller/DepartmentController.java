@@ -4,6 +4,7 @@
  */
 package com.luvina.la.controller;
 
+import com.luvina.la.constant.ErrorConstants;
 import com.luvina.la.service.DepartmentService;
 import com.luvina.la.dto.DepartmentDTO;
 import com.luvina.la.payload.response.ApiResponse;
@@ -60,14 +61,20 @@ public class DepartmentController {
      */
     @GetMapping
     public ResponseEntity<?> getListDepartments() {
-        // Lấy danh sách department từ service
-        List<DepartmentDTO> result = departmentService.getDepartments();
+        try {
+            // Lấy danh sách department từ service
+            List<DepartmentDTO> result = departmentService.getDepartments();
 
-        // Tạo response
-        ApiResponse<List<DepartmentDTO>> response = ApiResponse.<List<DepartmentDTO>>builder()
-                .departments(result)
-                .build();
+            // Tạo response
+            ApiResponse<List<DepartmentDTO>> response = ApiResponse.<List<DepartmentDTO>>builder()
+                    .departments(result)
+                    .build();
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception ex) {
+            ApiResponse<?> response = ApiResponse.createMessageResponse(ErrorConstants.ER023);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
     }
 }

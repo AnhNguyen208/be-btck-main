@@ -2,7 +2,7 @@
  * Copyright(C) 2024  Luvina
  * ErrorMessage.java, 06/10/2024 AnhNLT
  */
-package com.luvina.la.exception;
+package com.luvina.la.constant;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public enum ErrorCode {
+public enum ErrorConstants {
     // 1.1 Validate parameter [employeeLoginId]
     ER001_EMPLOYEE_LOGIN_ID("ER001", List.of(new String[]{"アカウント名"})),
     ER003_EMPLOYEE_LOGIN_ID("ER003", List.of(new String[]{"アカウント名"})),
@@ -82,7 +82,7 @@ public enum ErrorCode {
     private final String code;
     private final List<String> params;
 
-    ErrorCode(String code, List<String> params) {
+    ErrorConstants(String code, List<String> params) {
         this.code = code;
         this.params = params;
     }

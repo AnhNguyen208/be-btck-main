@@ -4,6 +4,7 @@
  */
 package com.luvina.la.controller;
 
+import com.luvina.la.constant.CodeConstants;
 import com.luvina.la.constant.ErrorConstants;
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.dto.EmployeeDetailDTO;
@@ -156,7 +157,7 @@ public class EmployeeController {
                 Long id = employeeService.addEmployee(request);
 
                 // Tạo response
-                response = ApiResponse.createMessageResponse(id, "MSG001", List.of(new String[]{}));
+                response = ApiResponse.createMessageResponse(id, CodeConstants.MSG_001.getCode(), List.of(new String[]{}));
             }
 
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -248,7 +249,7 @@ public class EmployeeController {
                 employeeService.deleteEmployee(employeeId);
 
                 // Tạo response
-                response = ApiResponse.createMessageResponse(employeeId, "MSG003", List.of(new String[]{}));
+                response = ApiResponse.createMessageResponse(employeeId, CodeConstants.MSG_003.getCode(), List.of(new String[]{}));
             }
 
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -292,7 +293,7 @@ public class EmployeeController {
                 Long employeeId = employeeService.editEmployee(request);
 
                 // Tạo response
-                response = ApiResponse.createMessageResponse(employeeId, "MSG002", List.of(new String[]{}));
+                response = ApiResponse.createMessageResponse(employeeId, CodeConstants.MSG_002.getCode(), List.of(new String[]{}));
             }
 
             return new ResponseEntity<>(response, HttpStatus.OK);

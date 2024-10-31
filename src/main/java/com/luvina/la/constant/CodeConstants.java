@@ -14,6 +14,9 @@ import lombok.Getter;
 public enum CodeConstants {
     SUCCESS("200"),
     ERROR("500"),
+    MSG_001("MSG001"),
+    MSG_002("MSG002"),
+    MSG_003("MSG003"),
     ;
     private final String code;
 

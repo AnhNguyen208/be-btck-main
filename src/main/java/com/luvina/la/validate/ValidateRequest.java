@@ -237,7 +237,7 @@ public class ValidateRequest {
      * Kiểm tra giá trị Order by
      * @param value gía trị cần kiểm tra
      * @return
-     *         true: Giá tr hợp lệ
+     *         true: Giá trị hợp lệ
      *         false: Giá trị không hợp lệ
      */
     private boolean checkOrdValue(String value) {

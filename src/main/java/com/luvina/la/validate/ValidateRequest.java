@@ -79,19 +79,20 @@ public class ValidateRequest {
      *      Không hợp lệ trả về ApiResponse chứa thông báo lỗi tương ứng
      */
     public ApiResponse<?> validateAddEmployeeRequest(EmployeeRequest request) {
-        ApiResponse<?> response;
+        ApiResponse<?> response = null;
 
-        response = validateEmployeeLoginIdAdd(request.getEmployeeLoginId());
-        if (response != null) {
-            return response;
+        if (response == null) {
+            response = validateEmployeeLoginIdAdd(request.getEmployeeLoginId());
         }
 
-        response = validateEmployeeLoginPassword(request.getEmployeeLoginPassword());
-        if (response != null) {
-            return response;
+        if (response == null) {
+            response = validateEmployeeLoginPassword(request.getEmployeeLoginPassword());
         }
 
-        response = validateEmployeeRequest(request);
+        if (response == null) {
+            response = validateEmployeeRequest(request);
+        }
+
         return response;
     }
 
@@ -141,24 +142,27 @@ public class ValidateRequest {
      *      Không hợp lệ trả về ApiResponse chứa thông báo lỗi tương ứng
      */
     public ApiResponse<?> validateEditEmployeeRequest(EmployeeRequest request) {
-        ApiResponse<?> response;
+        ApiResponse<?> response = null;
 
-        response = validateEmployeeIdEdit(request.getEmployeeId());
-        if (response != null) {
-            return response;
+
+        if (response == null) {
+            response = validateEmployeeIdEdit(request.getEmployeeId());
         }
 
-        response = validateEmployeeLoginIdEdit(request.getEmployeeId() , request.getEmployeeLoginId());
-        if (response != null) {
-            return response;
+        if (response == null) {
+            response = validateEmployeeLoginIdEdit(request.getEmployeeId() , request.getEmployeeLoginId());
         }
 
-        if ("".compareTo(request.getEmployeeLoginPassword()) != 0) {
-            response = validateEmployeeLoginPasswordEdit(request.getEmployeeLoginPassword());
-            return response;
+        if (response == null) {
+            if ("".compareTo(request.getEmployeeLoginPassword()) != 0) {
+                response = validateEmployeeLoginPasswordEdit(request.getEmployeeLoginPassword());
+            }
         }
 
-        response = validateEmployeeRequest(request);
+        if (response == null) {
+            response = validateEmployeeRequest(request);
+        }
+
         return response;
     }
 
@@ -170,44 +174,40 @@ public class ValidateRequest {
      *      Không hợp lệ trả về ApiResponse chứa thông báo lỗi tương ứng
      */
     private ApiResponse<?> validateEmployeeRequest(EmployeeRequest request) {
-        ApiResponse<?> response;
+        ApiResponse<?> response = null;
 
-        response = validateEmployeeName(request.getEmployeeName());
-        if (response != null) {
-            return response;
+        if (response == null) {
+            response = validateEmployeeName(request.getEmployeeName());
         }
 
-        response = validateEmployeeNameKana(request.getEmployeeNameKana());
-        if (response != null) {
-            return response;
+        if (response == null) {
+            response = validateEmployeeNameKana(request.getEmployeeNameKana());
         }
 
-        response = validateEmployeeBirthDate(request.getEmployeeBirthDate());
-        if (response != null) {
-            return response;
+        if (response == null) {
+            response = validateEmployeeBirthDate(request.getEmployeeBirthDate());
         }
 
-        response = validateEmployeeEmail(request.getEmployeeEmail());
-        if (response != null) {
-            return response;
+        if (response == null) {
+            response = validateEmployeeEmail(request.getEmployeeEmail());
         }
 
-        response = validateEmployeeTelephone(request.getEmployeeTelephone());
-        if (response != null) {
-            return response;
+        if (response == null) {
+            response = validateEmployeeTelephone(request.getEmployeeTelephone());
         }
 
-        response = validateDepartmentId(request.getDepartmentId());
-        if (response != null) {
-            return response;
+        if (response == null) {
+            response = validateDepartmentId(request.getDepartmentId());
         }
 
-        if (request.getCertifications() != null ) {
-            response = validateListCertifications(request.getCertifications());
-            return response;
+        if (response == null) {
+            if (request.getCertifications() != null ) {
+                response = validateListCertifications(request.getCertifications());
+            }
         }
 
-        return null;
+
+        return response;
     }
 
     /**

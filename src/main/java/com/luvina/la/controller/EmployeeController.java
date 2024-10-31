@@ -8,8 +8,7 @@ import com.luvina.la.constant.CodeConstants;
 import com.luvina.la.constant.ErrorConstants;
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.dto.EmployeeDetailDTO;
-import com.luvina.la.payload.request.AddEmployeeRequest;
-import com.luvina.la.payload.request.EditEmployeeRequest;
+import com.luvina.la.payload.request.EmployeeRequest;
 import com.luvina.la.payload.response.ApiResponse;
 import com.luvina.la.service.EmployeeService;
 import com.luvina.la.validate.ValidateRequest;
@@ -147,7 +146,7 @@ public class EmployeeController {
      *      }
      */
     @PostMapping
-    public ResponseEntity<?> addEmployee(@RequestBody AddEmployeeRequest request) {
+    public ResponseEntity<?> addEmployee(@RequestBody EmployeeRequest request) {
         try {
             // Kiểm tra thông tin employee từ FE có hợp lệ không
             ApiResponse<?> response = validateRequest.validateAddEmployeeRequest(request);
@@ -283,7 +282,7 @@ public class EmployeeController {
      *      }
      */
     @PutMapping
-    public ResponseEntity<?> editEmployee(@RequestBody EditEmployeeRequest request) {
+    public ResponseEntity<?> editEmployee(@RequestBody EmployeeRequest request) {
         try {
             // Kiểm tra thông tin employee từ FE có hợp lệ không
             ApiResponse<?> response = validateRequest.validateEditEmployeeRequest(request);

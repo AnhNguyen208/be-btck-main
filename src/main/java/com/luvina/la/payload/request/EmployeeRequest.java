@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class EditEmployeeRequest {
+public class EmployeeRequest {
     Long employeeId;
     String employeeName;
     String employeeBirthDate;

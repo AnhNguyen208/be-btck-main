@@ -4,20 +4,19 @@
  */
 package com.luvina.la.service.impl;
 
+import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.dto.EmployeeDetailDTO;
 import com.luvina.la.entity.Employee;
 import com.luvina.la.entity.EmployeeCertification;
 import com.luvina.la.mapper.EmployeeCertificationMapper;
 import com.luvina.la.mapper.EmployeeMapper;
-import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.payload.request.CertificationRequest;
-import com.luvina.la.payload.request.EditEmployeeRequest;
+import com.luvina.la.payload.request.EmployeeRequest;
 import com.luvina.la.repository.CertificationRepository;
 import com.luvina.la.repository.DepartmentRepository;
 import com.luvina.la.repository.EmployeeCertificationRepository;
-import com.luvina.la.service.EmployeeService;
-import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.repository.EmployeeRepository;
+import com.luvina.la.service.EmployeeService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -31,7 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Lấy thông tin Employee từ CSDL
+ * Service triển khai các thao tác với dữ liệu Employee từ CSDL
+ * Được sử dụng để quản lý và xử lý các thông tin liên quan đến Employee.
+ *
  * @author AnhNLT
  */
 @Service
@@ -95,8 +96,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Transactional
     @Override
-    public Long addEmployee(AddEmployeeRequest request) {
-        Employee employee = employeeMapper.toEntityAdd(request);
+    public Long addEmployee(EmployeeRequest request) {
+        Employee employee = employeeMapper.requestToEntity(request);
 
         String encodePassword = new BCryptPasswordEncoder().encode(employee.getEmployeeLoginPassword());
         employee.setEmployeeLoginPassword(encodePassword);
@@ -122,8 +123,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Transactional
     @Override
-    public Long editEmployee(EditEmployeeRequest request) {
-        Employee employee = employeeMapper.toEntityEdit(request);
+    public Long editEmployee(EmployeeRequest request) {
+        Employee employee = employeeMapper.requestToEntity(request);
         Employee oldEmployee = employeeRepository.findById(employee.getEmployeeId()).orElseThrow();
 
         if ("".compareTo(employee.getEmployeeLoginPassword()) == 0) {

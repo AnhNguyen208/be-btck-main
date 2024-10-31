@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Lấy thông tin Department từ CSDL
+ * Service triển khai các thao tác với dữ liệu Department từ CSDL.
+ * Được sử dụng để quản lý và xử lý các thông tin liên quan đến Department.
+ *
  * @author AnhNLT
  */
 @Service
@@ -29,8 +31,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     DepartmentMapper departmentMapper;
 
     /**
-     * Lấy danh sách tất cả Department
-     * @return Danh sách đối tượng DepartmentDTO
+     * Lấy danh sách tất cả các phòng ban (Department) dưới dạng DTO.
+     *
+     * @return Danh sách các đối tượng DepartmentDTO
      */
     @Override
     public List<DepartmentDTO> getDepartments() {
@@ -38,11 +41,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     /**
-     * Kiểm tra sự tồn tại của department bằng id
-     * @param departmentId id muốn kiểm tra
-     * @return
-     *      true: Tồn tại
-     *      false: Không tồn tại
+     * Kiểm tra sự tồn tại của một phòng ban dựa trên ID.
+     *
+     * @param departmentId ID của phòng ban cần kiểm tra
+     * @return true nếu phòng ban tồn tại, ngược lại false
      */
     @Override
     public boolean checkExistsById(Long departmentId) {

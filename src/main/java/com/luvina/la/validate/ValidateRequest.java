@@ -6,9 +6,8 @@ package com.luvina.la.validate;
 
 import com.luvina.la.constant.ErrorConstants;
 import com.luvina.la.constant.ParamOrderByConstants;
-import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.payload.request.CertificationRequest;
-import com.luvina.la.payload.request.EditEmployeeRequest;
+import com.luvina.la.payload.request.EmployeeRequest;
 import com.luvina.la.payload.response.ApiResponse;
 import com.luvina.la.service.CertificationService;
 import com.luvina.la.service.DepartmentService;
@@ -79,35 +78,10 @@ public class ValidateRequest {
      *      Hợp lệ trả về null
      *      Không hợp lệ trả về ApiResponse chứa thông báo lỗi tương ứng
      */
-    public ApiResponse<?> validateAddEmployeeRequest(AddEmployeeRequest request) {
+    public ApiResponse<?> validateAddEmployeeRequest(EmployeeRequest request) {
         ApiResponse<?> response;
 
         response = validateEmployeeLoginIdAdd(request.getEmployeeLoginId());
-        if (response != null) {
-            return response;
-        }
-
-        response = validateEmployeeName(request.getEmployeeName());
-        if (response != null) {
-            return response;
-        }
-
-        response = validateEmployeeNameKana(request.getEmployeeNameKana());
-        if (response != null) {
-            return response;
-        }
-
-        response = validateEmployeeBirthDate(request.getEmployeeBirthDate());
-        if (response != null) {
-            return response;
-        }
-
-        response = validateEmployeeEmail(request.getEmployeeEmail());
-        if (response != null) {
-            return response;
-        }
-
-        response = validateEmployeeTelephone(request.getEmployeeTelephone());
         if (response != null) {
             return response;
         }
@@ -117,17 +91,8 @@ public class ValidateRequest {
             return response;
         }
 
-        response = validateDepartmentId(request.getDepartmentId());
-        if (response != null) {
-            return response;
-        }
-
-        if (request.getCertifications() != null ) {
-            response = validateListCertifications(request.getCertifications());
-            return response;
-        }
-
-        return null;
+        response = validateEmployeeRequest(request);
+        return response;
     }
 
     /**
@@ -175,7 +140,7 @@ public class ValidateRequest {
      *      Hợp lệ trả về null
      *      Không hợp lệ trả về ApiResponse chứa thông báo lỗi tương ứng
      */
-    public ApiResponse<?> validateEditEmployeeRequest(EditEmployeeRequest request) {
+    public ApiResponse<?> validateEditEmployeeRequest(EmployeeRequest request) {
         ApiResponse<?> response;
 
         response = validateEmployeeIdEdit(request.getEmployeeId());
@@ -187,6 +152,25 @@ public class ValidateRequest {
         if (response != null) {
             return response;
         }
+
+        if ("".compareTo(request.getEmployeeLoginPassword()) != 0) {
+            response = validateEmployeeLoginPasswordEdit(request.getEmployeeLoginPassword());
+            return response;
+        }
+
+        response = validateEmployeeRequest(request);
+        return response;
+    }
+
+    /**
+     * Kiểm tra thông tin employee
+     * @param request Thông tin employee cần kiểm tra
+     * @return
+     *      Hợp lệ trả về null
+     *      Không hợp lệ trả về ApiResponse chứa thông báo lỗi tương ứng
+     */
+    private ApiResponse<?> validateEmployeeRequest(EmployeeRequest request) {
+        ApiResponse<?> response;
 
         response = validateEmployeeName(request.getEmployeeName());
         if (response != null) {
@@ -213,19 +197,12 @@ public class ValidateRequest {
             return response;
         }
 
-        if ("".compareTo(request.getEmployeeLoginPassword()) != 0) {
-            response = validateEmployeeLoginPasswordEdit(request.getEmployeeLoginPassword());
-            if (response != null) {
-                return response;
-            }
-        }
-
         response = validateDepartmentId(request.getDepartmentId());
         if (response != null) {
             return response;
         }
 
-        if (request.getCertifications() != null) {
+        if (request.getCertifications() != null ) {
             response = validateListCertifications(request.getCertifications());
             return response;
         }

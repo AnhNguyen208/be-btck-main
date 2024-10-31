@@ -5,7 +5,6 @@
 package com.luvina.la.service.impl;
 
 import com.luvina.la.dto.CertificationDTO;
-import com.luvina.la.entity.Certification;
 import com.luvina.la.mapper.CertificationMapper;
 import com.luvina.la.repository.CertificationRepository;
 import com.luvina.la.service.CertificationService;
@@ -18,7 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Lấy thông tin Certification từ CSDL
+ * Service triển khai các thao tác với dữ liệu Certification từ CSDL.
+ * Được sử dụng để quản lý và xử lý các thông tin liên quan đến Certification.
+ *
  * @author AnhNLT
  */
 @Service
@@ -28,9 +29,11 @@ import java.util.List;
 public class CertificationServiceImpl implements CertificationService {
     CertificationRepository certificationRepository;
     CertificationMapper certificationMapper;
+
     /**
-     * Lấy danh sách tất cả Certification
-     * @return Danh sách đối tượng CertificationDTO
+     * Lấy danh sách tất cả các chứng chỉ (Certification) dưới dạng DTO.
+     *
+     * @return Danh sách các đối tượng CertificationDTO
      */
     @Override
     public List<CertificationDTO> getCertifications() {
@@ -38,11 +41,10 @@ public class CertificationServiceImpl implements CertificationService {
     }
 
     /**
-     * Kiểm tra sự tồn tại của certification bằng id
-     * @param certificationId id muốn kiểm tra
-     * @return
-     *      true: Tồn tại
-     *      false: Không tồn tại
+     * Kiểm tra sự tồn tại của một chứng chỉ dựa trên ID.
+     *
+     * @param certificationId ID của chứng chỉ cần kiểm tra
+     * @return true nếu chứng chỉ tồn tại, ngược lại false
      */
     @Override
     public boolean checkExistsById(Long certificationId) {

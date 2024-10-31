@@ -4,10 +4,9 @@
  */
 package com.luvina.la.controller;
 
-import com.luvina.la.constant.ParamOrderByConstants;
+import com.luvina.la.constant.ErrorConstants;
 import com.luvina.la.dto.EmployeeDTO;
 import com.luvina.la.dto.EmployeeDetailDTO;
-import com.luvina.la.constant.ErrorConstants;
 import com.luvina.la.payload.request.AddEmployeeRequest;
 import com.luvina.la.payload.request.EditEmployeeRequest;
 import com.luvina.la.payload.response.ApiResponse;
@@ -96,18 +95,11 @@ public class EmployeeController {
             @RequestParam(defaultValue = "5") String limit
     ) {
         try {
-            ApiResponse<?> response;
+            ApiResponse<?> response = validateRequest.validateSearchParams(
+                    ordEmployeeName, ordCertificationName, ordEndDate, offset, limit
+            );
 
-            if (checkOrdValue(ordEmployeeName) || checkOrdValue(ordCertificationName) || checkOrdValue((ordEndDate))) {
-                // Kiểm tra ordEmployeeName, ordCertificationName, ordEndDate chỉ nhận giá trị ASC hoặc DESC chưa
-                response = ApiResponse.createMessageResponse(ErrorConstants.ER021_ORDER);
-            } else if (Integer.parseInt(limit) < 0) {
-                // Kiểm tra limit có phải số nguyên dương không
-                response = ApiResponse.createMessageResponse(ErrorConstants.ER018_LIMIT);
-            } else if (Integer.parseInt(offset) < 0) {
-                // Kiểm tra offset có phải số nguyên dương không
-                response = ApiResponse.createMessageResponse(ErrorConstants.ER018_OFFSET);
-            } else {
+            if (response == null) {
                 // Lấy tổng số bản ghi phù hợp từ service
                 Long totalRecords = employeeService.countEmployees(employeeName, departmentId);
 
@@ -309,16 +301,5 @@ public class EmployeeController {
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
-    }
-
-    /**
-     * Kiểm tra giá trị Order by
-     * @param value gía trị cần kiểm tra
-     * @return
-     *         true: Giá tr hợp lệ
-     *         false: Giá trị không hợp lệ
-     */
-    private boolean checkOrdValue(String value) {
-        return (!ParamOrderByConstants.ASC.getValue().equals(value)) && !ParamOrderByConstants.DESC.getValue().equals(value);
     }
 }
